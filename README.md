@@ -1,6 +1,9 @@
-# Frontend code template
+# Frontend for RusSeated
 
-This template to be used for frontend applications. Written in Vue.js with Vuetify and Vuex set up it is ready to be used. Facebook. Google and Telegram login is included.
+![](https://github.com/kniazevgeny/RusSeated/blob/master/img1.png) 
+![](https://github.com/kniazevgeny/RusSeated/blob/master/img2.png) 
+
+
 
 ## Project setup
 ```

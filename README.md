@@ -4,7 +4,7 @@
 
 ![](https://github.com/kniazevgeny/RusSeated/blob/master/img1.png) 
 
-### Информация и метки берется с бекенда
+### Информация и метки берутся с бекенда
 ![](https://github.com/kniazevgeny/RusSeated/blob/master/img2.png) 
 
 #### backend: https://github.com/semyon-dev/RusSeated

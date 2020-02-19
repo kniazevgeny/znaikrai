@@ -1,98 +1,96 @@
 <template lang="pug">
-    nav(style="background-color: transparent")
-        v-app-bar(flat app)
-            // Title//span {{$t('title')}}
-            v-row(style="width: 50%" justify="space-between")
-                v-btn(tile text ) КАРТА
-                v-btn(tile text ) АНАЛИТИКА
-                v-btn(tile text ) ИСТОРИИ
-                v-btn(tile text ) О ПРОЕКТЕ
-            v-spacer
-            // Dark mode
-            //<v-btn(text icon color='grey' @click='toggleMode')>//<v-icon(small) brightness_2>
-            // Language picker
+	nav(style="background-color: transparent")
+		v-app-bar(flat app)
+			// Title//span {{$t('title')}}
+			v-row(style="width: 50%" justify="space-between")
+				v-btn(tile text ) КАРТА
+				v-btn(tile text ) АНАЛИТИКА
+				v-btn(tile text ) ИСТОРИИ
+				v-btn(tile text ) О ПРОЕКТЕ
+			v-spacer
+			// Dark mode
+			//<v-btn(text icon color='grey' @click='toggleMode')>//<v-icon(small) brightness_2>
+			// Language picker//v-row(justify='center')
+			v-dialog(v-model='dialog', persistent='', max-width='1250px', scrollable)
+				template(v-slot:activator='{ on }')
+					v-btn(tile outlined style="margin-right: 4%" v-on='on') СООБЩИТЬ О НАРУШЕНИИ
+				v-card
+					v-card-title
+						span.headline СООБЩИТЬ О НАРУШЕНИИ
+					v-card-text
+						v-container
+							v-row
+								v-col(cols='12')
+									v-text-field(label='Какой Ваш статус?*', v-model='b_status', required, hint='Обязательное поле', persistent-hint)
+								v-col(cols='12')
+									v-text-field(label='В каком регионе находится учреждение ФСИН о котором Вы рассказали?*', v-model='b_region', required, hint='Обязательное поле', persistent-hint)
+								v-col(cols='12')
+									v-text-field(label='О каком учреждении ФСИН Вы рассказали?*', v-model='b_fsin_organization', required, hint='Обязательное поле', persistent-hint)
+								v-col(cols='12')
+									v-text-field(label='Укажите когда произошли нарушения о которых Вы рассказали?', v-model='b_time_of_offence')
+								v-col(cols='12')
+									v-text-field(label='С какими фактами применения физического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?', v-model='b_physical_impact_from_employees')
+								v-col(cols='12')
+									v-text-field(label='С какими фактами применения физического воздействия со стороны заключенных Вам приходилось сталкиваться?', v-model='b_physical_impact_from_prisoners')
+								v-col(cols='12')
+									v-text-field(label='С какими фактами психологического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?', v-model='b_psychological_impact_from_employees')
+								v-col(cols='12')
+									v-text-field(label='С какими фактами психологического воздействия со стороны заключенных Вам приходилось сталкиваться?', v-model='b_psychological_impact_from_prisoners')
+								v-col(cols='12')
+									v-text-field(label='В каких случаях Вы сталкивались с фактами вымогательства со стороны сотрудников ФСИН?', v-model='b_extortions_from_employees')
+								v-col(cols='12')
+									v-text-field(label='Приходилось ли Вам сталкиваться с иными случаями коррупции сотрудников ФСИН?', v-model='b_сorruption_from_employees')
+								v-col(cols='12')
+									v-text-field(label='Приходилось ли Вам сталкиваться с фактами вымогательства со стороны заключенных?', v-model='b_extortions_from_prisoners')
+								v-col(cols='12')
+									v-text-field(label='Какие нарушения, связанные с оказанием медицинской помощи, Вы можете отметить?', v-model='b_violations_of_medical_care')
+								v-col(cols='12')
+									v-text-field(label='Какие нарушения, связанные с питанием, Вы можете отметить?', v-model='b_violations_of_food')
+								v-col(cols='12')
+									v-text-field(label='Какие нарушения, связанные с одеждой, Вы можете отметить?', v-model='b_violations_of_clothes')
+								v-col(cols='12')
+									v-text-field(label='Известны ли Вам случаи трудового рабства?', v-model='b_labor_slavery')
+								v-col(cols='12')
+									v-text-field(label='Укажите, в каком диапазоне находится месячная зарплата заключенных?', v-model='b_salary_of_prisoners')
+								v-col(cols='12')
+									v-text-field(label='Какие нарушения, связанные с предоставлением свиданий с Родственниками, Вам известны?', v-model='b_visits_with_relatives')
+								v-col(cols='12')
+									v-text-field(label='Какие нарушения, связанные с общением с адвокатом (иным лицом, имеющим право на оказание юридической помощи), Вам известны?', v-model='b_communication_with_lawyer')
+								v-col(cols='12')
+									v-text-field(label='Есть ли у заключенных возможность направлять жалобы, ходатайства и заявления в надзирающие органы и правозащитные организации?', v-model='b_can_prisoners_submit_complaints')
+								v-col(cols='12')
+									v-text-field(label='Если ли у Вас есть дополнительная информация, которой Вы готовы поделиться с нами, то ее можно написать здесь:', v-model='b_additional_information')
+								v-col(cols='12')
+									v-text-field(label='Согласны ли Вы на публичную огласку приведенных Вами фактов?', v-model='b_public_disclosure')
+								v-col(cols='12')
+									v-text-field(label='Готовы ли Вы сообщить свое имя и контакты?', v-model='b_provide_name_and_contacts')
+								v-col(cols='12')
+									v-text-field(label='Согласны ли Вы на обработку Ваших персональных данных?', v-model='b_processing_personal_data')
+								v-col(cols='12')
+									v-text-field(label='Какие нарушения, связанные с этапированием заключенных Вам известны?', v-model='b_violations_staging')
+								v-col(cols='12')
+									v-text-field(label='С какими запретами (нарушениями) на отправление религиозных обрядов со стороны сотрудников ФСИН Вам приходилось сталкиваться?', v-model='b_violations_religious_rites_from_employees')
+								v-col(cols='12')
+									v-text-field(label='С какими запретами (нарушениями) на отправление религиозных обрядов со стороны заключенных Вам приходилось сталкиваться?', v-model='b_violations_religious_rites_from_prisoners')
+								v-col(cols='12')
+									v-text-field(label='С какими нарушениями при применении мер взыскания, связанных с водворением в карцер и ШИЗО, переводом в ПКТ, ЕПКТ и на СУС, Вам приходилось сталкиваться?', v-model='b_violations_penalties_related_to_placement')
+								v-col(cols='12')
+									v-text-field(label='Мы могли бы помочь Вам в составлении жалобы в Европейский суд по поводу нарушений в местах лишения свободы. Хотели бы Вы получить такую помощь?', v-model='b_help_european_court')
+								v-col(cols='12')
+									v-text-field(label='Какие нарушения, связанные с иными формами общения с Родственниками, Вам известны?', v-model='b_communication_with_relatives')
 
-                      v-row(justify='center')
-            v-dialog(v-model='dialog', persistent='', max-width='1250px', scrollable)
-                template(v-slot:activator='{ on }')
-                    v-btn(tile outlined style="margin-right: 4%" v-on='on') СООБЩИТЬ О НАРУШЕНИИ
-                v-card
-                    v-card-title
-                        span.headline СООБЩИТЬ О НАРУШЕНИИ
-                    v-card-text
-                        v-container
-                            v-row
-                                v-col(cols='12')
-                                    v-text-field(label='Какой Ваш статус?*', v-model='b_status', required, hint='Обязательное поле', persistent-hint)
-                                v-col(cols='12')
-                                    v-text-field(label='В каком регионе находится учреждение ФСИН о котором Вы рассказали?*', v-model='b_region', required, hint='Обязательное поле', persistent-hint)
-                                v-col(cols='12')
-                                    v-text-field(label='О каком учреждении ФСИН Вы рассказали?*', v-model='b_fsin_organization', required, hint='Обязательное поле', persistent-hint)
-                                v-col(cols='12')
-                                    v-text-field(label='Укажите когда произошли нарушения о которых Вы рассказали?', v-model='b_time_of_offence')
-                                v-col(cols='12')
-                                    v-text-field(label='С какими фактами применения физического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?', v-model='b_physical_impact_from_employees')
-                                v-col(cols='12')
-                                    v-text-field(label='С какими фактами применения физического воздействия со стороны заключенных Вам приходилось сталкиваться?', v-model='b_physical_impact_from_prisoners')
-                                v-col(cols='12')
-                                    v-text-field(label='С какими фактами психологического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?', v-model='b_psychological_impact_from_employees')
-                                v-col(cols='12')
-                                    v-text-field(label='С какими фактами психологического воздействия со стороны заключенных Вам приходилось сталкиваться?', v-model='b_psychological_impact_from_prisoners')
-                                v-col(cols='12')
-                                    v-text-field(label='В каких случаях Вы сталкивались с фактами вымогательства со стороны сотрудников ФСИН?', v-model='b_extortions_from_employees')
-                                v-col(cols='12')
-                                    v-text-field(label='Приходилось ли Вам сталкиваться с иными случаями коррупции сотрудников ФСИН?', v-model='b_сorruption_from_employees')
-                                v-col(cols='12')
-                                    v-text-field(label='Приходилось ли Вам сталкиваться с фактами вымогательства со стороны заключенных?', v-model='b_extortions_from_prisoners')
-                                v-col(cols='12')
-                                    v-text-field(label='Какие нарушения, связанные с оказанием медицинской помощи, Вы можете отметить?', v-model='b_violations_of_medical_care')
-                                v-col(cols='12')
-                                    v-text-field(label='Какие нарушения, связанные с питанием, Вы можете отметить?', v-model='b_violations_of_food')
-                                v-col(cols='12')
-                                    v-text-field(label='Какие нарушения, связанные с одеждой, Вы можете отметить?', v-model='b_violations_of_clothes')
-                                v-col(cols='12')
-                                    v-text-field(label='Известны ли Вам случаи трудового рабства?', v-model='b_labor_slavery')
-                                v-col(cols='12')
-                                    v-text-field(label='Укажите, в каком диапазоне находится месячная зарплата заключенных?', v-model='b_salary_of_prisoners')
-                                v-col(cols='12')
-                                    v-text-field(label='Какие нарушения, связанные с предоставлением свиданий с Родственниками, Вам известны?', v-model='b_visits_with_relatives')
-                                v-col(cols='12')
-                                    v-text-field(label='Какие нарушения, связанные с общением с адвокатом (иным лицом, имеющим право на оказание юридической помощи), Вам известны?', v-model='b_communication_with_lawyer')
-                                v-col(cols='12')
-                                    v-text-field(label='Есть ли у заключенных возможность направлять жалобы, ходатайства и заявления в надзирающие органы и правозащитные организации?', v-model='b_can_prisoners_submit_complaints')
-                                v-col(cols='12')
-                                    v-text-field(label='Если ли у Вас есть дополнительная информация, которой Вы готовы поделиться с нами, то ее можно написать здесь:', v-model='b_additional_information')
-                                v-col(cols='12')
-                                    v-text-field(label='Согласны ли Вы на публичную огласку приведенных Вами фактов?', v-model='b_public_disclosure')
-                                v-col(cols='12')
-                                    v-text-field(label='Готовы ли Вы сообщить свое имя и контакты?', v-model='b_provide_name_and_contacts')
-                                v-col(cols='12')
-                                    v-text-field(label='Согласны ли Вы на обработку Ваших персональных данных?', v-model='b_processing_personal_data')
-                                v-col(cols='12')
-                                    v-text-field(label='Какие нарушения, связанные с этапированием заключенных Вам известны?', v-model='b_violations_staging')
-                                v-col(cols='12')
-                                    v-text-field(label='С какими запретами (нарушениями) на отправление религиозных обрядов со стороны сотрудников ФСИН Вам приходилось сталкиваться?', v-model='b_violations_religious_rites_from_employees')
-                                v-col(cols='12')
-                                    v-text-field(label='С какими запретами (нарушениями) на отправление религиозных обрядов со стороны заключенных Вам приходилось сталкиваться?', v-model='b_violations_religious_rites_from_prisoners')
-                                v-col(cols='12')
-                                    v-text-field(label='С какими нарушениями при применении мер взыскания, связанных с водворением в карцер и ШИЗО, переводом в ПКТ, ЕПКТ и на СУС, Вам приходилось сталкиваться?', v-model='b_violations_penalties_related_to_placement')
-                                v-col(cols='12')
-                                    v-text-field(label='Мы могли бы помочь Вам в составлении жалобы в Европейский суд по поводу нарушений в местах лишения свободы. Хотели бы Вы получить такую помощь?', v-model='b_help_european_court')
-                                v-col(cols='12')
-                                    v-text-field(label='Какие нарушения, связанные с иными формами общения с Родственниками, Вам известны?', v-model='b_communication_with_relatives')
+							small *indicates required field
+						v-card-actions
+							v-spacer
+							v-btn(color='error', @click='closeWin()') Закрыть
+							v-btn(color='success', @click='sendNewBlank()', tile, light) Отправить
 
-                            small *indicates required field
-                        v-card-actions
-                            v-spacer
-                            v-btn(color='error', @click='closeWin()') Закрыть
-                            v-btn(color='success', @click='sendNewBlank()', tile, light) Отправить
-
-                    //v-menu(offset-y)
-                        template(v-slot:activator='{ on }')
-                            v-btn(text icon color='grey' v-on='on') {{currentLocale.icon}}
-                        v-list
-                            v-list-item(v-for='locale in locales' @click='changeLanguage(locale.code)' :key="locale.code")
-                                v-list-item-title {{locale.icon}}
+					//v-menu(offset-y)
+						 template(v-slot:activator='{ on }')
+							  v-btn(text icon color='grey' v-on='on') {{currentLocale.icon}}
+						 v-list
+							  v-list-item(v-for='locale in locales' @click='changeLanguage(locale.code)' :key="locale.code")
+									v-list-item-title {{locale.icon}}
 </template>
 
 <script lang="ts">
@@ -103,8 +101,7 @@
     import axios from "axios";
     import * as api from "../utils/api";
 
-
-    @Component
+	 @Component
     export default class Navbar extends Vue {
 
         dialog: boolean = false
@@ -161,16 +158,11 @@
             document.title = i18n.t("Zekovnet") as string;
         }
 
-        validate () {
-            if (this.$refs.form.validate()) {
-                return 0
-            }
-            else return 1
-        }
-        closeWin(){
+        closeWin() {
             this.dialog = false;
 
         }
+
         sendNewBlank() {
             if (this.b_status != '' && this.b_region != '' && this.b_fsin_organization != '') {
                 this.dialog = false;
@@ -223,8 +215,7 @@
                             active: true
                         });
                     })
-            }
-            else{
+            } else {
                 store.setSnackbar({
                     message: "Вы заполнили не все обязательные поля",
                     color: "error",
@@ -236,24 +227,24 @@
 </script>
 
 <style>
-    nav a:link {
-        text-decoration: none;
-    }
+	nav a:link {
+		text-decoration: none;
+	}
 
-    nav a:visited {
-        text-decoration: none;
-    }
+	nav a:visited {
+		text-decoration: none;
+	}
 
-    nav a:hover {
-        text-decoration: underline;
-    }
+	nav a:hover {
+		text-decoration: underline;
+	}
 
-    nav a:active {
-        text-decoration: underline;
-    }
+	nav a:active {
+		text-decoration: underline;
+	}
 
-    header {
-        background-color: transparent;
-    }
+	header {
+		background-color: transparent;
+	}
 </style>
 

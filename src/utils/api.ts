@@ -1,9 +1,8 @@
 // Dependencies
 import axios from 'axios'
-import {Place} from '../models/place'
 import {resolve} from "q";
 
-const base = 'https://87a880b8.ngrok.io'
+const base = 'https://gentle-thicket-20134.herokuapp.coms'
 
 /*
 
@@ -24,11 +23,6 @@ export async function loginTelegram(loginInfo: any) {
 }
 */
 
-export async function places() {
-    await axios.get('${base}/places').then(response => {
-        return response.data
-    });
-}
 
 /*export async function reset(user: User) {
   return (await axios.post(

@@ -1,46 +1,44 @@
 <template lang="html">
-    <div id="map">
-        <div v-if="false" v-for="(m,i) in markers1" :key="i">
-            <a v-text="m.position.lat"> </a>
-            <a v-text="i"></a>
-        </div>
-        <v-btn @click="getplaces">get</v-btn>
-        <v-text-field xs6></v-text-field>
-        <google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="3"
-                    style="height: 615px;" :options="mapStyle">
-            <gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
-                              @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
-            </gmap-info-window>
-            <GmapCluster>
-            <gmap-marker v-if="markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
-                         @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
-            </GmapCluster>
-            <!--<gmap-marker :position="{
-                        lat: 47.376332,
-                        lng: 8.547511
-                      }" :clickable="true"
-                     @click="toggleInfoWindow({
-                      position: {
-                        lat: 47.376332,
-                        lng: 8.547511
-                      },
-                      infoText: '<strong>Marker 1</strong>'
-                   },1)"></gmap-marker>-->
-            <ground-overlay source="./overlay.png" :bounds="{
-            north: 1.502,
-            south: 1.185,
-            east: 104.0262,
-            west: 103.5998,
-        }" :opacity="0.5">
-            </ground-overlay>
-        </google-map>
-        <transition name="fade" mode="out-in">
-            <div v-show="infoWinOpenMine" class="fade-transition">
-                <InfoViewer :info="{currentInfo}"></InfoViewer>
-            </div>
-        </transition>
-        <!--a v-if="markers1" v-text="markers1"></a-->
-    </div>
+	<v-layout wrap>
+		<v-layout style="width: 100vw;">
+			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="3"
+							style="height: 100vh; width: 100vw; clear: left;" :options="mapStyle">
+				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
+										@closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
+				</gmap-info-window>
+				<GmapCluster>
+					<gmap-marker v-if="markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
+									 @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
+				</GmapCluster>
+				<!--<gmap-marker :position="{
+								lat: 47.376332,
+								lng: 8.547511
+							 }" :clickable="true"
+							@click="toggleInfoWindow({
+							 position: {
+								lat: 47.376332,
+								lng: 8.547511
+							 },
+							 infoText: '<strong>Marker 1</strong>'
+						 },1)"></gmap-marker>-->
+				<!--				<ground-overlay source="./overlay.png" :bounds="{
+								north: 1.502,
+								south: 1.185,
+								east: 104.0262,
+								west: 103.5998,
+						  }" :opacity="0.5">
+								</ground-overlay>-->
+			</google-map>
+			<transition name="fade" mode="out-in">
+				<div v-show="infoWinOpenMine" class="fade-transition">
+					<InfoViewer :info="{currentInfo}"></InfoViewer>
+				</div>
+			</transition>
+		</v-layout>
+		<!--v-btn @click="getplaces">get</v-btn-->
+
+		<!--a v-if="markers1" v-text="markers1"></a-->
+	</v-layout>
 </template>
 
 <script>
@@ -51,12 +49,11 @@
     import iconred from "../assets/r2.svg";
     import icongreen from "../assets/g.svg";
     import InfoViewer from "../components/InfoViewer";
-    import {places} from "../utils/api";
     import GmapCluster from 'vue2-google-maps/dist/components/cluster'
 
     Vue.use(VueGoogleMaps, {
         load: {
-            key: 'AIzaSyA5uIPaFS0wkwR_Ot_1fleFNA9EpL3Gv3g',
+            key: 'AIzaSyC6pljRiVUllKxiLWpeolAy275PKguW4hE',
             //libraries: Geocoder,
             v: '3.39',
         },
@@ -363,7 +360,8 @@
 
 
                 try {
-                    axios.get('https://8b2b0c6c.ngrok.io/places').then(response => {
+                    console.log(store.apibase());
+                    axios.get(store.apibase() + '/places').then(response => {
                         this.markers1 = response.data.places;
                         console.log(this.markers1);
                     });
@@ -407,31 +405,33 @@
 
 
 <style>
-    .gm-style-iw.gm-style-iw-c {
-        position: fixed;
-        width: 250px;
-        height: 300px;
-    }
+	.gm-style-iw.gm-style-iw-c {
+		position: fixed;
+		width: 250px;
+		height: 300px;
+	}
 
-    /*   .gm-style-iw-t::after{
-       width: 0px!important;
-       height: 0px!important;
-      }*/
-    .gmnoprint {
-        display: none;
-    }
+	/*   .gm-style-iw-t::after{
+		width: 0px!important;
+		height: 0px!important;
+	  }*/
+	.gmnoprint {
+		display: none;
+	}
 
-    /*.vue-map{
-      position: fixed;
-    }*/
+	/*.vue-map{
+	  position: fixed;
+	}*/
 
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
-    }
-    .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
-        transform: translateY(300px);
-        opacity: 0;
-    }
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .5s;
+	}
+
+	.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */
+	{
+		transform: translateY(300px);
+		opacity: 0;
+	}
 
 
 </style>

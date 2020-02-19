@@ -1,13 +1,11 @@
 // Dependencies
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Place } from '../models/place'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
 export interface State {
-  place?: Place
   snackbar: SnackbarState
   language?: String
   dark: Boolean,
@@ -27,7 +25,6 @@ interface SnackbarState {
 
 const storeOptions = {
   state: {
-    place: {region: '', fsin_organization: '', full_name: ''},
     snackbar: {
       message: '',
       active: false,
@@ -35,7 +32,7 @@ const storeOptions = {
     },
     language: undefined,
     dark: true,
-    apibase: "http://8b2b0c6c.ngrok.io"
+    apibase: 'https://gentle-thicket-20134.herokuapp.com'
   },
 
   mutations: {/*
@@ -56,11 +53,10 @@ const storeOptions = {
     },
   },
   getters: {
-    place: (state: State) => state.place,
     snackbar: (state: State) => state.snackbar,
     language: (state: State) => state.language,
     dark: (state: State) => true,
-    apibase: (state: State) => state.apibase
+    apibase: (state: State) => 'https://gentle-thicket-20134.herokuapp.com'
   },
   plugins: [createPersistedState()],
 }
@@ -70,7 +66,6 @@ export const store = new Vuex.Store<State>(storeOptions)
 // Getters
 const getters = store.getters
 
-export const place = () => getters.place as Place | undefined
 export const snackbar = () => getters.snackbar as SnackbarState
 export const language = () => getters.language as string | undefined
 export const dark = () => true

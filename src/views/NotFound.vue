@@ -4,13 +4,12 @@
     v-layout(column justify-center align-center).text-xs-center
       v-flex(xs12 md10)
         .headline.pb-4
-          span {{$t('notFound')}}
+          span {{$t('notFound')}} abc
 </template>
 
-<script lang="ts">
+<script>
 import Vue from "vue";
-import Component from "vue-class-component";
+import Component from "vue-property-decorator";
 
-@Component
 export default class NotFound extends Vue {}
 </script>

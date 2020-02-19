@@ -1,127 +1,43 @@
 <template lang="pug">
-  .v-container.pa-4
-    // Main content
-    v-layout(column
-    justify-center
-    align-center).text-center
-      v-flex(xs12 md10)
-        .headline.pb-4
-          span(v-html='$t("home.info")')
-        p {{$t('home.rules.register')}}
-        p {{$t('home.rules.money')}}
-        p {{$t('home.rules.success')}}
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        p {{$t('home.rules.success')}}
-
-    a
-      v-flex.pt-4
-        <!--vue-telegram-login(mode='callback'-->
-        <!--telegram-login='mamkintrade_bot'-->
-        <!--@callback='onTelegramAuth'-->
-        <!--radius='3'-->
-        <!--:userpic='false')-->
-        <!--g-signin-button(:params='{ client_id: googleClientId }'-->
-        <!--@success='onGoogleSignInSuccess'-->
-        <!--@error='onGoogleSignInError') {{$t("home.google")}}-->
-        //fb-signin-button(:params='{ scope: "email", return_scopes: true}'
-        //@success='onFacebookSignInSuccess'
-        //@error='onFacebookSignInError') {{$t('home.facebook')}}
-        //.vk-signin-button(@click.stop='vkDialog = true') {{$t('home.vk')}}
-        //.api-signin-button(@click.stop='keyDialog = true') {{$t('home.key')}}
-
-      v-flex.pt-4
-        .caption
-          router-link(to='/privacy') {{ $t('home.privacy') }}
+	v-layout(column)
+		v-card(style="margin-top: -65px")
+			v-img( src="https://russeated-f.herokuapp.com/static/img/home1.9606d6cd.jpg")
+				v-card-text
+					v-layout(fill-height='', style='width: 90%; margin-left: 5%; margin-top: 10%')
+							v-flex(xs5='', style="text-align: left") Согласно статистике ФСИН, в российских местах лишения свободы сейчас находитсяоколо 520 тысяч человек: 455,5 тысяч — в колониях, 96,7 тысяч — в СИЗО, 1,2 тысячи —в тюрьмах и тысяча человек в воспитательных колониях для несовершеннолетних.За последние несколько лет стало больше известно о случаях нарушения прав осужденных — с 2016 по 2018 года Следственный комитет зарегистрировал 6,5 тысяч заявлени о насилии в тюрьмах. При этом лишь 2% жалоб закончились уголовными делами
+							v-flex(xs7='')
+								div(style='text-align: right; max-width: 50vw; padding: 10px; border-radius: 10px')
 </template>
 
 <script lang="ts">
-    import  Vue from "vue";
-    import axios from "axios";
-    import * as store from "../plugins/store";
+    import Vue from "vue";
     import Component from "vue-class-component";
-    import {i18n} from "../plugins/i18n";
 
-    // FB object is global, declaring here for TS
-
-    @Component({
-        components: {}
-    })
+    @Component
     export default class Home extends Vue {
-
-
-        /*onFacebookSignInSuccess(response: any) {
-          FB.api("/me", async (dude: any) => {
-            try {
-              const user = await loginFacebook(response.authResponse.accessToken);
-              store.setUser(user);
-              this.$router.replace("app");
-            } catch (err) {
-              store.setSnackbar({
-                message: "errors.facebook",
-                color: "error",
-                active: true
-              });
-            }
-          });
-        }*/
-
-        /*async onGoogleSignInSuccess(googleUser: any) {
-          try {
-            const user = await loginGoogle(googleUser.getAuthResponse().id_token);
-            store.setUser(user);
-            //this.$router.replace("cabinet");
-          } catch (err) {
-            store.setSnackbar({
-              message: "errors.google",
-              color: "error",
-              active: true
-            });
-          }
-        }
-        onGoogleSignInError(error: Error) {
-          store.setSnackbar({
-            message: "errors.google",
-            color: "error",
-            active: true
-          });
-        }*/
 
     }
 </script>
 
 <style>
-  .fb-signin-button {
-    cursor: pointer;
-    display: block;
-    padding: 10px 46px;
-    border-radius: 3px;
-    background-color: #647daf;
-    color: #fff;
-    margin: 10px;
-  }
+	.fb-signin-button {
+		cursor: pointer;
+		display: block;
+		padding: 10px 46px;
+		border-radius: 3px;
+		background-color: #647daf;
+		color: #fff;
+		margin: 10px;
+	}
 
-  .g-signin-button {
-    margin: 10px;
-    cursor: pointer;
-    display: block;
-    padding: 10px 46px;
-    border-radius: 3px;
-    background-color: #ce5658;
-    color: #fff;
-  }
+	.g-signin-button {
+		margin: 10px;
+		cursor: pointer;
+		display: block;
+		padding: 10px 46px;
+		border-radius: 3px;
+		background-color: #ce5658;
+		color: #fff;
+	}
+
 </style>

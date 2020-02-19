@@ -29,12 +29,12 @@
 						  }" :opacity="0.5">
 								</ground-overlay>-->
 			</google-map>
-			<transition name="fade" mode="out-in">
-				<div v-show="infoWinOpenMine" class="fade-transition">
-					<InfoViewer :info="{currentInfo}"></InfoViewer>
-				</div>
-			</transition>
 		</v-layout>
+		<transition name="slide-fade" mode="in-out">
+			<div v-show="infoWinOpenMine" class="fade-transition inform">
+				<InfoViewer :info="currentInfo"></InfoViewer>
+			</div>
+		</transition>
 		<!--v-btn @click="getplaces">get</v-btn-->
 
 		<!--a v-if="markers1" v-text="markers1"></a-->
@@ -388,7 +388,6 @@
                 //check if its the same marker that was selected if yes toggle
                 if (this.currentMidx === idx) {
                     this.infoWinOpenMine = !this.infoWinOpenMine;
-                    this.currentInfo = undefined;
                 }
                 //if different marker set infowindow to open and reset current marker index
                 else {
@@ -396,6 +395,7 @@
                     this.currentInfo = marker;
                     this.infoWinOpenMine = true;
                 }
+                //console.log(this.currentInfo);
 
             }
         },
@@ -422,19 +422,15 @@
 		display: none;
 	}
 
-	/*.vue-map{
-	  position: fixed;
-	}*/
-
-	.fade-enter-active, .fade-leave-active {
-		transition: opacity .5s;
+	.slide-fade-enter-active {
+		transition: all .2s ease-out;
 	}
-
-	.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */
-	{
-		transform: translateY(300px);
-		opacity: 0;
+	.slide-fade-leave-active {
+		transition: all .2s ease-in;
 	}
-
+	.slide-fade-enter, .slide-fade-leave-to
+		/* .slide-fade-leave-active до версии 2.1.8 */ {
+		transform: translateY(100vh);
+	}
 
 </style>

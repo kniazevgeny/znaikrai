@@ -79,7 +79,7 @@
 								v-col(cols='12')
 									v-text-field(label='Какие нарушения, связанные с иными формами общения с Родственниками, Вам известны?', v-model='b_communication_with_relatives')
 
-							small *indicates required field
+							small *обязательное поле
 						v-card-actions
 							v-spacer
 							v-btn(color='error', @click='closeWin()') Закрыть

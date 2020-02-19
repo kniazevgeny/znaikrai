@@ -1,7 +1,7 @@
 <template lang="pug">
 	v-layout(column)
 		v-card(style="margin-top: -65px")
-			v-img( src="https://russeated-f.herokuapp.com/static/img/home1.9606d6cd.jpg")
+			v-img( src="https://russeated-f.herokuapp.com/static/img/home1.9606d6cd.jpg", style="height: 100vh")
 				v-card-text
 					v-layout(fill-height='', style='width: 90%; margin-left: 5%; margin-top: 10%')
 							v-flex(xs5='', style="text-align: left") Согласно статистике ФСИН, в российских местах лишения свободы сейчас находитсяоколо 520 тысяч человек: 455,5 тысяч — в колониях, 96,7 тысяч — в СИЗО, 1,2 тысячи —в тюрьмах и тысяча человек в воспитательных колониях для несовершеннолетних.За последние несколько лет стало больше известно о случаях нарушения прав осужденных — с 2016 по 2018 года Следственный комитет зарегистрировал 6,5 тысяч заявлени о насилии в тюрьмах. При этом лишь 2% жалоб закончились уголовными делами

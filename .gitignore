@@ -2,6 +2,7 @@
 node_modules
 /dist
 russeated-f
+src/config
 
 # local env files
 .env.local

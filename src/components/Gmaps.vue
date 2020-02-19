@@ -49,11 +49,12 @@
     import iconred from "../assets/r2.svg";
     import icongreen from "../assets/g.svg";
     import InfoViewer from "../components/InfoViewer";
-    import GmapCluster from 'vue2-google-maps/dist/components/cluster'
+    import GmapCluster from 'vue2-google-maps/dist/components/cluster';
+    import * as gmapskey from "../config/gmapskey";
 
     Vue.use(VueGoogleMaps, {
         load: {
-            key: 'AIzaSyC6pljRiVUllKxiLWpeolAy275PKguW4hE',
+            key: gmapskey.key, //or paste your api key here
             //libraries: Geocoder,
             v: '3.39',
         },
@@ -94,6 +95,7 @@
             place: '',
             infoWindowPos: null,
             infoWinOpenMine: false,
+            infoWinOpen: false,
             currentMidx: null,
             currentInfo: undefined,
             infoOptions: undefined,
@@ -353,6 +355,7 @@
         },
         methods: {
             getplaces() {
+                //console.log(gmapskey.key);
                 this.iconr = iconred;
                 this.icong = icongreen;
                 //let el = document.getElementsByClassName('gm-style')[0].childNodes[0].childNodes[2].childNodes[0];
@@ -360,7 +363,7 @@
 
 
                 try {
-                    console.log(store.apibase());
+                    //console.log(store.apibase());
                     axios.get(store.apibase() + '/places').then(response => {
                         this.markers1 = response.data.places;
                         console.log(this.markers1);

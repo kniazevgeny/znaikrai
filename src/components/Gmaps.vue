@@ -2,7 +2,7 @@
 	<v-layout wrap>
 		<v-layout style="width: 100vw;">
 			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="3"
-							style="height: 100vh; width: 100vw; clear: left;" :options="mapStyle">
+							style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;" :options="mapStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
 										@closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
 				</gmap-info-window>
@@ -32,7 +32,7 @@
 		</v-layout>
 		<transition name="slide-fade" mode="in-out">
 			<div v-show="infoWinOpenMine" class="fade-transition inform">
-				<InfoViewer :info="currentInfo"></InfoViewer>
+				<InfoViewer :info="currentInfo" @closes="infoWinOpenMine = false"></InfoViewer>
 			</div>
 		</transition>
 		<!--v-btn @click="getplaces">get</v-btn-->

@@ -3,11 +3,15 @@
 		cookie-law(theme='blood-orange'
 		:buttonText='"Ок"'
 		:message='"Мы используем куки"')
-		Navbar
+		Navbar(style="z-index: 10")
 		v-content
-			Home
-			//router-view
-			Gmaps(v-if="mount" id="map")
+			v-layout(column)
+				Home(style="z-index: 1; position: initial")
+				v-layout(style="height: 110vh")
+				//abs, z-ind height width
+					//↓fix
+				//router-view
+			Gmaps(v-if="mount" id="map" style="z-index: 0; position: fixed;")
 		Snackbar
 </template>
 

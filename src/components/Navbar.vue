@@ -1,17 +1,17 @@
 <template lang="pug">
 	nav(style="background-color: transparent")
-		v-app-bar(flat app)
+		v-app-bar(flat app, justify="space-between")
 			// Title//span {{$t('title')}}
-			v-row(style="width: 50%" justify="space-between")
+			v-row(justify="space-between", style="max-width: 40%")
 				v-btn(tile text ) КАРТА
 				v-btn(tile text ) АНАЛИТИКА
 				v-btn(tile text ) ИСТОРИИ
 				v-btn(tile text ) О ПРОЕКТЕ
-			v-spacer
 			// Dark mode
 			//<v-btn(text icon color='grey' @click='toggleMode')>//<v-icon(small) brightness_2>
 			// Language picker//v-row(justify='center')
-			v-dialog(v-model='dialog', persistent='', max-width='1250px', scrollable)
+			v-spacer
+			v-dialog(v-model='dialog', max-width='1250px', scrollable)
 				template(v-slot:activator='{ on }')
 					v-btn(tile outlined style="margin-right: 4%" v-on='on') СООБЩИТЬ О НАРУШЕНИИ
 				v-card
@@ -90,7 +90,11 @@
 							  v-btn(text icon color='grey' v-on='on') {{currentLocale.icon}}
 						 v-list
 							  v-list-item(v-for='locale in locales' @click='changeLanguage(locale.code)' :key="locale.code")
-									v-list-item-title {{locale.icon}}
+										v-list-item-title {{locale.icon}}
+		div(style="justify-content: center; top: 10px; position: fixed; left: 49%; margin-right: -49%;")
+			img(src="../assets/logo.svg", width=50, height=50, )
+
+
 </template>
 
 <script lang="ts">
@@ -103,6 +107,7 @@
 
 	 @Component
     export default class Navbar extends Vue {
+
 
         dialog: boolean = false
         b_status: string = ''
@@ -160,7 +165,6 @@
 
         closeWin() {
             this.dialog = false;
-
         }
 
         sendNewBlank() {

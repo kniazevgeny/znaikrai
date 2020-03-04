@@ -31,7 +31,7 @@ const storeOptions = {
       color: 'success',
     },
     language: undefined,
-    dark: true,
+    dark: false,
     apibase: 'https://gentle-thicket-20134.herokuapp.com'
   },
 
@@ -49,13 +49,13 @@ const storeOptions = {
       state.language = language
     },
     setDark(state: State, dark: Boolean) {
-      state.dark = true
+      state.dark = dark
     },
   },
   getters: {
     snackbar: (state: State) => state.snackbar,
     language: (state: State) => state.language,
-    dark: (state: State) => true,
+    dark: (state: State) => state.dark,
     apibase: (state: State) => 'https://gentle-thicket-20134.herokuapp.com'
   },
   plugins: [createPersistedState()],
@@ -68,7 +68,7 @@ const getters = store.getters
 
 export const snackbar = () => getters.snackbar as SnackbarState
 export const language = () => getters.language as string | undefined
-export const dark = () => true
+export const dark = () => getters.dark as boolean
 export const apibase = () => getters.apibase as string | undefined
 
 // Mutations
@@ -87,5 +87,5 @@ export const setLanguage = (language: String) => {
   store.commit('setLanguage', language)
 }
 export const setDark = (dark: Boolean) => {
-  store.commit('setDark', true)
+  store.commit('setDark', dark);
 }

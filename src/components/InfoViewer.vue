@@ -126,7 +126,7 @@
 	}*/
 	.inform {
 		position: absolute !important;
-		z-index: 11;
+		z-index: 91;
 		left: 1vh;
 		width: 40vw;
 		bottom: 7vh;
@@ -147,6 +147,7 @@
 		text-transform: uppercase;
 		color: #D50000 !important;
 		font-family: 'Akrobat';
+		font-weight: 900;
 	}
 
 

@@ -13,9 +13,9 @@ import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = true
 new Vue({
+  vuetify,
   router,
   store,
   i18n,
-  vuetify,
   render: h => h(App),
 }).$mount('#app')

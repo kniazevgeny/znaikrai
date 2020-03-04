@@ -30,7 +30,7 @@
 								</ground-overlay>-->
 			</google-map>
 		</v-layout>
-		<transition name="slide-fade" mode="in-out">
+		<transition name="slide-fade" mode="in-out" style="z-index: 99">
 			<div v-show="infoWinOpenMine" class="fade-transition inform">
 				<InfoViewer :info="currentInfo" @closes="infoWinOpenMine = false"></InfoViewer>
 			</div>

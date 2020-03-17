@@ -1,4 +1,5 @@
-# Frontend for RusSeated - https://russeated-f.herokuapp.com/
+# Знай край - фронтенд проекта
+## https://russeated-f.herokuapp.com/
 
 ### Скриншоты сайта
 

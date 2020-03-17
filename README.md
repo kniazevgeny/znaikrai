@@ -8,7 +8,7 @@
 ### Информация и метки берутся с бекенда
 ![](https://github.com/kniazevgeny/RusSeated/blob/master/img2.png) 
 
-#### backend: https://github.com/semyon-dev/RusSeated
+#### backend: https://github.com/semyon-dev/znai-krai
 
 ## Project setup
 ```

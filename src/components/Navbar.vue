@@ -1,19 +1,19 @@
 <template lang="pug">
 	nav(style="background-color: transparent; z-index: 100")
-		v-app-bar(flat :app=`$router.currentRoute.path == "/"`, justify="space-between" style="width: 90%; margin-left: 5%" :dark='$store.state.dark')
+		v-app-bar(flat :app=`$router.currentRoute.path == "/"`, justify="space-between" style="width: 90%; margin-left: 5%; align-items: center!important" :dark='$store.state.dark' prominent)
 			// Title//span {{$t('title')}}
-			v-row(justify="space-between", style="width: 30%; max-width: 45%")
-				v-btn(tile text class="navbar-text" :to="'/'") КАРТА
-				v-btn(tile text class="navbar-text") АНАЛИТИКА
-				v-btn(tile text class="navbar-text") ИСТОРИИ
-				v-btn(tile text class="navbar-text") О ПРОЕКТЕ
+			v-row(justify="start", style="width: 30%; max-width: 45%")
+				v-btn(tile text class="navbar-text" :to="'/'" x-large) КАРТА
+				v-btn(tile text class="navbar-text" x-large) АНАЛИТИКА
+				v-btn(tile text class="navbar-text" x-large) ИСТОРИИ
+				v-btn(tile text class="navbar-text" x-large) О ПРОЕКТЕ
 			// Dark mode
 			//<v-btn(text icon color='grey' @click='toggleMode')>//<v-icon(small) brightness_2>
 			// Language picker//v-row(justify='center')
 			v-spacer
-			v-btn(tile outlined style="margin-right: 4%; padding: 0 16px!important" class="navbar-text" :to="'/tell'") СООБЩИТЬ О НАРУШЕНИИ
-		div(:style=`$router.currentRoute.path == "/"?"position: fixed":"position: absolute;"` style='justify-content: center; top: 10px; left: 49%; margin-right: -49%; position: inherit')
-			img(src="../assets/logo.svg", width=50, height=50, :style='$store.state.dark ? "filter: none" : "filter: invert()"')
+			v-btn(tile outlined style="margin-right: 4%; padding: 0 16px!important" class="navbar-text" :to="'/tell'" x-large id="tellus") СООБЩИТЬ О НАРУШЕНИИ
+		div(:style=`$router.currentRoute.path == "/"?"position: fixed":"position: absolute;"` style='justify-content: center; top: 30px; left: 47%; margin-right: -47%; position: inherit')
+			img(src="../assets/logo.svg", width=70, height=70, :style='$store.state.dark ? "filter: none" : "filter: invert()"')
 
 
 </template>
@@ -69,12 +69,12 @@
 		background-color: transparent;
 	}
 	.navbar-text{
-		font-family: 'Akrobat';
+		font-family: 'Akrobat'!important;
 		font-weight: 700!important;
 		font-size: 1.1rem!important;
 	}
 
-	.navbar-text.v-btn--active > .v-btn__content {
+	.navbar-text.v-btn--active:not(#tellus) > .v-btn__content {
 	  color: #D50000!important;
 	}
 
@@ -86,6 +86,10 @@
 	}
 	.v-btn--outlined {
 		border: 1.5px solid!important;
+	}
+
+	.v-toolbar--prominent .v-toolbar__content {
+		align-items: center!important;
 	}
 </style>
 

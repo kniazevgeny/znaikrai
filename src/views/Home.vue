@@ -1,6 +1,6 @@
 <template lang="pug">
 	v-layout(column)
-		v-card(style="margin-top: -65px; box-shadow: 0px 90px 90px 0px rgba(0,0,0,0.75); z-index: 1; position: initial" :dark='$store.state.dark')
+		v-card(style="margin-top: -12vh; box-shadow: 0px 90px 90px 0px rgba(0,0,0,0.75); z-index: 1; position: initial" :dark='$store.state.dark')
 			v-img( src="https://russeated-f.herokuapp.com/static/img/home1.9606d6cd.jpg", style="height: 100vh")
 				v-card-text
 					v-layout(fill-height='', style='width: 90%; margin-left: 5%; margin-top: 10%')

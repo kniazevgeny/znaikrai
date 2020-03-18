@@ -1,75 +1,103 @@
 <template lang="pug">
-	v-card(:dark='$store.state.dark')
-		v-container(style="margin-top: 5rem")
+	v-card(:dark='$store.state.dark' style=" background: #E9E9E9;")
+		v-container(style="margin-top: 5rem;")
 			v-row
 				span(class="headlinetxt") РАССКАЖИТЕ
 		v-card-text
 			v-container
-				v-row
-					v-col(cols='8')
-						v-text-field(label='Какой Ваш статус?*', v-model='b_status', required, hint='Обязательное поле', persistent-hint, filled)
-					v-col(cols='8')
-						v-text-field(label='В каком регионе находится учреждение ФСИН о котором Вы рассказали?*', v-model='b_region', required, hint='Обязательное поле', persistent-hint, filled)
-					v-col(cols='8')
-						v-text-field(label='О каком учреждении ФСИН Вы рассказали?*', v-model='b_fsin_organization', required, hint='Обязательное поле', persistent-hint, filled)
-					v-col(cols='8')
-						v-text-field(label='Укажите когда произошли нарушения о которых Вы рассказали?', v-model='b_time_of_offence', filled)
-					v-col(cols='8')
-						v-text-field(label='С какими фактами применения физического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?', v-model='b_physical_impact_from_employees', filled)
-					v-col(cols='8')
-						v-text-field(label='С какими фактами применения физического воздействия со стороны заключенных Вам приходилось сталкиваться?', v-model='b_physical_impact_from_prisoners', filled)
-					v-col(cols='8')
-						v-text-field(label='С какими фактами психологического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?', v-model='b_psychological_impact_from_employees', filled)
-					v-col(cols='8')
-						v-text-field(label='С какими фактами психологического воздействия со стороны заключенных Вам приходилось сталкиваться?', v-model='b_psychological_impact_from_prisoners', filled)
-					v-col(cols='8')
-						v-text-field(label='В каких случаях Вы сталкивались с фактами вымогательства со стороны сотрудников ФСИН?', v-model='b_extortions_from_employees', filled)
-					v-col(cols='8')
-						v-text-field(label='Приходилось ли Вам сталкиваться с иными случаями коррупции сотрудников ФСИН?', v-model='b_сorruption_from_employees', filled)
-					v-col(cols='8')
-						v-text-field(label='Приходилось ли Вам сталкиваться с фактами вымогательства со стороны заключенных?', v-model='b_extortions_from_prisoners', filled)
-					v-col(cols='8')
-						v-text-field(label='Какие нарушения, связанные с оказанием медицинской помощи, Вы можете отметить?', v-model='b_violations_of_medical_care', filled)
-					v-col(cols='8')
-						v-text-field(label='Какие нарушения, связанные с питанием, Вы можете отметить?', v-model='b_violations_of_food', filled)
-					v-col(cols='8')
-						v-text-field(label='Какие нарушения, связанные с одеждой, Вы можете отметить?', v-model='b_violations_of_clothes', filled)
-					v-col(cols='8')
-						v-text-field(label='Известны ли Вам случаи трудового рабства?', v-model='b_labor_slavery', filled)
-					v-col(cols='8')
-						v-text-field(label='Укажите, в каком диапазоне находится месячная зарплата заключенных?', v-model='b_salary_of_prisoners', filled)
-					v-col(cols='8')
-						v-text-field(label='Какие нарушения, связанные с предоставлением свиданий с Родственниками, Вам известны?', v-model='b_visits_with_relatives', filled)
-					v-col(cols='8')
-						v-text-field(label='Какие нарушения, связанные с общением с адвокатом (иным лицом, имеющим право на оказание юридической помощи), Вам известны?', v-model='b_communication_with_lawyer', filled)
-					v-col(cols='8')
-						v-text-field(label='Есть ли у заключенных возможность направлять жалобы, ходатайства и заявления в надзирающие органы и правозащитные организации?', v-model='b_can_prisoners_submit_complaints', filled)
-					v-col(cols='8')
-						v-text-field(label='Если ли у Вас есть дополнительная информация, которой Вы готовы поделиться с нами, то ее можно написать здесь:', v-model='b_additional_information', filled)
-					v-col(cols='8')
-						v-text-field(label='Согласны ли Вы на публичную огласку приведенных Вами фактов?', v-model='b_public_disclosure', filled)
-					v-col(cols='8')
-						v-text-field(label='Готовы ли Вы сообщить свое имя и контакты?', v-model='b_provide_name_and_contacts', filled)
-					v-col(cols='8')
-						v-text-field(label='Согласны ли Вы на обработку Ваших персональных данных?', v-model='b_processing_personal_data', filled)
-					v-col(cols='8')
-						v-text-field(label='Какие нарушения, связанные с этапированием заключенных Вам известны?', v-model='b_violations_staging', filled)
-					v-col(cols='8')
-						v-text-field(label='С какими запретами (нарушениями) на отправление религиозных обрядов со стороны сотрудников ФСИН Вам приходилось сталкиваться?', v-model='b_violations_religious_rites_from_employees', filled)
-					v-col(cols='8')
-						v-text-field(label='С какими запретами (нарушениями) на отправление религиозных обрядов со стороны заключенных Вам приходилось сталкиваться?', v-model='b_violations_religious_rites_from_prisoners', filled)
-					v-col(cols='8')
-						v-text-field(label='С какими нарушениями при применении мер взыскания, связанных с водворением в карцер и ШИЗО, переводом в ПКТ, ЕПКТ и на СУС, Вам приходилось сталкиваться?', v-model='b_violations_penalties_related_to_placement', filled)
-					v-col(cols='8')
-						v-text-field(label='Мы могли бы помочь Вам в составлении жалобы в Европейский суд по поводу нарушений в местах лишения свободы. Хотели бы Вы получить такую помощь?', v-model='b_help_european_court', filled)
-					v-col(cols='8')
-						v-text-field(label='Какие нарушения, связанные с иными формами общения с Родственниками, Вам известны?', v-model='b_communication_with_relatives', filled)
+				div(style="width: 50vw")
+					span(class="subtitle1") Ваше свиедтельство поможет пролить свет на происходящее в российских тюрьмаХ. Мы помогаем людям, чьи права были нарушены. Спасибо, что делаете это вместе с нами.
+				br
+				v-row(style="margin-top: 35px")
+					v-col(cols='9')
+						span(class="question") Каков Ваш статус?
+						v-text-field(v-model='b_status', required, hint='Обязательное поле', persistent-hint, filled)
+					v-col(cols='9')
+						span(class="question") В каком регионе находится учреждение ФСИН о котором Вы рассказали?
+						v-text-field(v-model='b_region', required, hint='Обязательное поле', persistent-hint, filled)
+					v-col(cols='9')
+						span(class="question") О каком учреждении ФСИН Вы рассказали?
+						v-text-field(label='', v-model='b_fsin_organization', required, hint='Обязательное поле', persistent-hint, filled)
+					v-col(cols='9')
+						span(class="question") Укажите когда произошли нарушения о которых Вы рассказали?
+						v-text-field(label='', v-model='b_time_of_offence', filled)
+					v-col(cols='9')
+						span(class="question") С какими фактами применения физического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?
+						v-text-field(label='', v-model='b_physical_impact_from_employees', filled)
+					v-col(cols='9')
+						span(class="question") С какими фактами применения физического воздействия со стороны заключенных Вам приходилось сталкиваться?
+						v-text-field(label='', v-model='b_physical_impact_from_prisoners', filled)
+					v-col(cols='9')
+						span(class="question") С какими фактами психологического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?
+						v-text-field(label='', v-model='b_psychological_impact_from_employees', filled)
+					v-col(cols='9')
+						span(class="question") С какими фактами психологического воздействия со стороны заключенных Вам приходилось сталкиваться?
+						v-text-field(label='', v-model='b_psychological_impact_from_prisoners', filled)
+					v-col(cols='9')
+						span(class="question") В каких случаях Вы сталкивались с фактами вымогательства со стороны сотрудников ФСИН?
+						v-text-field(label='', v-model='b_extortions_from_employees', filled)
+					v-col(cols='9')
+						span(class="question") Приходилось ли Вам сталкиваться с иными случаями коррупции сотрудников ФСИН?
+						v-text-field(label='', v-model='b_сorruption_from_employees', filled)
+					v-col(cols='9')
+						span(class="question") Приходилось ли Вам сталкиваться с фактами вымогательства со стороны заключенных?
+						v-text-field(label='', v-model='b_extortions_from_prisoners', filled)
+					v-col(cols='9')
+						span(class="question") Какие нарушения, связанные с оказанием медицинской помощи, Вы можете отметить?
+						v-text-field(label='', v-model='b_violations_of_medical_care', filled)
+					v-col(cols='9')
+						span(class="question") Какие нарушения, связанные с питанием, Вы можете отметить?
+						v-text-field(label='', v-model='b_violations_of_food', filled)
+					v-col(cols='9')
+						span(class="question") Какие нарушения, связанные с одеждой, Вы можете отметить?
+						v-text-field(label='', v-model='b_violations_of_clothes', filled)
+					v-col(cols='9')
+						span(class="question") Известны ли Вам случаи трудового рабства?
+						v-text-field(label='', v-model='b_labor_slavery', filled)
+					v-col(cols='9')
+						span(class="question") Укажите, в каком диапазоне находится месячная зарплата заключенных?
+						v-text-field(label='', v-model='b_salary_of_prisoners', filled)
+					v-col(cols='9')
+						span(class="question") Какие нарушения, связанные с предоставлением свиданий с Родственниками, Вам известны?
+						v-text-field(label='', v-model='b_visits_with_relatives', filled)
+					v-col(cols='9')
+						span(class="question") Какие нарушения, связанные с общением с адвокатом (иным лицом, имеющим право на оказание юридической помощи), Вам известны?
+						v-text-field(label='', v-model='b_communication_with_lawyer', filled)
+					v-col(cols='9')
+						span(class="question") Есть ли у заключенных возможность направлять жалобы, ходатайства и заявления в надзирающие органы и правозащитные организации?
+						v-text-field(label='', v-model='b_can_prisoners_submit_complaints', filled)
+					v-col(cols='9')
+						span(class="question") Если ли у Вас есть дополнительная информация, которой Вы готовы поделиться с нами, то ее можно написать здесь:
+						v-text-field(label='Опишите факты', v-model='b_additional_information', filled)
+					v-col(cols='9')
+						span(class="question") Согласны ли Вы на публичную огласку приведенных Вами фактов?
+						v-text-field(label='', v-model='b_public_disclosure', filled)
+					v-col(cols='9')
+						span(class="question") Готовы ли Вы сообщить свое имя и контакты?
+						v-text-field(label='', v-model='b_provide_name_and_contacts', filled)
+					v-col(cols='9')
+						span(class="question") Согласны ли Вы на обработку Ваших персональных данных?
+						v-text-field(label='', v-model='b_processing_personal_data', filled)
+					v-col(cols='9')
+						span(class="question") Какие нарушения, связанные с этапированием заключенных Вам известны?
+						v-text-field(label='', v-model='b_violations_staging', filled)
+					v-col(cols='9')
+						span(class="question") С какими запретами (нарушениями) на отправление религиозных обрядов со стороны сотрудников ФСИН Вам приходилось сталкиваться?
+						v-text-field(label='', v-model='b_violations_religious_rites_from_employees', filled)
+					v-col(cols='9')
+						span(class="question") С какими запретами (нарушениями) на отправление религиозных обрядов со стороны заключенных Вам приходилось сталкиваться?
+						v-text-field(label='', v-model='b_violations_religious_rites_from_prisoners', filled)
+					v-col(cols='9')
+						span(class="question") С какими нарушениями при применении мер взыскания, связанных с водворением в карцер и ШИЗО, переводом в ПКТ, ЕПКТ и на СУС, Вам приходилось сталкиваться?
+						v-text-field(label='', v-model='b_violations_penalties_related_to_placement', filled)
+					v-col(cols='9')
+						span(class="question") Мы могли бы помочь Вам в составлении жалобы в Европейский суд по поводу нарушений в местах лишения свободы. Хотели бы Вы получить такую помощь?
+						v-text-field(label='', v-model='b_help_european_court', filled)
+					v-col(cols='9')
+						span(class="question") Какие нарушения, связанные с иными формами общения с Родственниками, Вам известны?
+						v-text-field(label='', v-model='b_communication_with_relatives', filled)
 
-				small *обязательное поле
-			v-card-actions
-				v-spacer
-				v-btn(color='error', @click='closeWin()') Закрыть
-				v-btn(color='success', @click='sendNewBlank()', tile, light) Отправить
+				v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent") Отправить
 
 		//v-menu(offset-y)
 																																		 template(v-slot:activator='{ on }')
@@ -89,7 +117,8 @@
     @Component
     export default class Tell extends Vue {
 
-        dialog: boolean = false;
+        sent: boolean = false;
+        loadingbtn: boolean = false;
         b_status: string = '';
         b_region: string = '';
         b_fsin_organization: string = '';
@@ -123,7 +152,7 @@
 
         sendNewBlank() {
             if (this.b_status != '' && this.b_region != '' && this.b_fsin_organization != '') {
-                this.dialog = false;
+                this.loadingbtn = true;
                 axios.post(store.apibase() + "/form",
                     {
                         status: this.b_status,
@@ -159,6 +188,8 @@
                 ).then(response => {
                     console.log(response);
                     if (response.data.message == "ok") {
+                        this.loadingbtn = false;
+                        this.sent = true;
                         store.setSnackbar({
                             message: "Успех! Ваша заявка теперь находится в обработке.",
                             color: "success",
@@ -190,12 +221,37 @@
 		border-right: 1px;
 	}
 </style>
-<style scoped>
+<style >
 	.headlinetxt {
-		font-family: 'Akrobat'!important;
+		font-family: 'Akrobat Black'!important;
 		font-style: normal;
-		font-weight: 900;
-		font-size: 5rem!important;
+		font-size: 7rem!important;
 		line-height: 6rem;
+	}
+
+	.question{
+		font-family: 'Akrobat'!important;
+		color: #000;
+		font-weight: bold;
+		text-transform: uppercase;
+		font-style: normal;
+		font-size: 1.35rem!important;
+		line-height: 1.2rem;
+		padding-bottom: 100px;
+	}
+
+	.v-input__control>.v-input__slot{
+		background-color: white!important;
+	}
+	.col-9{
+		padding-bottom: 2rem!important;
+	}
+	.subtitle1{
+		text-transform: uppercase;
+		font-family: 'Akrobat'!important;
+		color: #000;
+		font-size: 1.2rem;
+		width: 60vw;
+		margin-top: 20px;
 	}
 </style>

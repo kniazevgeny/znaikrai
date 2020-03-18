@@ -129,7 +129,7 @@
 		z-index: 91;
 		left: 1vh;
 		width: 40vw;
-		bottom: 7vh;
+		bottom: 3vh;
 		height: 85vh;
 		border-radius: 2px;
 	}

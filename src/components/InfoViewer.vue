@@ -13,45 +13,84 @@
 						{{info.name}}
 					</v-container>
 					<v-spacer></v-spacer>
-					<v-btn md1 xs1 flat depressed text x-large style="margin-top: 20px"><v-icon>mdi-share</v-icon></v-btn>
-					<v-btn md1 xs1 flat depressed text x-large style="margin-top: 20px"
-									@click="$emit('closes')"><v-icon>mdi-window-close</v-icon></v-btn>
+					<v-btn md1 xs1 text depressed text x-large style="margin-top: 20px">
+						<v-icon>mdi-share</v-icon>
+					</v-btn>
+					<v-btn md1 xs1 text depressed text x-large style="margin-top: 20px"
+					       @click="$emit('closes')">
+						<v-icon>mdi-window-close</v-icon>
+					</v-btn>
 				</v-card-actions>
 				<v-card-text>
-					<div class="text--primary" style="color:#000!important">
-						{{info.type}}<br>
-						{{info.location}}<br>
-						{{info.notes}}<br>
-						{{info.position.lat}}
-						{{info.position.lng}}
-						{{info.number_of_violations}}<br>
-						{{info.phone_number}}<br>
-						{{info.google_maps_rating}}<br>
-						{{info.website}}
-					</div>
-					<br><br><br>Далее те же данные, а я показываю возможность скроллить<br><br><br>
-					<div class="text--primary" style="color:#000!important">
-						{{info.type}}<br>
-						{{info.location}}<br>
-						{{info.notes}}<br>
-						{{info.position.lat}}
-						{{info.position.lng}}
-						{{info.number_of_violations}}<br>
-						{{info.phone_number}}<br>
-						{{info.google_maps_rating}}<br>
-						{{info.website}}
-					</div>
-					<div class="text--primary" style="color:#000!important">
-						{{info.type}}<br>
-						{{info.location}}<br>
-						{{info.notes}}<br>
-						{{info.position.lat}}
-						{{info.position.lng}}
-						{{info.number_of_violations}}<br>
-						{{info.phone_number}}<br>
-						{{info.google_maps_rating}}<br>
-						{{info.website}}
-					</div>
+					<v-layout justify-space-around style="width: 32%; margin-left: 0%;">
+						<v-btn-toggle v-model="activeBtn" tile mandatory color="white">
+							<v-btn block :outlined="activeBtn !== 0" :dark="activeBtn === 0" :ripple="false" :depressed="false"
+							       style="border-color: black!important">
+								Нарушения
+							</v-btn>
+							<v-btn block :outlined="activeBtn !== 1" :dark="activeBtn === 1" :ripple="false" :depressed="false"
+							       style="border-color: black!important">
+								Информация
+							</v-btn>
+							<v-btn block :outlined="activeBtn !== 2" :dark="activeBtn === 2" :ripple="false" :depressed="false"
+							       style="border-color: black!important">
+								Свидетельства
+							</v-btn>
+						</v-btn-toggle>
+					</v-layout>
+					<v-window v-model="activeBtn">
+						<v-window-item>
+							<div class="text--primary" style="color:#000!important">
+								{{info.type}}<br>
+								{{info.location}}<br>
+								{{info.notes}}<br>
+								{{info.position.lat}}
+								{{info.position.lng}}
+								{{info.number_of_violations}}<br>
+								{{info.phone_number}}<br>
+								{{info.google_maps_rating}}<br>
+								{{info.website}}
+							</div>
+						</v-window-item>
+						<v-window-item>
+							<div class="text--primary" style="color:#000!important">
+								{{info.type}}<br>
+								{{info.location}}<br>
+								{{info.notes}}<br>
+								{{info.position.lat}}
+								{{info.position.lng}}
+								{{info.number_of_violations}}<br>
+								{{info.phone_number}}<br>
+								{{info.google_maps_rating}}<br>
+								{{info.website}}
+							</div>
+							<div class="text--primary" style="color:#000!important">
+								{{info.type}}<br>
+								{{info.location}}<br>
+								{{info.notes}}<br>
+								{{info.position.lat}}
+								{{info.position.lng}}
+								{{info.number_of_violations}}<br>
+								{{info.phone_number}}<br>
+								{{info.google_maps_rating}}<br>
+								{{info.website}}
+							</div>
+						</v-window-item>
+						<v-window-item>
+							<div class="text--primary" style="color:#000!important">
+								{{info.type}}<br>
+								{{info.location}}<br>
+								{{info.notes}}<br>
+								{{info.position.lat}}
+								{{info.position.lng}}
+								{{info.number_of_violations}}<br>
+								{{info.phone_number}}<br>
+								{{info.google_maps_rating}}<br>
+								{{info.website}}
+							</div>
+						</v-window-item>
+					</v-window>
+
 					<div class="text--primary" style="color:#000!important">
 						{{info.type}}<br>
 						{{info.location}}<br>
@@ -96,7 +135,10 @@
         props: ['info'],
         components: {
             BarChart: BarChart
-        }
+        },
+        data: () => ({
+            activeBtn: 1
+        })
     }
 </script>
 
@@ -150,5 +192,17 @@
 		font-weight: 900;
 	}
 
+	.v-item-group > .theme--light > span {
+		color: #000 !important;
+		font-family: 'Akrobat';
+		font-weight: 800;
+		font-size: 1rem;
+	}
+
+	.v-item-group > .theme--dark > span {
+		font-family: 'Akrobat';
+		font-weight: 800;
+		font-size: 1rem;
+	}
 
 </style>

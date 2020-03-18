@@ -223,7 +223,8 @@
 </style>
 <style >
 	.headlinetxt {
-		font-family: 'Akrobat Black'!important;
+		font-family: 'Akrobat'!important;
+		font-weight: 900;
 		font-style: normal;
 		font-size: 7rem!important;
 		line-height: 6rem;

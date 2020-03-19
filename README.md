@@ -1,5 +1,5 @@
 # Знай край - фронтенд проекта
-## https://russeated-f.herokuapp.com/
+## https://znaikrai.herokuapp.com/
 
 ### Скриншоты сайта
 

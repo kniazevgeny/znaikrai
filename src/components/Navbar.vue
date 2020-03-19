@@ -12,7 +12,7 @@
 			// Language picker//v-row(justify='center')
 			v-spacer
 			v-btn(tile outlined style="margin-right: 4%; padding: 0 16px!important" class="navbar-text" :to="'/tell'" x-large id="tellus") СООБЩИТЬ О НАРУШЕНИИ
-		div(:style=`$router.currentRoute.path == "/"?"position: fixed":"position: absolute;"` style='justify-content: center; top: 30px; left: 47%; margin-right: -47%; position: inherit')
+		div(:style=`$router.currentRoute.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 30px; left: 47%; margin-right: -47%; position: inherit')
 			img(src="../assets/logo.svg", width=70, height=70, :style='$store.state.dark ? "filter: none" : "filter: invert()"')
 
 

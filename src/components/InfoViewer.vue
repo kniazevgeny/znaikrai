@@ -53,30 +53,31 @@
 							</div>
 						</v-window-item>
 						<v-window-item>
-							<div class="text--primary" style="color:#000!important">
-								{{info.type}}<br>
-								{{info.location}}<br>
-								{{info.notes}}<br>
-								{{info.position.lat}}
-								{{info.position.lng}}
-								{{info.number_of_violations}}<br>
-								{{info.phone_number}}<br>
-								{{info.google_maps_rating}}<br>
-								{{info.website}}
-							</div>
-							<div class="text--primary" style="color:#000!important">
-								{{info.type}}<br>
-								{{info.location}}<br>
-								{{info.notes}}<br>
-								{{info.position.lat}}
-								{{info.position.lng}}
-								{{info.number_of_violations}}<br>
-								{{info.phone_number}}<br>
-								{{info.google_maps_rating}}<br>
-								{{info.website}}
+							<div class="text--primary" style="color:#000!important; width: 90%; margin-left: 3%; padding-top: 30px">
+								<v-row cols="12">
+									<v-flex xs4 class="info-table-name">Тип</v-flex>
+									<v-flex xs8 class="info-table-value">{{ info.type }}</v-flex>
+									<v-flex xs12 class="divide"><v-divider></v-divider></v-flex>
+
+									<v-flex xs4 class="info-table-name">Местоположение</v-flex>
+									<v-flex xs8 class="info-table-value">{{ info.location }}</v-flex>
+									<v-flex xs12 class="divide"><v-divider></v-divider></v-flex>
+
+									<v-flex xs4 class="info-table-name">Номер телефона</v-flex>
+									<v-flex xs8 class="info-table-value">{{ info.phone_number }}</v-flex>
+									<v-flex xs12 class="divide"><v-divider></v-divider></v-flex>
+
+									<v-flex xs4 class="info-table-name">Сайт</v-flex>
+									<v-flex xs8 class="info-table-value"><a :href="info.website">{{ info.website }}</a></v-flex>
+									<v-flex xs12 class="divide"><v-divider></v-divider></v-flex>
+
+									<v-flex xs4 class="info-table-name">Заметки</v-flex>
+									<v-flex xs8 class="info-table-value">{{ info.notes }}</v-flex>
+								</v-row>
 							</div>
 						</v-window-item>
 						<v-window-item>
+
 							<div class="text--primary" style="color:#000!important">
 								{{info.type}}<br>
 								{{info.location}}<br>
@@ -91,17 +92,7 @@
 						</v-window-item>
 					</v-window>
 
-					<div class="text--primary" style="color:#000!important">
-						{{info.type}}<br>
-						{{info.location}}<br>
-						{{info.notes}}<br>
-						{{info.position.lat}}
-						{{info.position.lng}}
-						{{info.number_of_violations}}<br>
-						{{info.phone_number}}<br>
-						{{info.google_maps_rating}}<br>
-						{{info.website}}
-					</div>
+
 					<div class="text--primary" style="color:#000!important">
 						{{info.type}}<br>
 						{{info.location}}<br>
@@ -171,8 +162,8 @@
 		z-index: 91;
 		left: 1vh;
 		width: 40vw;
-		bottom: 3vh;
-		height: 85vh;
+		bottom: 8vh;
+		height: 75vh;
 		border-radius: 2px;
 	}
 
@@ -205,4 +196,27 @@
 		font-size: 1rem;
 	}
 
+	.divide{
+		padding: 17px;
+	}
+
+	.info-table-name{
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: bold;
+		font-size: 14px;
+		line-height: 150%;
+		/* or 21px */
+		text-transform: uppercase;
+		color: #070809;
+	}
+	.info-table-value{
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: normal;
+		font-size: 14px;
+		line-height: 150%;
+		/* or 21px */
+		color: #070809;
+	}
 </style>

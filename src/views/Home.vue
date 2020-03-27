@@ -16,6 +16,7 @@
     import Gmaps from "../components/Gmaps.vue";
 
     Vue.component('Gmaps', Gmaps);
+
     @Component
     export default class Home extends Vue {
     }

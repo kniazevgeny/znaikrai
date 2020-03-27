@@ -2,13 +2,13 @@
 	<v-layout wrap>
 		<v-layout style="width: 100vw;">
 			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="3"
-							style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;" :options="mapStyle">
+			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;" :options="mapStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
-										@closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
+				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
 				</gmap-info-window>
 				<GmapCluster>
 					<gmap-marker v-if="markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
-									 @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
+					             @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
 				</GmapCluster>
 				<!--<gmap-marker :position="{
 								lat: 47.376332,
@@ -32,7 +32,7 @@
 		</v-layout>
 		<transition name="slide-fade" mode="in-out" style="z-index: 99">
 			<div v-show="infoWinOpenMine" class="fade-transition inform">
-				<InfoViewer :info="currentInfo" @closes="infoWinOpenMine = false"></InfoViewer>
+				<InfoViewer :info="currentInfo" @closes="closes()"></InfoViewer>
 			</div>
 		</transition>
 		<!--v-btn @click="getplaces">get</v-btn-->
@@ -41,8 +41,8 @@
 	</v-layout>
 </template>
 
-<script>
-    import Vue from "vue"
+<script lang="js">
+    import Vue from "vue";
     import axios from "axios";
     import * as store from "../plugins/store";
     import * as VueGoogleMaps from "vue2-google-maps";
@@ -87,7 +87,7 @@
     }));
 
 
-    export default {
+    export default{
         name: "Gmaps",
         data: () => ({
             iconr: '',
@@ -370,6 +370,7 @@
                     });
                     //this.$router.replace("cabinet");
                 } catch (err) {
+                    console.log(err);
                     store.setSnackbar({
                         message: err.message,
                         color: "error",
@@ -377,14 +378,16 @@
                     });
                 }
             },
+            closes() {
+                this.infoWinOpenMine = false;
+                store.setInfowindow(false);
+            },
             addrmaps() {
                 console.log(this.place);
             },
             toggleInfoWindow(marker, idx) {
                 //this.infoWindowPos = marker.position;
                 //this.infoOptionsM.content = marker.notes;
-
-
                 //check if its the same marker that was selected if yes toggle
                 if (this.currentMidx === idx) {
                     this.infoWinOpenMine = !this.infoWinOpenMine;
@@ -395,6 +398,7 @@
                     this.currentInfo = marker;
                     this.infoWinOpenMine = true;
                 }
+                store.setInfowindow(this.infoWinOpenMine);
                 //console.log(this.currentInfo);
 
             }
@@ -425,11 +429,14 @@
 	.slide-fade-enter-active {
 		transition: all .2s ease-out;
 	}
+
 	.slide-fade-leave-active {
 		transition: all .2s ease-in;
 	}
+
 	.slide-fade-enter, .slide-fade-leave-to
-		/* .slide-fade-leave-active до версии 2.1.8 */ {
+		/* .slide-fade-leave-active до версии 2.1.8 */
+	{
 		transform: translateY(100vh);
 	}
 

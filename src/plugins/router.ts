@@ -3,6 +3,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from '.././views/Home.vue'
 import Tell from '.././views/Tell.vue'
+import Stories from '.././views/Stories.vue'
 import notFound from '.././views/NotFound.vue'
 import * as store from './store'
 
@@ -15,6 +16,11 @@ const router = new Router({
             path: '/',
             name: 'home',
             component: home,
+        },
+        {
+            path: '/stories',
+            name: 'stories',
+            component: Stories,
         },
         {
             path: '/tell',

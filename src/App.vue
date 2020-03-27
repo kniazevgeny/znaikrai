@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-app(@load="loaded()" :dark='$store.state.dark' :class='$store.state.dark ? "grey darken-4" : "grey lighten-4"' v-scroll="loaded()")
+	v-app(@load="loaded()" :dark='$store.state.dark' :class='$store.state.dark ? "grey darken-4" : "grey lighten-4"' :v-scroll="!mount ? loaded(): a()")
 		cookie-law(theme='blood-orange'
 		:buttonText='"Ок"'
 		:message='"Мы используем куки"')
@@ -16,6 +16,10 @@
 </template>
 
 <script lang="ts">
+	//TODO
+	//Помещать метки карты в хранилище
+
+
     import Navbar from "./components/Navbar.vue";
     import Snackbar from "./components/Snackbar.vue";
     import Home from "./views/Home.vue";
@@ -33,12 +37,17 @@
         methods: {
             loaded() {
                 console.log("loaded");
+                store.setInfowindow(false);
+
                 /*if (!(this as any).mount) {
                     store.setDark(!store.dark());
                     ((this as any).$vuetify.theme as any).dark = store.dark();
                 }*/
                 (this as any).mount = true;
-            }
+            },
+		        a(){
+
+		        }
 
         },
     };

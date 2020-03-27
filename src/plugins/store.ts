@@ -9,7 +9,8 @@ export interface State {
   snackbar: SnackbarState
   language?: String
   dark: Boolean,
-  apibase: String
+  apibase: String,
+  infowindow: Boolean
 }
 
 interface LocalizedError {
@@ -32,7 +33,8 @@ const storeOptions = {
     },
     language: undefined,
     dark: false,
-    apibase: 'https://gentle-thicket-20134.herokuapp.com'
+    apibase: 'https://gentle-thicket-20134.herokuapp.com',
+    infowindow: false
   },
 
   mutations: {/*
@@ -51,12 +53,17 @@ const storeOptions = {
     setDark(state: State, dark: Boolean) {
       state.dark = dark
     },
+    setInfowindow(state: State, infowindow: Boolean) {
+      state.infowindow = infowindow
+    },
   },
   getters: {
     snackbar: (state: State) => state.snackbar,
     language: (state: State) => state.language,
     dark: (state: State) => state.dark,
-    apibase: (state: State) => 'https://gentle-thicket-20134.herokuapp.com'
+    apibase: (state: State) => 'https://gentle-thicket-20134.herokuapp.com',
+    infowindow: (state: State) => state.infowindow
+
   },
   plugins: [createPersistedState()],
 }
@@ -70,6 +77,7 @@ export const snackbar = () => getters.snackbar as SnackbarState
 export const language = () => getters.language as string | undefined
 export const dark = () => getters.dark as boolean
 export const apibase = () => getters.apibase as string | undefined
+export const infowindow = () => getters.infowindow as boolean
 
 // Mutations
 /*
@@ -88,4 +96,7 @@ export const setLanguage = (language: String) => {
 }
 export const setDark = (dark: Boolean) => {
   store.commit('setDark', dark);
+}
+export const setInfowindow = (infowindow: Boolean) => {
+  store.commit('setInfowindow', infowindow);
 }

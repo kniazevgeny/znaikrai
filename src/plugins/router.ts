@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import home from '.././views/Home.vue'
 import Tell from '.././views/Tell.vue'
 import Stories from '.././views/Stories.vue'
+import About from '.././views/About.vue'
 import notFound from '.././views/NotFound.vue'
 import * as store from './store'
 
@@ -27,6 +28,11 @@ const router = new Router({
             name: 'tell',
             component: Tell,
         },
+        {
+            path: '/about',
+            name: 'about',
+            component: About,
+        }
         /*        {
                     path: '*',
                     name: 'notFound',

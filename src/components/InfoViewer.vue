@@ -167,7 +167,7 @@
 		z-index: 91;
 		left: 1vh;
 		width: 40vw;
-		bottom: 10vh;
+		bottom: 11vh;
 		height: 75vh;
 		border-radius: 2px;
 	}

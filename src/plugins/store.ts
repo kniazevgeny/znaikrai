@@ -61,7 +61,7 @@ const storeOptions = {
     snackbar: (state: State) => state.snackbar,
     language: (state: State) => state.language,
     dark: (state: State) => state.dark,
-    apibase: (state: State) => 'https://gentle-thicket-20134.herokuapp.com',
+    apibase: (state: State) => 'https://api-znaikrai.herokuapp.com',
     infowindow: (state: State) => state.infowindow
 
   },

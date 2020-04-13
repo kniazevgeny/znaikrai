@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "set PORT=8081 && vue-cli-service serve",
+    "serve": "vue-cli-service serve",
     "test": "jest",
     "build": "vue-cli-service build",
     "distribute": "vue-cli-service serve --mode development"

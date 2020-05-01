@@ -51,7 +51,7 @@
         changeLanguage(locale: string) {
             i18n.locale = locale;
             store.setLanguage(locale);
-            document.title = i18n.t("Zekovnet") as string;
+            document.title = i18n.t("Znaikrai") as string;
         }
 
     }

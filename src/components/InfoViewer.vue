@@ -38,6 +38,10 @@
 							</v-btn>
 						</v-btn-toggle>
 					</v-layout>
+					<br>
+					<v-layout v-if="info.warning">
+						<v-btn large disabled block outlined color="orange" style="padding-right: 4%;">{{ info.warning }}</v-btn>
+					</v-layout>
 					<v-window v-model="activeBtn">
 						<v-window-item>
 							<v-layout wrap style="padding-top: 30px">
@@ -95,8 +99,13 @@
 										<v-divider></v-divider>
 									</v-flex>
 
+
 									<v-flex xs4 class="info-table-name">Номер телефона</v-flex>
-									<v-flex xs8 class="info-table-value">{{ info.phone_number }}</v-flex>
+									<v-flex xs8 class="info-table-value"></v-flex>
+									<v-layout v-for="value in info.phones" :key="value" style="width: 100%;">
+										<v-flex xs4 class="info-table-name"></v-flex>
+										<v-flex xs8 class="info-table-value">{{ value }}</v-flex>
+									</v-layout>
 									<v-flex xs12 class="divide">
 										<v-divider></v-divider>
 									</v-flex>

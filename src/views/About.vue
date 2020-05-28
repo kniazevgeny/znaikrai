@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-card(:dark='$store.state.dark' style=" background: #E5E5E5; height: 87vh" flat)
+	v-card(:dark='$store.state.dark' style=" background: #E5E5E5" flat)
 		v-container(style="margin-top: 5rem;")
 			v-row(wrap)
 				span(class="headlinetxt", id="about-headline") ЗНАЙ КРАЙ
@@ -45,27 +45,28 @@
 </script>
 
 <style>
-	.headlinetxt#about-headline::before {
-		content: url("../assets/about.svg");
-		transform: scale(1.1) !important;
-		margin-left: 20.5rem;
-		margin-top: -1.6rem;
-		width: 5vw;
-		position: absolute;
-		font-family: 'Source Sans Pro';
-		font-style: normal;
-		font-weight: 600;
-		font-size: 38px;
-		line-height: 48px;
-		align-items: center;
-		text-align: center;
-		text-transform: uppercase;
+	@media screen and (min-width: 600px) {
+		.headlinetxt#about-headline::before {
+			content: url("../assets/about.svg");
+			transform: scale(1.1) !important;
+			margin-left: 20.5rem;
+			margin-top: -1.6rem;
+			width: 5vw;
+			position: absolute;
+			font-family: 'Source Sans Pro';
+			font-style: normal;
+			font-weight: 600;
+			font-size: 38px;
+			line-height: 48px;
+			align-items: center;
+			text-align: center;
+			text-transform: uppercase;
 
-		color: #000000;
+			color: #000000;
 
-		transform: rotate(-3deg);
+			transform: rotate(-3deg);
+		}
 	}
-
 
 	.v-input__control>.gray_e5{
 		height: 62px;

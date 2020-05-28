@@ -16,10 +16,10 @@
 				v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent") Отправить
 
 		//v-menu(offset-y)
-																																																																		 template(v-slot:activator='{ on }')
-																																																																																																																																																																		v-btn(text icon color='grey' v-on='on') {{currentLocale.icon}}
-																																																																		 v-list
-																																																																																																																																																																		v-list-item(v-for='locale in locales' @click='changeLanguage(locale.code)' :key="locale.code")
+						template(v-slot:activator='{ on }')
+						 v-btn(text icon color='grey' v-on='on') {{currentLocale.icon}}
+								v-list
+										v-list-item(v-for='locale in locales' @click='changeLanguage(locale.code)' :key="locale.code")
 
 </template>
 
@@ -38,39 +38,39 @@
         questions: object = [];
         form = {};
 
-				getQuestions(){
-				    axios.get(store.apibase() + "/formQuestions").then((response) => {
-						    console.log(response.status);
-						    this.questions = response.data;
-				    })
-						    .catch(err => {
-						        console.log(err);
+        getQuestions() {
+            axios.get(store.apibase() + "/formQuestions").then((response) => {
+                console.log(response.status);
+                this.questions = response.data;
+            })
+                .catch(err => {
+                    console.log(err);
                     store.setSnackbar({
                         message: err.message,
                         color: "error",
                         active: true
                     });
-						    })
-				}
+                })
+        }
 
         mounted(): void {
             this.getQuestions();
         }
 
-        checkField(value: string){
-				    return value != '' && value != undefined;
+        checkField(value: string) {
+            return value != '' && value != undefined;
         }
 
         sendNewBlank() {
-				    console.log((this.form as any).status);
-            if ( this.checkField((this.form as any).status) && this.checkField((this.form as any).region) && this.checkField((this.form as any).fsin_organization)) {
+            console.log((this.form as any).status);
+            if ( this.checkField((this.form as any).status) && this.checkField((this.form as any).region) && this.checkField((this.form as any).fsin_organization) ) {
                 let b = {};
                 // @ts-ignore
-                for (let i = 0; i < this.questions.length; i++){
+                for (let i = 0; i < this.questions.length; i++) {
                     // @ts-ignore
                     b[this.questions[i].name] = (this.form as any)[this.questions[i].name] == undefined ? "" : (this.form as any)[this.questions[i].name];
                 }
-				        //console.log(b);
+                //console.log(b);
                 this.loadingbtn = true;
                 axios.post(store.apibase() + "/form",
                     b

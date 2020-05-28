@@ -197,7 +197,7 @@
                         "elementType": "labels.text",
                         "stylers": [
                             {
-                                "visibility": "off"
+                                "visibility": "on"
                             }
                         ]
                     },
@@ -241,7 +241,7 @@
                         "featureType": "road.arterial",
                         "stylers": [
                             {
-                                "visibility": "off"
+                                "visibility": "on"
                             }
                         ]
                     },
@@ -268,7 +268,7 @@
                         "elementType": "labels",
                         "stylers": [
                             {
-                                "visibility": "off"
+                                "visibility": "on"
                             }
                         ]
                     },
@@ -285,7 +285,7 @@
                         "featureType": "road.local",
                         "stylers": [
                             {
-                                "visibility": "off"
+                                "visibility": "on"
                             }
                         ]
                     },

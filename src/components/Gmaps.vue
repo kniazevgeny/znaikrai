@@ -50,11 +50,12 @@
     import icongreen from "../assets/g.svg";
     import InfoViewer from "../components/InfoViewer";
     import GmapCluster from 'vue2-google-maps/dist/components/cluster';
-    import * as gmapskey from "../config/gmapskey";
+
 
     Vue.use(VueGoogleMaps, {
         load: {
-            key: gmapskey.key, //or paste your api key here
+            key: process.env.VUE_APP_GMAPSKEY, //or paste your api key here
+		        //to create local env vars, create .env.local file in root folder, then add VUE_APP_*=value
             //libraries: Geocoder,
             v: '3.39',
         },
@@ -87,7 +88,7 @@
     }));
 
 
-    export default{
+    export default {
         name: "Gmaps",
         data: () => ({
             iconr: '',
@@ -403,7 +404,7 @@
 
             }
         },
-        mounted() {
+        created() {
             this.getplaces();
         },
 

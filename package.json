@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --mode develpopment",
     "test": "jest",
     "build": "vue-cli-service build",
     "distribute": "vue-cli-service serve --mode development"
@@ -17,6 +17,7 @@
     "babel-jest": "^25.1.0",
     "buefy": "^0.8.13",
     "chart.js": "^2.9.3",
+    "dotenv": "^8.2.0",
     "jest": "^25.1.0",
     "jest-vue-preprocessor": "^1.7.1",
     "pug": "^2.0.3",

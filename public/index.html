@@ -49,32 +49,36 @@
 			font-weight: 400;
 			font-style: normal;
 		}
+		@-webkit-keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+			to {
+				opacity: 1;
+			}
+		}
+
+		#loading-img {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			margin: auto;
+			animation: fadeIn 1.5s;
+		}
 	</style>
 </head>
 <body>
-<!--script>
-	window.fbAsyncInit = function() {
-		FB.init({
-			appId: '2041705955940670',
-			cookie: true,
-			xfbml: true,
-			version: 'v3.2',
-		})
-		FB.AppEvents.logPageView()
-	}
-
-	;(function(d, s, id) {
-		var js,
-			fjs = d.getElementsByTagName(s)[0]
-		if (d.getElementById(id)) {
-			return
-		}
-		js = d.createElement(s)
-		js.id = id
-		js.src = 'https://connect.facebook.net/en_US/sdk.js'
-		fjs.parentNode.insertBefore(js, fjs)
-	})(document, 'script', 'facebook-jssdk')
-</script-->
 <noscript>
 	<font color="white">
 		<strong
@@ -84,9 +88,7 @@
 	</font>
 </noscript>
 <div id="app">
-	<center><img
-		src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn2.scratch.mit.edu%2Fget_image%2Fgallery%2F1115204_170x100.png&f=1"
-		width="116" height="100"></img></center>
+	<img src="./static/logo.svg" id="loading-img" width="150" height="150"/>
 </div>
 <!-- built files will be auto injected -->
 </body>

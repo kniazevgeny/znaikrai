@@ -2,11 +2,11 @@
 	<v-layout wrap>
 		<v-layout style="width: 100vw;">
 			<div id="modePicker">
-				<v-btn-toggle v-model="mapMode" mandatory tile>
-					<v-btn active-class="v-btn--disabled">
+				<v-btn-toggle v-model="mapMode" mandatory tile active-class="v-btn--disabled">
+					<v-btn>
 						<v-icon>adjust</v-icon>
 					</v-btn>
-					<v-btn  active-class="v-btn--disabled">
+					<v-btn>
 						<v-icon>blur_on</v-icon>
 					</v-btn>
 				</v-btn-toggle>

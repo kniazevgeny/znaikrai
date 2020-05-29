@@ -104,7 +104,7 @@
 									<v-flex xs8 class="info-table-value"></v-flex>
 									<v-layout v-for="value in info.phones" :key="value" style="width: 100%;">
 										<v-flex xs4 class="info-table-name"></v-flex>
-										<v-flex xs8 class="info-table-value">{{ value }}</v-flex>
+										<v-flex xs8 class="info-table-value"><a :href="'tel:' + value">{{ value }}</a></v-flex>
 									</v-layout>
 									<v-flex xs12 class="divide">
 										<v-divider></v-divider>

@@ -18,11 +18,11 @@
 				</gmap-info-window>
 				<GmapCluster v-if="!mapMode">
 					<gmap-marker v-if="markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
-					             @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
+					             @click="toggleInfoWindow(m,i)" :icon="m.coronavirus ? iconRedCovid : icong"></gmap-marker>
 				</GmapCluster>
 				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="m.position"
 				             :clickable="true"
-				             @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
+				             @click="toggleInfoWindow(m,i)" :icon="m.coronavirus ? iconRedCovid : icong"></gmap-marker>
 				<!--<gmap-marker :position="{
 								lat: 47.376332,
 								lng: 8.547511
@@ -60,7 +60,11 @@
     import * as store from "../plugins/store";
     import * as VueGoogleMaps from "vue2-google-maps";
     import iconred from "../assets/r2.svg";
-    import icongreen from "../assets/g.svg";
+    import iconRedCovid from "../assets/r2-covid.svg";
+    // !WARNING
+    // before adding new svg, edit it and add to svg attribute height and width parameters
+    // e.g. <svg width="60" height="60" ...
+    import icongreen from "../assets/g2.svg";
     import InfoViewer from "../components/InfoViewer";
     import GmapCluster from 'vue2-google-maps/dist/components/cluster';
 
@@ -106,6 +110,7 @@
         data: () => ({
             mapMode: 0,
             iconr: '',
+            iconRedCovid: '',
             icong: '',
             place: '',
             infoWindowPos: null,
@@ -411,6 +416,7 @@
             getplaces() {
                 //console.log(gmapskey.key);
                 this.iconr = iconred;
+                this.iconRedCovid = iconRedCovid;
                 this.icong = icongreen;
                 //let el = document.getElementsByClassName('gm-style')[0].childNodes[0].childNodes[2].childNodes[0];
                 //el.setAttribute("style", "position: fixed; right: 20%; margin-top: 90%; height: 500px; max-height: none")//

@@ -1,15 +1,21 @@
 <template lang="html">
 	<v-layout wrap>
 		<v-layout style="width: 100vw;">
+			<v-btn-toggle dark mandatory tile v-model="mapMode" id="modePicker">
+				<v-btn><v-icon>adjust</v-icon></v-btn>
+				<v-btn><v-icon>blur_on</v-icon></v-btn>
+			</v-btn-toggle>
 			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="3"
 			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;" :options="mapStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
 				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
 				</gmap-info-window>
-				<GmapCluster>
+				<GmapCluster v-if="!mapMode">
 					<gmap-marker v-if="markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
 					             @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
 				</GmapCluster>
+				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
+				             @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
 				<!--<gmap-marker :position="{
 								lat: 47.376332,
 								lng: 8.547511
@@ -91,6 +97,7 @@
     export default {
         name: "Gmaps",
         data: () => ({
+            mapMode: 0,
             iconr: '',
             icong: '',
             place: '',
@@ -115,6 +122,45 @@
                         ]
                     },
                     {
+                        "featureType": "landscape.man_made",
+                        "elementType": "geometry.fill",
+                        "stylers": [
+                            {
+                                "saturation": 45
+                            },
+                            {
+                                "lightness": -60
+                            },
+                            {
+                                "visibility": "on"
+                            },
+                            {
+                                "weight": 3.5
+                            }
+                        ]
+                    },
+                    {
+                        "featureType": "landscape.man_made",
+                        "elementType": "geometry.stroke",
+                        "stylers": [
+                            {
+                                "color": "#627fbb"
+                            },
+                            {
+                                "saturation": -50
+                            },
+                            {
+                                "lightness": 75
+                            },
+                            {
+                                "visibility": "on"
+                            },
+                            {
+                                "weight": 8
+                            }
+                        ]
+                    },
+                    {
                         "elementType": "labels.text.fill",
                         "stylers": [
                             {
@@ -135,7 +181,7 @@
                         "elementType": "labels",
                         "stylers": [
                             {
-                                "visibility": "off"
+                                "visibility": "on"
                             }
                         ]
                     },
@@ -153,7 +199,7 @@
                         "elementType": "labels.text",
                         "stylers": [
                             {
-                                "visibility": "off"
+                                "visibility": "on"
                             }
                         ]
                     },
@@ -188,7 +234,7 @@
                         "elementType": "geometry.fill",
                         "stylers": [
                             {
-                                "visibility": "off"
+                                "visibility": "on"
                             }
                         ]
                     },
@@ -197,7 +243,7 @@
                         "elementType": "labels.text",
                         "stylers": [
                             {
-                                "visibility": "on"
+                                "visibility": "off"
                             }
                         ]
                     },
@@ -440,5 +486,12 @@
 	{
 		transform: translateY(100vh);
 	}
-
+	#modePicker {
+		position: absolute;
+		bottom: 40px;
+		right: 0;
+		clear: right;
+		z-index: 10;
+		transform: rotate(90deg);
+	}
 </style>

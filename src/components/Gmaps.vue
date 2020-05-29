@@ -1,10 +1,16 @@
 <template lang="html">
 	<v-layout wrap>
 		<v-layout style="width: 100vw;">
-			<v-btn-toggle dark mandatory tile v-model="mapMode" id="modePicker">
-				<v-btn><v-icon>adjust</v-icon></v-btn>
-				<v-btn><v-icon>blur_on</v-icon></v-btn>
-			</v-btn-toggle>
+			<div id="modePicker">
+				<v-btn-toggle v-model="mapMode" mandatory tile>
+					<v-btn active-class="v-btn--disabled">
+						<v-icon>adjust</v-icon>
+					</v-btn>
+					<v-btn  active-class="v-btn--disabled">
+						<v-icon>blur_on</v-icon>
+					</v-btn>
+				</v-btn-toggle>
+			</div>
 			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="3"
 			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;" :options="mapStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
@@ -14,7 +20,8 @@
 					<gmap-marker v-if="markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
 					             @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
 				</GmapCluster>
-				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
+				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="m.position"
+				             :clickable="true"
 				             @click="toggleInfoWindow(m,i)" :icon="i % 2 ? icong : iconr"></gmap-marker>
 				<!--<gmap-marker :position="{
 								lat: 47.376332,
@@ -61,7 +68,7 @@
     Vue.use(VueGoogleMaps, {
         load: {
             key: process.env.VUE_APP_GMAPSKEY, //or paste your api key here
-		        //to create local env vars, create .env.local file in root folder, then add VUE_APP_*=value
+            //to create local env vars, create .env.local file in root folder, then add VUE_APP_*=value
             //libraries: Geocoder,
             v: '3.39',
         },
@@ -486,6 +493,7 @@
 	{
 		transform: translateY(100vh);
 	}
+
 	#modePicker {
 		position: absolute;
 		bottom: 40px;

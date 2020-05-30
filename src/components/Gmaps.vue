@@ -455,7 +455,13 @@
                 //if different marker set infowindow to open and reset current marker index
                 else {
                     this.currentMidx = idx;
-                    this.currentInfo = marker;
+                    let info = marker;
+                    for (let propName in info) {
+                        if ((propName !== "warning") && (info[propName].toString() === "" || info[propName] === undefined)) {
+                            delete info[propName];
+                        }
+                    }
+                    this.currentInfo = info;
                     this.infoWinOpenMine = true;
                 }
                 store.setInfowindow(this.infoWinOpenMine);

@@ -14,8 +14,8 @@
 			v-spacer
 			v-btn(tile, outlined, style="margin-right: 4%; padding: 0 16px!important", class="navbar-text", :to="'/tell'", x-large, id="tellus") СООБЩИТЬ О НАРУШЕНИИ
 				div(id="letter", :style='$store.state.dark ? "color: white" : "color: black"') ///      ///      ///
-		div(:style=`$router.currentRoute.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 30px; left: 47%; margin-right: -47%; position: inherit')
-			img(src="../assets/logo.svg", width=70, height=70, :style='$store.state.dark ? "filter: none" : "filter: invert()"')
+		div(:style=`$router.currentRoute.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 15px; left: 0; right: 0; margin: auto; position: absolute')
+			img(src="../assets/logo.svg", width=70, height=70, :style='$store.state.dark ? "filter: none" : "filter: invert()"' style="position: absolute; top: 100px; bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;")
 
 
 </template>
@@ -53,8 +53,11 @@
             store.setLanguage(locale);
             document.title = i18n.t("Znaikrai") as string;
         }
+        mounted(): void {
+            store.setLanguage('ru');
+        }
 
-    }
+   }
 </script>
 
 <style>

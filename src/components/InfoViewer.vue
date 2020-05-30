@@ -4,7 +4,7 @@
 		max-width="50vw"
 		light
 		style="color:#000; overflow-y: auto; overflow-x: hidden"
-		v-if="info"
+		v-show="info"
 	>
 		<v-row>
 			<v-col style="width: 94%; margin-left: 3%;">
@@ -39,8 +39,8 @@
 						</v-btn-toggle>
 					</v-layout>
 					<br>
-					<v-layout v-if="info.warning">
-						<v-btn large disabled block outlined color="orange" style="padding-right: 4%;">{{ info.warning }}</v-btn>
+					<v-layout v-if="info.warning" style="padding-right: 4%;">
+						<v-btn large disabled block outlined color="orange">{{ info.warning }}</v-btn>
 					</v-layout>
 					<v-window v-model="activeBtn">
 						<v-window-item>
@@ -57,7 +57,7 @@
 								</p>
 							</v-layout>
 							<v-divider></v-divider>
-							<v-layout wrap  style="padding-top: 20px">
+							<v-layout wrap style="padding-top: 20px">
 								<h4>Физическое воздействие (ФСИН)</h4>
 								<v-layout style="width: 100%;">
 									<div class="stats-digit" style="background-color: #FFB800;"><p style="align-items: center">3</p></div>
@@ -70,7 +70,7 @@
 								</p>
 							</v-layout>
 							<v-divider></v-divider>
-							<v-layout wrap  style="padding-top: 20px">
+							<v-layout wrap style="padding-top: 20px">
 								<h4>Физическое воздействие (ФСИН)</h4>
 								<v-layout style="width: 100%;">
 									<div class="stats-digit" style="background-color: #1F870E;"><p style="align-items: center">0</p></div>
@@ -87,37 +87,29 @@
 						<v-window-item>
 							<div class="text--primary" style="color:#000!important; width: 90%; margin-left: 3%; padding-top: 30px">
 								<v-row cols="12">
-									<v-flex xs4 class="info-table-name">Тип</v-flex>
-									<v-flex xs8 class="info-table-value">{{ info.type }}</v-flex>
-									<v-flex xs12 class="divide">
-										<v-divider></v-divider>
-									</v-flex>
 
-									<v-flex xs4 class="info-table-name">Местоположение</v-flex>
-									<v-flex xs8 class="info-table-value">{{ info.location }}</v-flex>
-									<v-flex xs12 class="divide">
-										<v-divider></v-divider>
-									</v-flex>
+									<v-layout style="width: 100%;" wrap v-for="(value, i) in info" :key="i"
+									          v-if="i !== 'name' && i !== 'warning' && i !== 'coronavirus' && $t('infoViewer.' + i).toString() !== ('infoViewer.' + i)">
+										<v-flex xs4 class="info-table-name">{{ $t('infoViewer.' + i).toString() }}</v-flex>
+										<!-- Default: -->
+										<v-flex v-if="i !== 'phones' && i !== 'website'" xs8 class="info-table-value">
+											{{ value }}
+										</v-flex>
+										<!-- Special cases: phones, websites... -->
+										<v-flex xs8 v-else wrap style="width: 100%;">
+											<v-layout v-if="i === 'phones'" v-for="value2 in info.phones" :key="value2" style="width: 100%;">
+												<v-flex class="info-table-value"><a :href="'tel:' + value2">{{ value2 }}</a></v-flex>
+											</v-layout>
+											<v-flex v-if="i === 'website'" xs8 class="info-table-value" >
+												<a :href="value">{{ value }}</a>
+											</v-flex>
+										</v-flex>
 
-
-									<v-flex xs4 class="info-table-name">Номер телефона</v-flex>
-									<v-flex xs8 class="info-table-value"></v-flex>
-									<v-layout v-for="value in info.phones" :key="value" style="width: 100%;">
-										<v-flex xs4 class="info-table-name"></v-flex>
-										<v-flex xs8 class="info-table-value"><a :href="'tel:' + value">{{ value }}</a></v-flex>
+										<v-flex xs12 class="divide">
+											<v-divider></v-divider>
+										</v-flex>
 									</v-layout>
-									<v-flex xs12 class="divide">
-										<v-divider></v-divider>
-									</v-flex>
 
-									<v-flex xs4 class="info-table-name">Сайт</v-flex>
-									<v-flex xs8 class="info-table-value"><a :href="info.website">{{ info.website }}</a></v-flex>
-									<v-flex xs12 class="divide">
-										<v-divider></v-divider>
-									</v-flex>
-
-									<v-flex xs4 class="info-table-name">Заметки</v-flex>
-									<v-flex xs8 class="info-table-value">{{ info.notes }}</v-flex>
 								</v-row>
 							</div>
 						</v-window-item>
@@ -142,8 +134,14 @@
             BarChart: BarChart
         },
         data: () => ({
-            activeBtn: 1
-        })
+            activeBtn: 1,
+        }),
+        methods: {
+            //getWord()
+        },
+        mounted() {
+            console.log(this.$t('infoViewer.type').toString() !== ('infoViewer.ty'));
+        }
     }
 </script>
 
@@ -250,8 +248,9 @@
 		align-items: flex-start;
 		justify-content: center;
 	}
-	.stats-digit > p{
-		margin-top: -1px!important;
+
+	.stats-digit > p {
+		margin-top: -1px !important;
 	}
 
 	.v-window-item > .layout > h4 {
@@ -266,5 +265,9 @@
 		font-weight: normal;
 		font-size: 12px;
 		line-height: 150%;
+	}
+
+	.info-table-value:first-letter {
+		text-transform: uppercase;
 	}
 </style>

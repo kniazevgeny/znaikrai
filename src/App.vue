@@ -8,7 +8,6 @@
 			v-layout(column)
 				//Home(style="z-index: 1; position: initial")
 				router-view(style="z-index: 99; position: initial" :dark='$store.state.dark')
-				v-layout(v-if="$router.currentRoute.path === '/'" style="height: 110vh")
 				//abs, z-ind height width
 								//↓fix
 			//Gmaps(v-if="mount" id="map" style="z-index: 0; position: fixed;")

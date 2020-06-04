@@ -4,7 +4,7 @@
 		:dark='$store.state.dark', prominent, :style=`$store.state.infowindow || 0 ? "width: 45%; right: 6.85%; left: auto": "width: 90%; margin-left: 5%;"`)
 			// Title//span {{$t('title')}}
 			v-row(justify="start", style="width: 30%; max-width: 45%; z-index: 1", v-if="!$store.state.infowindow || 0")
-				v-btn(tile text class="navbar-text" :class="$router.currentRoute.path === '/' ? 'map-underline' : 'aaaa'", :to="'/'" x-large) КАРТА
+				v-btn(tile text class="navbar-text" :to="'/'" x-large) КАРТА
 				v-btn(tile text class="navbar-text", x-large) АНАЛИТИКА
 				v-btn(tile text class="navbar-text", :to="'stories'" x-large) ИСТОРИИ
 				v-btn(tile text class="navbar-text", :to="'about'" x-large) О ПРОЕКТЕ

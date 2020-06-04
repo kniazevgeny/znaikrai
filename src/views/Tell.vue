@@ -25,6 +25,8 @@
 
 <script lang="ts">
     import Vue from "vue";
+    import Vuetify from 'vuetify';
+    Vue.use(Vuetify);
     import Component from "vue-class-component";
     import * as store from "../plugins/store";
     import {i18n} from "../plugins/i18n";

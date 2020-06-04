@@ -32,23 +32,23 @@ const router = new Router({
             path: '/about',
             name: 'about',
             component: About,
+        },
+        {
+            path: '*',
+            name: 'notFound',
+            component: notFound,
         }
-        /*        {
-                    path: '*',
-                    name: 'notFound',
-                    component: notFound,
-                }*/
     ],
 })
 
 router.beforeEach((to, _, next) => {
     //next()
-    if (to.path === '/') {
+    if ( to.path === '/' ) {
         store.setDark(true);
     } else {
         store.setDark(false);
     }
-    if (to.path != 'home' && store.infowindow()){
+    if ( to.path != 'home' && store.infowindow() ) {
         store.setInfowindow(false)
     }
     console.log(store.dark());

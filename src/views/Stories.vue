@@ -31,16 +31,19 @@
 			v-layout(style="width: 90%; margin-left: 5%; margin-right: 5%" justify-space-around)
 				v-btn(x-large, text, class="footerBtn") <-/   Аналитика
 				v-spacer
-				v-btn(x-large, text, class="footerBtn")
+				v-btn(x-large, text, class="footerBtn", :to="'about'")
 					span О проекте
 					span(style="transform: rotate(-180deg);")  <-/   
 
 
 </template>
 
-<script>
-    export default {
-        name: "Stories"
+<script lang="ts">
+    import Vue from 'vue';
+    import Component from "vue-class-component";
+
+    @Component
+    export default class Stories extends Vue {
     }
 </script>
 
@@ -96,14 +99,15 @@
 		height: 60vh;
 	}
 
-	.imgs{
+	.imgs {
 		width: 100vw;
 	}
-	.footerBtn{
+
+	.footerBtn {
 		font-family: 'Akrobat';
 		font-style: normal;
 		font-weight: 600;
-		font-size: 25px!important;
+		font-size: 25px !important;
 		line-height: 30px;
 		/* identical to box height */
 

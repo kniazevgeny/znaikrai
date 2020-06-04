@@ -426,7 +426,7 @@
             InfoViewer: InfoViewer
         },
         methods: {
-            async getplaces() {
+            getplaces() {
                 //console.log(gmapskey.key);
                 this.iconr = iconred;
                 this.iconRedCovid = iconRedCovid;
@@ -437,7 +437,7 @@
 
                 try {
                     //console.log(store.apibase());
-                    await axios.get(store.apibase() + '/places').then(response => {
+                    axios.get(store.apibase() + '/places/').then(response => {
                         this.markers0 = response.data.places;
                         this.markers1 = response.data.places;
                         console.log(this.markers1);

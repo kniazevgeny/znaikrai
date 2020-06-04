@@ -16,24 +16,5 @@
 </script>
 
 <style>
-	.fb-signin-button {
-		cursor: pointer;
-		display: block;
-		padding: 10px 46px;
-		border-radius: 3px;
-		background-color: #647daf;
-		color: #fff;
-		margin: 10px;
-	}
-
-	.g-signin-button {
-		margin: 10px;
-		cursor: pointer;
-		display: block;
-		padding: 10px 46px;
-		border-radius: 3px;
-		background-color: #ce5658;
-		color: #fff;
-	}
 
 </style>

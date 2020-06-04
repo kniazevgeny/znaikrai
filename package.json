@@ -45,8 +45,6 @@
   "devDependencies": {
     "@vue/cli-plugin-typescript": "^3.11.0",
     "@vue/cli-service": "^3.11.0",
-    "sass": "^1.22.10",
-    "sass-loader": "^8.0.0",
     "ts-jest": "^25.2.1",
     "typescript": "^3.6.2",
     "vue-template-compiler": "^2.5.21"

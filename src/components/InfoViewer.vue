@@ -145,7 +145,7 @@
 		            // on localhost it has no effect
                 navigator.clipboard.writeText(window.location.host + '/?id=' + this.info._id);
                 store.setSnackbar({
-                    message: "Скопировано",
+                    message: "Ссылка скопирована",
                     color: "success",
                     active: true
                 });

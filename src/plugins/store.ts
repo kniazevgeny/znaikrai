@@ -33,7 +33,7 @@ const storeOptions = {
     },
     language: undefined,
     dark: false,
-    apibase: 'https://gentle-thicket-20134.herokuapp.com',
+    apibase: '',
     infowindow: false
   },
 

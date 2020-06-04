@@ -1,6 +1,40 @@
 <template lang="html">
 	<v-layout wrap>
 		<v-layout style="width: 100vw;">
+			<v-layout id="search" height="60" raised tile style="z-index: 4;">
+				<v-card height="60" raised tile style="z-index: 4;" wrap>
+					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
+						<v-icon height="56" class="pa-2 ma-0" large style="height: 60px;">search</v-icon>
+						<v-text-field height="60" class="pa-0 ma-0" style="width: 30vw"
+						              label="Поиск по учреждениям ФСИН"></v-text-field>
+					</v-layout>
+				</v-card>
+				<transition name="fade" mode="in-out">
+					<v-layout v-if="options" wrap style="max-width: 50vw">
+						<v-select dark height="60" class="pa-0 ma-0 search-select" v-model="searchType" :items="searchTypes"
+						          label="По типу учреждения" multiple menu-props="top, offsetY"
+						          style="z-index: 100; width: 25vw">
+							<template v-slot:selection="{ item, index }">
+									<span>{{ item }}, </span>
+							</template>
+							<template v-slot:item="{ item }">
+								<!-- TODO: short to long name-->
+								<v-checkbox :label="item"></v-checkbox>
+							</template>
+						</v-select>
+						<v-select dark height="60" class="pa-0 ma-0" v-model="searchCount" :items="searchCounts"
+						          label="По количеству отзывов" menu-props="top, offsetY"
+						          dense style="z-index: 100; width: 25vw"></v-select>
+					</v-layout>
+				</transition>
+				<v-btn height="60" @click="options = !options" tile fab meduim
+				       :color="options ? 'white' : 'black'">
+					<transition name="fade" mode="out-in">
+						<tune-r v-if="options"/>
+						<tune-b v-else/>
+					</transition>
+				</v-btn>
+			</v-layout>
 			<div id="modePicker">
 				<v-btn-toggle v-model="mapMode" mandatory tile active-class="v-btn--disabled">
 					<v-btn>
@@ -23,24 +57,6 @@
 				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="m.position"
 				             :clickable="true"
 				             @click="toggleInfoWindow(m,i)" :icon="m.coronavirus ? iconRedCovid : icong"></gmap-marker>
-				<!--<gmap-marker :position="{
-								lat: 47.376332,
-								lng: 8.547511
-							 }" :clickable="true"
-							@click="toggleInfoWindow({
-							 position: {
-								lat: 47.376332,
-								lng: 8.547511
-							 },
-							 infoText: '<strong>Marker 1</strong>'
-						 },1)"></gmap-marker>-->
-				<!--				<ground-overlay source="./overlay.png" :bounds="{
-								north: 1.502,
-								south: 1.185,
-								east: 104.0262,
-								west: 103.5998,
-						  }" :opacity="0.5">
-								</ground-overlay>-->
 			</google-map>
 		</v-layout>
 		<transition name="slide-fade" mode="in-out" style="z-index: 99">
@@ -61,6 +77,8 @@
     import * as VueGoogleMaps from "vue2-google-maps";
     import iconred from "../assets/r2.svg";
     import iconRedCovid from "../assets/r2-covid.svg";
+    import tune_r from "./tuneSVG_r";
+    import tune_b from "./tuneSVG_b";
     // !WARNING
     // before adding new svg, edit it and add to svg attribute height and width parameters
     // e.g. <svg width="60" height="60" ...
@@ -88,21 +106,10 @@
     });
     Vue.component('gmap-marker', VueGoogleMaps.Marker);
     Vue.component('InfoViewer', InfoViewer);
+    Vue.component('tune-r', tune_r);
+    Vue.component('tune-b', tune_b);
     Vue.component('GmapCluster', GmapCluster);
     Vue.component('gmap-info-window', VueGoogleMaps.InfoWindow);
-    Vue.component('ground-overlay', VueGoogleMaps.MapElementFactory({
-        mappedProps: {
-            'opacity': {}
-        },
-        props: {
-            'source': {type: String},
-            'bounds': {type: Object},
-        },
-        events: ['click', 'dblclick'],
-        name: 'groundOverlay',
-        ctr: () => google.maps.GroundOverlay,
-        ctrArgs: (options, {source, bounds}) => [source, bounds, options],
-    }));
 
 
     export default {
@@ -403,6 +410,12 @@
                     }
                 ]
             },
+            searchTypes: ['СИЗО', 'ИК', 'ВК', 'ЛИУ', 'Тюрьмы'],
+            searchType: ['СИЗО', 'ИК', 'ВК', 'ЛИУ', 'Тюрьмы'],
+            searchCounts: ['Все', 'Только со свидетельствами'],
+            searchCount: 'Все',
+            options: false,
+            markers: 0,
             markers1: 0
 
         }),
@@ -425,6 +438,7 @@
                 try {
                     //console.log(store.apibase());
                     await axios.get(store.apibase() + '/places').then(response => {
+                        this.markers0 = response.data.places;
                         this.markers1 = response.data.places;
                         console.log(this.markers1);
                         this.checkUrlMarker();
@@ -470,15 +484,18 @@
                 //console.log(this.currentInfo);
 
             },
-            checkUrlMarker(){
+            checkUrlMarker() {
                 let markerToShow = 0;
                 markerToShow = this.$route.query.id;
                 if (markerToShow) {
-										this.markers1.forEach(el => {
-												if (el._id === markerToShow)
-														this.toggleInfoWindow(el, 0)
-										})
+                    this.markers1.forEach(el => {
+                        if (el._id === markerToShow)
+                            this.toggleInfoWindow(el, 0)
+                    })
                 }
+            },
+            search() {
+
             }
         },
         created() {
@@ -491,6 +508,8 @@
 
 
 <style>
+	@import '../assets/styles/main.css';
+
 	.gm-style-iw.gm-style-iw-c {
 		position: fixed;
 		width: 250px;
@@ -505,19 +524,6 @@
 		display: none;
 	}
 
-	.slide-fade-enter-active {
-		transition: all .2s ease-out;
-	}
-
-	.slide-fade-leave-active {
-		transition: all .2s ease-in;
-	}
-
-	.slide-fade-enter, .slide-fade-leave-to
-		/* .slide-fade-leave-active до версии 2.1.8 */
-	{
-		transform: translateY(100vh);
-	}
 
 	#modePicker {
 		position: absolute;
@@ -527,4 +533,41 @@
 		z-index: 10;
 		transform: rotate(90deg);
 	}
+
+	#search {
+		position: absolute;
+		top: 75vh;
+		left: 20px;
+		z-index: 10;
+	}
+
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .1s;
+	}
+
+	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+	{
+		opacity: 0
+	}
+	.search-select > .v-input__control > .v-input__slot > .v-select__slot > label {
+		font-family: Roboto;
+		font-style: normal;
+		font-weight: 300;
+		font-size: 13px;
+		line-height: 15px;
+		display: flex;
+		align-items: center;
+
+		color: #585858;
+	}
+	.search-select > .v-input__control > .v-input__slot > .v-select__slot > .v-select__selections {
+		font-family: Roboto;
+		font-style: normal;
+		font-weight: 300;
+		font-size: 17px;
+		line-height: 19px;
+		display: flex;
+		align-items: center;
+	}
+
 </style>

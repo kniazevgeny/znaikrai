@@ -1,11 +1,25 @@
-var express = require('express');
-var path = require('path');
-var serveStatic = require('serve-static');
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
 
-app = express();
-app.use(serveStatic(__dirname + "/dist"));
+const PORT = process.env.PORT || 5000;
 
-var port = process.env.PORT || 5000;
-app.listen(port);
+const STATIC = path.resolve(__dirname, 'dist');
+const INDEX = path.resolve(STATIC, 'index.html');
 
-console.log('server started '+ port);
+
+const app = express();
+app.use(bodyParser.json());
+
+// Static content
+app.use(express.static(STATIC));
+
+// All GET request handled by INDEX file
+app.get('*', function (req, res) {
+    res.sendFile(INDEX);
+});
+
+// Start server
+app.listen(PORT, function () {
+    console.log('Server up and running on ', `http://localhost:${PORT}/`);
+})

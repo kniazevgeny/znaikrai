@@ -413,7 +413,7 @@
             InfoViewer: InfoViewer
         },
         methods: {
-            getplaces() {
+            async getplaces() {
                 //console.log(gmapskey.key);
                 this.iconr = iconred;
                 this.iconRedCovid = iconRedCovid;
@@ -424,9 +424,10 @@
 
                 try {
                     //console.log(store.apibase());
-                    axios.get(store.apibase() + '/places').then(response => {
+                    await axios.get(store.apibase() + '/places').then(response => {
                         this.markers1 = response.data.places;
                         console.log(this.markers1);
+                        this.checkUrlMarker();
                     });
                     //this.$router.replace("cabinet");
                 } catch (err) {
@@ -458,6 +459,7 @@
                     let info = marker;
                     for (let propName in info) {
                         if ((propName !== "warning") && (info[propName].toString() === "" || info[propName] === undefined)) {
+                            // deletes empty props
                             delete info[propName];
                         }
                     }
@@ -467,10 +469,21 @@
                 store.setInfowindow(this.infoWinOpenMine);
                 //console.log(this.currentInfo);
 
+            },
+            checkUrlMarker(){
+                let markerToShow = 0;
+                markerToShow = this.$route.query.id;
+                if (markerToShow) {
+										this.markers1.forEach(el => {
+												if (el._id === markerToShow)
+														this.toggleInfoWindow(el, 0)
+										})
+                }
             }
         },
         created() {
             this.getplaces();
+            // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
         },
 
     };

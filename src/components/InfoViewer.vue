@@ -4,7 +4,7 @@
 		max-width="50vw"
 		light
 		style="color:#000; overflow-y: auto; overflow-x: hidden"
-		v-show="info"
+		v-if="info"
 	>
 		<v-row>
 			<v-col style="width: 94%; margin-left: 3%;">
@@ -13,7 +13,7 @@
 						{{info.name}}
 					</v-container>
 					<v-spacer></v-spacer>
-					<v-btn md1 xs1 text depressed text x-large style="margin-top: 20px">
+					<v-btn @click="share" md1 xs1 text depressed text x-large style="margin-top: 20px">
 						<v-icon>mdi-share</v-icon>
 					</v-btn>
 					<v-btn md1 xs1 text depressed text x-large style="margin-top: 20px"
@@ -90,6 +90,7 @@
 
 									<v-layout style="width: 100%;" wrap v-for="(value, i) in info" :key="i"
 									          v-if="i !== 'name' && i !== 'warning' && i !== 'coronavirus' && $t('infoViewer.' + i).toString() !== ('infoViewer.' + i)">
+										<!-- Special parameters↑                                                if localisation.ts contains this name↑ -->
 										<v-flex xs4 class="info-table-name">{{ $t('infoViewer.' + i).toString() }}</v-flex>
 										<!-- Default: -->
 										<v-flex v-if="i !== 'phones' && i !== 'website'" xs8 class="info-table-value">
@@ -100,7 +101,7 @@
 											<v-layout v-if="i === 'phones'" v-for="value2 in info.phones" :key="value2" style="width: 100%;">
 												<v-flex class="info-table-value"><a :href="'tel:' + value2">{{ value2 }}</a></v-flex>
 											</v-layout>
-											<v-flex v-if="i === 'website'" xs8 class="info-table-value" >
+											<v-flex v-if="i === 'website'" xs8>
 												<a :href="value">{{ value }}</a>
 											</v-flex>
 										</v-flex>
@@ -125,6 +126,7 @@
 </template>
 
 <script>
+    import * as store from "../plugins/store";
     import BarChart from '../components/LinearCh'
 
     export default {
@@ -138,6 +140,16 @@
         }),
         methods: {
             //getWord()
+            share() {
+                // warning: this works only over https
+		            // on localhost it has no effect
+                navigator.clipboard.writeText(window.location.host + '/?id=' + this.info._id);
+                store.setSnackbar({
+                    message: "Скопировано",
+                    color: "success",
+                    active: true
+                });
+            }
         },
         mounted() {
             console.log(this.$t('infoViewer.type').toString() !== ('infoViewer.ty'));

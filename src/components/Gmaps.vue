@@ -1,31 +1,36 @@
 <template lang="html">
 	<v-layout wrap>
 		<v-layout style="width: 100vw;">
-			<v-layout id="search" height="60" raised tile style="z-index: 4;">
-				<v-card height="60" raised tile style="z-index: 4;" wrap>
+			<v-layout dark id="search" height="60" raised tile style="z-index: 4;">
+				<v-card dark height="60" raised tile style="z-index: 4;" wrap color="white">
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
-						<v-icon height="56" class="pa-2 ma-0" large style="height: 60px;">search</v-icon>
-						<v-text-field height="60" class="pa-0 ma-0" style="width: 30vw"
+						<v-icon light height="56" class="pa-2 ma-0" id="search-icon" large style="height: 60px;">search</v-icon>
+						<v-text-field light height="60" class="pa-0 ma-0 search-textfield" style="width: 30vw"
 						              label="Поиск по учреждениям ФСИН"></v-text-field>
 					</v-layout>
 				</v-card>
 				<transition name="fade" mode="in-out">
-					<v-layout v-if="options" wrap style="max-width: 50vw">
-						<v-select dark height="60" class="pa-0 ma-0 search-select" v-model="searchType" :items="searchTypes"
-						          label="По типу учреждения" multiple menu-props="top, offsetY"
-						          style="z-index: 100; width: 25vw">
-							<template v-slot:selection="{ item, index }">
+					<v-card dark height="60" raised tile style="z-index: 4;" wrap>
+						<v-layout v-if="options" wrap style="max-width: 50vw">
+							<v-select dark height="60" class="pa-0 ma-0 search-select" v-model="searchType" :items="searchTypes"
+							          label="По типу учреждения" multiple menu-props="top, offsetY, dark"
+							          style="z-index: 100; width: 20vw">
+								<template v-slot:selection="{ item, index }">
 									<span>{{ item }}, </span>
-							</template>
-							<template v-slot:item="{ item }">
-								<!-- TODO: short to long name-->
-								<v-checkbox :label="item"></v-checkbox>
-							</template>
-						</v-select>
-						<v-select dark height="60" class="pa-0 ma-0" v-model="searchCount" :items="searchCounts"
-						          label="По количеству отзывов" menu-props="top, offsetY"
-						          dense style="z-index: 100; width: 25vw"></v-select>
-					</v-layout>
+								</template>
+								<template v-slot:item="{ item, attrs, on }">
+									<span>
+										{{ item }}, 
+										<a v-if="attrs.inputValue">selected {{attrs.inputValue}}</a>
+										<!-- TODO: icon fill=true/false prop-->
+										</span>
+								</template>
+							</v-select>
+							<v-select dark height="60" class="pa-0 ma-0 search-select" v-model="searchCount" :items="searchCounts"
+							          label="По количеству отзывов" menu-props="top, offsetY, dark"
+							          dense style="z-index: 100; width: 20vw"></v-select>
+						</v-layout>
+					</v-card>
 				</transition>
 				<v-btn height="60" @click="options = !options" tile fab meduim
 				       :color="options ? 'white' : 'black'">
@@ -536,7 +541,7 @@
 
 	#search {
 		position: absolute;
-		top: 75vh;
+		top: 80vh;
 		left: 20px;
 		z-index: 10;
 	}
@@ -549,25 +554,6 @@
 	{
 		opacity: 0
 	}
-	.search-select > .v-input__control > .v-input__slot > .v-select__slot > label {
-		font-family: Roboto;
-		font-style: normal;
-		font-weight: 300;
-		font-size: 13px;
-		line-height: 15px;
-		display: flex;
-		align-items: center;
 
-		color: #585858;
-	}
-	.search-select > .v-input__control > .v-input__slot > .v-select__slot > .v-select__selections {
-		font-family: Roboto;
-		font-style: normal;
-		font-weight: 300;
-		font-size: 17px;
-		line-height: 19px;
-		display: flex;
-		align-items: center;
-	}
 
 </style>

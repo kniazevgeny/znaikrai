@@ -9,7 +9,8 @@
 				v-btn(tile text class="navbar-text", :to="'stories'" x-large) ИСТОРИИ
 				v-btn(tile text class="navbar-text", :to="'about'" x-large) О ПРОЕКТЕ
 			// Dark mode
-			//<v-btn(text icon color='grey' @click='toggleMode')>//<v-icon(small) brightness_2>
+			// v-btn(text icon color='grey' @click='toggleMode')
+				v-icon(small) brightness_2
 			// Language picker//v-row(justify='center')
 			v-spacer
 			v-btn(tile, outlined, style="margin-right: 4%; padding: 0 16px!important", class="navbar-text", :to="'/tell'", x-large, id="tellus") СООБЩИТЬ О НАРУШЕНИИ

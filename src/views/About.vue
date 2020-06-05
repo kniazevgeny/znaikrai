@@ -11,7 +11,7 @@
 			v-container(style="margin-top: 100px")
 				v-layout(wrap)
 					div(style="width: 25vw")
-						v-select(:items="ways" outlined v-model="current" label="" background-color="grey_e5" color="black" style="")
+						v-select(:items="ways" outlined v-model="current" label="" background-color="grey_e5" color="black" style="" class="about-select")
 					div(style="width: 6vw; margin-left: 15px")
 						v-text-field(filled, v-model="amount", background-color="gray_e5")
 					div(style="width: 20vw; margin-left: 15px")
@@ -53,7 +53,7 @@
     }
 </script>
 
-<style>
+<style scoped>
 	@media screen and (min-width: 600px) {
 		.headlinetxt#about-headline::before {
 			content: url("../assets/about.svg");
@@ -83,13 +83,13 @@
 		box-sizing: border-box !important;
 		border-radius: 1px !important;
 	}
-	.select {
+	.about-select > .v-input__control > .select {
 		border: 2px solid #000000 !important;
 		box-sizing: border-box !important;
 		border-radius: 1px !important;
 	}
 
-	.v-select__slot {
+	.about-select > .v-input__control > .select > .v-select__slot {
 		font-family: 'Roboto';
 		font-style: normal;
 		font-weight: normal;

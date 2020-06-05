@@ -11,8 +11,8 @@
 				v-row(style="margin-top: 35px")
 					v-col(cols='9' v-for="(value, i) in questions" :key="i")
 						span(class="question") {{ value.question }}
-						v-text-field(v-if="value.required", label='', v-model='form[value.name]', required, hint='Обязательное поле', persistent-hint, filled)
-						v-text-field(v-else, label='', v-model='form[value.name]', filled)
+						v-text-field(class="question-textfield" v-if="value.required", label='', v-model='form[value.name]', required, hint='Обязательное поле', persistent-hint, filled)
+						v-text-field(class="question-textfield" v-else, label='', v-model='form[value.name]', filled)
 				v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent") Отправить
 
 		//v-menu(offset-y)
@@ -107,7 +107,7 @@
 </script>
 
 <style>
-	.v-input__slot {
+	.question-textfield > .v-input__control > .v-input__slot {
 		border: 2px solid !important;
 		border-right: 1px;
 	}
@@ -132,7 +132,7 @@
 		padding-bottom: 100px;
 	}
 
-	.v-input__control > .v-input__slot {
+	.question-textfield > .v-input__control > .v-input__slot {
 		background-color: white !important;
 	}
 

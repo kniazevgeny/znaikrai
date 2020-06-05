@@ -1,0 +1,52 @@
+.search-select > .v-input__control > .v-input__slot {
+    background-color: #000;
+}
+.search-select > .v-input__control > .v-input__slot > .v-select__slot > label {
+    font-family: Roboto;
+    margin-top: 10px;
+    margin-left: 15px;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    color: #585858;
+}
+.search-select > .v-input__control > .v-input__slot > .v-select__slot > .v-select__selections {
+    font-family: Roboto;
+    padding-left: 15px;
+    margin-top: 10px;
+
+    font-style: normal;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+}
+
+.search-textfield > .v-input__control > .v-input__slot {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
+    border: none!important;
+}
+.search-textfield > .v-input__control > .v-input__slot > .v-menu::after{
+    color: #D50000;
+    border-width: 1.5px;
+}
+.search-textfield > .v-input__control > .v-input__slot::before {
+    display: none!important;
+}
+.search-select > .v-input__control > .v-input__slot::before {
+    display: none!important;
+}
+#search-icon {
+    padding: 20px!important;
+    border: none!important;
+}

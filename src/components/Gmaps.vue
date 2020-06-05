@@ -10,28 +10,35 @@
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap color="white">
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
 						<v-icon light height="56" class="pa-2 ma-0" id="search-icon" large style="height: 60px;">search</v-icon>
-						<v-text-field light height="60" class="pa-0 ma-0 search-textfield" style="width: 30vw"
+						<v-text-field @input="search" light height="60" class="pa-0 ma-0 search-textfield" style="width: 30vw"
 						              label="Поиск по учреждениям ФСИН"></v-text-field>
 					</v-layout>
 				</v-card>
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap>
 					<transition name="fade1" mode="out-in">
 						<v-layout v-if="options" wrap style="max-width: 50vw">
-							<v-select dark height="60" class="pa-0 ma-0 search-select" v-model="searchType" :items="searchTypes"
+							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchType"
+							          :items="searchTypes"
 							          label="По типу учреждения" multiple menu-props="top, offsetY, dark"
 							          style="z-index: 100; width: 20vw">
-								<template v-slot:selection="{ item, index }">
-									<span>{{ item }}, </span>
+								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
+									<span v-if="index === 0">
+										<span>{{ item }}</span>
+									</span>
+									<span
+										v-if="index === 1"
+										class="grey--text caption"
+									>(+{{ searchType.length - 1 }})</span>
 								</template>
-								<template v-slot:item="{ item, attrs, on }">
-									<span>
-										{{ item }}, 
-										<a v-if="attrs.inputValue">selected {{attrs.inputValue}}</a>
-										<!-- TODO: icon fill=true/false prop-->
+								<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
+										<span class="search-select-menu">
+											<z-checkbox :checked="attrs.inputValue"></z-checkbox>
+											{{ item }}
 										</span>
 								</template>
 							</v-select>
-							<v-select dark height="60" class="pa-0 ma-0 search-select" v-model="searchCount" :items="searchCounts"
+							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchCount"
+							          :items="searchCounts"
 							          label="По количеству отзывов" menu-props="top, offsetY, dark"
 							          dense style="z-index: 100; width: 20vw"></v-select>
 						</v-layout>
@@ -86,6 +93,7 @@
     import iconRedCovid from "../assets/r2-covid.svg";
     import tune_r from "./tuneSVG_r";
     import tune_b from "./tuneSVG_b";
+    import zcheckbox from "./Z-checkbox"
     // !WARNING
     // before adding new svg, edit it and add to svg attribute height and width parameters
     // e.g. <svg width="60" height="60" ...
@@ -115,6 +123,7 @@
     Vue.component('InfoViewer', InfoViewer);
     Vue.component('tune-r', tune_r);
     Vue.component('tune-b', tune_b);
+    Vue.component('z-checkbox', zcheckbox);
     Vue.component('GmapCluster', GmapCluster);
     Vue.component('gmap-info-window', VueGoogleMaps.InfoWindow);
 
@@ -417,8 +426,8 @@
                     }
                 ]
             },
-            searchTypes: ['СИЗО', 'ИК', 'ВК', 'ЛИУ', 'Тюрьмы'],
-            searchType: ['СИЗО', 'ИК', 'ВК', 'ЛИУ', 'Тюрьмы'],
+            searchTypes:  ["Исправительная колония", "Воспитательная колония", "Следственный изолятор", "Лечебно-исправительное учреждение", "Колония-поселение", "Исправительный центр", "Тюрьма", "Больница", "Объединение исправительных колоний", "Лечебно-профилактическое учреждение", "Лечебное исправительное учреждение", "Колония-поселения", "Объединение колоний"],
+            searchType:  ["Исправительная колония", "Воспитательная колония", "Следственный изолятор", "Лечебно-исправительное учреждение", "Колония-поселение", "Исправительный центр", "Тюрьма", "Больница", "Объединение исправительных колоний", "Лечебно-профилактическое учреждение", "Лечебное исправительное учреждение", "Колония-поселения", "Объединение колоний"],
             searchCounts: ['Все', 'Только со свидетельствами'],
             searchCount: 'Все',
             options: false,
@@ -448,6 +457,16 @@
                         this.markers0 = response.data.places;
                         this.markers1 = response.data.places;
                         console.log(this.markers1);
+                        /*let mySet = new Set();
+                        this.markers0.forEach(val => {
+                            mySet.add(val.type);
+                        });
+                        let a = [];
+                        mySet.forEach(val => {
+                            a.push(val);
+                        });
+                        console.log(mySet);
+                        console.log(a);*/
                         this.checkUrlMarker();
                     });
                     //this.$router.replace("cabinet");
@@ -502,7 +521,15 @@
                 }
             },
             search() {
-
+                this.markers1 = this.markers0;
+                this.markers1 = this.markers1.filter(
+                    tmp => this.searchType.includes(tmp.type)
+                );
+                /*if (this.searchCount !== 'Все'){
+                    this.markers1 = this.markers1.filter(
+                        tmp => tmp.notes !== ''
+                    );
+                }*/
             }
         },
         created() {

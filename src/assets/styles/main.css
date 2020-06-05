@@ -36,11 +36,11 @@
     align-items: center;
     border: none!important;
 }
-.search-textfield > .v-input__control > .v-input__slot > .v-menu::after{
-    color: #D50000;
-    border-width: 1.5px;
+.search-select > .v-input__control > .v-input__slot::after{
+    color: #D50000!important;
+    border-width: 1.5px!important;
 }
-.search-textfield > .v-input__control > .v-input__slot::before {
+.search-textfield > .v-input__control > .v-input__slot::after {
     display: none!important;
 }
 .search-select > .v-input__control > .v-input__slot::before {

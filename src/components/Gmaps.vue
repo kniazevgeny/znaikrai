@@ -9,8 +9,8 @@
 						              label="Поиск по учреждениям ФСИН"></v-text-field>
 					</v-layout>
 				</v-card>
-				<transition name="fade" mode="in-out">
-					<v-card dark height="60" raised tile style="z-index: 4;" wrap>
+				<v-card dark height="60" raised tile style="z-index: 4;" wrap>
+					<transition name="fade1" mode="out-in">
 						<v-layout v-if="options" wrap style="max-width: 50vw">
 							<v-select dark height="60" class="pa-0 ma-0 search-select" v-model="searchType" :items="searchTypes"
 							          label="По типу учреждения" multiple menu-props="top, offsetY, dark"
@@ -30,8 +30,8 @@
 							          label="По количеству отзывов" menu-props="top, offsetY, dark"
 							          dense style="z-index: 100; width: 20vw"></v-select>
 						</v-layout>
-					</v-card>
-				</transition>
+					</transition>
+				</v-card>
 				<v-btn height="60" @click="options = !options" tile fab meduim
 				       :color="options ? 'white' : 'black'">
 					<transition name="fade" mode="out-in">
@@ -546,14 +546,16 @@
 		z-index: 10;
 	}
 
-	.fade-enter-active, .fade-leave-active {
-		transition: opacity .1s;
+	.fade1-enter-active, .fade1-leave-active {
+		transition: opacity .4s;
 	}
-
-	.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+	.fade1-enter, .fade1-leave-to /* .fade-leave-active below version 2.1.8 */
 	{
 		opacity: 0
 	}
 
+	.fade1-enter-to{
+		transition: opacity .96s;
+	}
 
 </style>

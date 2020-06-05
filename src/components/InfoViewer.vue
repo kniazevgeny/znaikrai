@@ -182,11 +182,11 @@
 			transition: all 500ms;*!
 	}*/
 	.inform {
-		position: absolute !important;
+		position: absolute!important;
 		z-index: 91;
 		left: 1vh;
 		width: 40vw;
-		bottom: 11vh;
+		bottom: 1vh!important;
 		height: 75vh;
 		border-radius: 2px;
 	}

@@ -1,6 +1,11 @@
 <template lang="html">
 	<v-layout wrap>
 		<v-layout style="width: 100vw;">
+			<transition name="slide-fade" mode="in-out" style="z-index: 99">
+				<v-layout v-show="infoWinOpenMine" class="inform" style="position: absolute !important; margin-bottom: 20vh">
+					<InfoViewer :info="currentInfo" @closes="closes()"></InfoViewer>
+				</v-layout>
+			</transition>
 			<v-layout dark id="search" height="60" raised tile style="z-index: 4;">
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap color="white">
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
@@ -40,6 +45,7 @@
 					</transition>
 				</v-btn>
 			</v-layout>
+
 			<div id="modePicker">
 				<v-btn-toggle v-model="mapMode" mandatory tile active-class="v-btn--disabled">
 					<v-btn>
@@ -64,11 +70,7 @@
 				             @click="toggleInfoWindow(m,i)" :icon="m.coronavirus ? iconRedCovid : icong"></gmap-marker>
 			</google-map>
 		</v-layout>
-		<transition name="slide-fade" mode="in-out" style="z-index: 99">
-			<div v-show="infoWinOpenMine" class="fade-transition inform">
-				<InfoViewer :info="currentInfo" @closes="closes()"></InfoViewer>
-			</div>
-		</transition>
+
 		<!--v-btn @click="getplaces">get</v-btn-->
 
 		<!--a v-if="markers1" v-text="markers1"></a-->
@@ -546,15 +548,29 @@
 		z-index: 10;
 	}
 
+	.slide-fade-enter-active {
+		transition: all .2s ease-out;
+	}
+
+	.slide-fade-leave-active {
+		transition: all .2s ease-in;
+	}
+
+	.slide-fade-enter, .slide-fade-leave-to
+		/* .slide-fade-leave-active до версии 2.1.8 */
+	{
+		transform: translateY(100vh);
+	}
+
 	.fade1-enter-active, .fade1-leave-active {
 		transition: opacity .4s;
 	}
-	.fade1-enter, .fade1-leave-to /* .fade-leave-active below version 2.1.8 */
-	{
+
+	.fade1-enter, .fade1-leave-to {
 		opacity: 0
 	}
 
-	.fade1-enter-to{
+	.fade1-enter-to {
 		transition: opacity .96s;
 	}
 

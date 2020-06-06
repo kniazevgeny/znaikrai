@@ -26,7 +26,7 @@
     align-items: center;
 }
 
-.search-textfield > .v-input__control > .v-input__slot {
+.search-autocomplete > .v-input__control > .v-input__slot {
     font-family: Roboto;
     font-style: normal;
     font-weight: 300;
@@ -40,13 +40,13 @@
     color: #D50000!important;
     border-width: 1.5px!important;
 }
-.search-textfield > .v-input__control > .v-input__slot::after {
+.search-autocomplete > .v-input__control > .v-input__slot::after {
     display: none!important;
 }
 .search-select > .v-input__control > .v-input__slot::before {
     display: none!important;
 }
 #search-icon {
-    padding: 20px!important;
+    padding: 15px!important;
     border: none!important;
 }

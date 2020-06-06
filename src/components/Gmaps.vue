@@ -1,11 +1,6 @@
 <template lang="html">
 	<v-layout wrap>
 		<v-layout style="width: 100vw;">
-			<transition name="slide-fade" mode="in-out" style="z-index: 99">
-				<v-layout v-show="infoWinOpenMine" class="inform" style="position: absolute !important; margin-bottom: 20vh">
-					<InfoViewer :info="currentInfo" @closes="closes()"></InfoViewer>
-				</v-layout>
-			</transition>
 			<v-layout dark id="search" height="60" raised tile style="z-index: 4;">
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap color="white">
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
@@ -19,7 +14,7 @@
 						<v-layout v-if="options" wrap style="max-width: 50vw">
 							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchType"
 							          :items="searchTypes"
-							          label="По типу учреждения" multiple menu-props="top, offsetY, dark"
+							          label="По типу учреждения" multiple menu-props="light, top, offsetY, eager"
 							          style="z-index: 100; width: 20vw">
 								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
 									<span v-if="index === 0">
@@ -39,7 +34,7 @@
 							</v-select>
 							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchCount"
 							          :items="searchCounts"
-							          label="По количеству отзывов" menu-props="top, offsetY, dark"
+							          label="По количеству отзывов" menu-props="top, offsetY, light"
 							          dense style="z-index: 100; width: 20vw"></v-select>
 						</v-layout>
 					</transition>
@@ -77,6 +72,11 @@
 				             @click="toggleInfoWindow(m,i)" :icon="m.coronavirus ? iconRedCovid : icong"></gmap-marker>
 			</google-map>
 		</v-layout>
+		<transition name="slide-fade" mode="in-out" style="z-index: 101">
+			<v-layout v-show="infoWinOpenMine" class="inform" style="position: absolute !important; margin-bottom: 20vh">
+				<InfoViewer :info="currentInfo" @closes="closes()"></InfoViewer>
+			</v-layout>
+		</transition>
 
 		<!--v-btn @click="getplaces">get</v-btn-->
 
@@ -426,8 +426,8 @@
                     }
                 ]
             },
-            searchTypes:  ["Исправительная колония", "Воспитательная колония", "Следственный изолятор", "Лечебно-исправительное учреждение", "Колония-поселение", "Исправительный центр", "Тюрьма", "Больница", "Объединение исправительных колоний", "Лечебно-профилактическое учреждение", "Лечебное исправительное учреждение", "Колония-поселения", "Объединение колоний"],
-            searchType:  ["Исправительная колония", "Воспитательная колония", "Следственный изолятор", "Лечебно-исправительное учреждение", "Колония-поселение", "Исправительный центр", "Тюрьма", "Больница", "Объединение исправительных колоний", "Лечебно-профилактическое учреждение", "Лечебное исправительное учреждение", "Колония-поселения", "Объединение колоний"],
+            searchTypes: ["Исправительная колония", "Воспитательная колония", "Следственный изолятор", "Лечебно-исправительное учреждение", "Колония-поселение", "Исправительный центр", "Тюрьма", "Больница", "Объединение исправительных колоний", "Лечебно-профилактическое учреждение", "Лечебное исправительное учреждение", "Колония-поселения", "Объединение колоний"],
+            searchType: ["Исправительная колония", "Воспитательная колония", "Следственный изолятор", "Лечебно-исправительное учреждение", "Колония-поселение", "Исправительный центр", "Тюрьма", "Больница", "Объединение исправительных колоний", "Лечебно-профилактическое учреждение", "Лечебное исправительное учреждение", "Колония-поселения", "Объединение колоний"],
             searchCounts: ['Все', 'Только со свидетельствами'],
             searchCount: 'Все',
             options: false,
@@ -486,7 +486,10 @@
             addrmaps() {
                 console.log(this.place);
             },
-            toggleInfoWindow(marker, idx) {
+            /**
+             * @param {Console} console
+             */
+            toggleInfoWindow(marker, idx, console) {
                 //this.infoWindowPos = marker.position;
                 //this.infoOptionsM.content = marker.notes;
                 //check if its the same marker that was selected if yes toggle
@@ -498,10 +501,12 @@
                     this.currentMidx = idx;
                     let info = marker;
                     for (let propName in info) {
-                        if ((propName !== "warning") && (info[propName].toString() === "" || info[propName] === undefined)) {
+                        if ((propName !== "warning") && (info[propName] === null || info[propName].toString() === "" || info[propName] === undefined)) {
                             // deletes empty props
                             delete info[propName];
                         }
+                        ;
+
                     }
                     this.currentInfo = info;
                     this.infoWinOpenMine = true;
@@ -511,9 +516,9 @@
 
             },
             checkUrlMarker() {
-                let markerToShow = 0;
-                markerToShow = this.$route.query.id;
-                if (markerToShow) {
+                let markerToShow = this.$route.query.id;
+                console.log(markerToShow);
+                if (markerToShow !== undefined) {
                     this.markers1.forEach(el => {
                         if (el._id === markerToShow)
                             this.toggleInfoWindow(el, 0)

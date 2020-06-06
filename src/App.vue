@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-app(@load="loaded()" dark='$store.state.dark' :class='$store.state.dark ? "grey darken-4" : "grey lighten-4"' :v-scroll="!mount ? loaded(): a()")
+	v-app(@load="loaded()" :dark='$store.state.dark' :class='$store.state.dark ? "grey darken-4" : "grey lighten-4"' :v-scroll="!mount ? loaded(): a()")
 		cookie-law(theme='blood-orange'
 		:buttonText='"Ок"'
 		:message='"Мы используем куки"')

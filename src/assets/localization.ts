@@ -8,7 +8,6 @@ export const messages = {
             hours: "Часы работы",
             location: "Местоположение",
             notes: "Заметки",
-            number_of_violations: "Количество нарушений",
             phones: "Номер телефона",
             type: "Тип",
             warning: "",

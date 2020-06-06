@@ -5,6 +5,7 @@
 		light
 		style="color:#000; overflow-y: auto; overflow-x: hidden"
 		v-if="info"
+		tile
 	>
 		<v-row>
 			<v-col style="width: 94%; margin-left: 3%;">

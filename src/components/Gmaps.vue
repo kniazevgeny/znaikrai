@@ -5,8 +5,12 @@
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap color="white">
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
 						<v-icon light class="pa-2 ma-0" id="search-icon" large style="height: 60px;">search</v-icon>
-						<v-autocomplete v-if="markers0" v-model="searchName" @input="search" light height="60" class="pa-0 ma-0 search-autocomplete" style="width: 30vw; z-index: 100;"
-						              label="Поиск по учреждениям ФСИН" :items="searchNames" item-text="name" flat hide-no-data hide-details menu-props="light, top, offsetY, tile, flat"></v-autocomplete>
+						<v-autocomplete v-if="markers0" v-model="searchName" @input="search" light height="60"
+						                class="pa-0 ma-0 search-autocomplete" style="width: 30vw; z-index: 100;" label="Поиск по учреждениям ФСИН"
+						                :items="searchNames" item-text="name" item-value="searchObj"
+						                return-object flat hide-no-data hide-details
+						                menu-props="light, top, offsetY, tile, flat, close-on-click"></v-autocomplete>
+						<!-- TODO: v-icon>close</v-icon-->
 					</v-layout>
 				</v-card>
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap>
@@ -430,11 +434,12 @@
             searchType: ["Исправительная колония", "Воспитательная колония", "Следственный изолятор", "Лечебно-исправительное учреждение", "Колония-поселение", "Исправительный центр", "Тюрьма", "Больница", "Объединение исправительных колоний", "Лечебно-профилактическое учреждение", "Лечебное исправительное учреждение", "Колония-поселения", "Объединение колоний"],
             searchCounts: ['Все', 'Только со свидетельствами'],
             searchCount: 'Все',
-		        searchName: "",
-		        searchNames: [],
+            searchName: "",
+            searchNames: [],
             options: false,
-            markers: 0,
-            markers1: 0
+            markers0: [],
+            markers1: [],
+            searchObj: 0
 
         }),
         computed: {
@@ -456,9 +461,21 @@
                 try {
                     //console.log(store.apibase());
                     axios.get(store.apibase() + '/places/').then(response => {
-                        this.markers0 = response.data.places;
-                        this.markers0.forEach(val => this.searchNames.push(val.name.slice(5, -1)));//findIndex("№")
-                        this.markers1 = response.data.places;
+                        let sorted = response.data.places.sort(function(a,b) {
+                            let x = a.name.toLowerCase();
+                            let y = b.name.toLowerCase();
+                            return x < y ? -1 : x > y ? 1 : 0;
+                        });
+                        sorted.forEach(val => {
+                            // removes xyz«INFO»xyz
+                            val.name = val.name.slice(val.name.indexOf("«") + 1, val.name.indexOf("»"));
+                            // removes space after №
+		                        if (val.name.indexOf("№") !== -1)
+                              val.name = val.name.slice(0, val.name.indexOf("№") + 1) + val.name.slice(val.name.indexOf("№") + 2, val.name.length);
+                            this.markers0.push(val);
+                            this.markers1.push(val);
+                        });
+                        this.markers1.forEach(val => this.searchNames.push(val.name));
                         console.log(this.markers1);
                         /*let mySet = new Set();
                         this.markers0.forEach(val => {
@@ -508,8 +525,6 @@
                             // deletes empty props
                             delete info[propName];
                         }
-                        ;
-
                     }
                     this.currentInfo = info;
                     this.infoWinOpenMine = true;
@@ -520,7 +535,6 @@
             },
             checkUrlMarker() {
                 let markerToShow = this.$route.query.id;
-                console.log(markerToShow);
                 if (markerToShow !== undefined) {
                     this.markers1.forEach(el => {
                         if (el._id === markerToShow)
@@ -533,6 +547,17 @@
                 this.markers1 = this.markers1.filter(
                     tmp => this.searchType.includes(tmp.type)
                 );
+                this.markers1 = this.markers1.filter(
+                    tmp => this.searchName.includes(tmp.name)
+                );
+                console.log(this.searchName);
+                /*if (this.searchName !== ""){
+		                console.log(this.markers1);
+                    this.markers1 = this.markers1.forEach((val, i) => {
+                      if (val.name !== this.searchName) {console.log(val.name, this.searchName); delete this.markers1[i];}
+                    });
+		                console.log(this.markers1);
+                }*/
                 /*if (this.searchCount !== 'Все'){
                     this.markers1 = this.markers1.filter(
                         tmp => tmp.notes !== ''

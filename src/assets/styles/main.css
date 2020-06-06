@@ -43,10 +43,23 @@
 .search-autocomplete > .v-input__control > .v-input__slot::after {
     display: none!important;
 }
+.search-autocomplete > .v-input__control > .v-input__slot::before {
+    display: none!important;
+    border: none!important;
+}
 .search-select > .v-input__control > .v-input__slot::before {
     display: none!important;
 }
 #search-icon {
     padding: 15px!important;
     border: none!important;
+}
+.v-menu__content.v-autocomplete__content > .v-list > .v-list-item {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 19px;
+    display: flex;
+    align-items: center;
 }

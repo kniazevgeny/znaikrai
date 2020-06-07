@@ -69,7 +69,7 @@
 				</gmap-info-window>
 				<GmapCluster v-if="!mapMode">
 					<gmap-marker v-if="markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
-					             @click="toggleInfoWindow(m,i)" :icon="m.coronavirus ? iconRedCovid : icong"></gmap-marker>
+					             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker>
 				</GmapCluster>
 				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="m.position"
 				             :clickable="true"
@@ -93,15 +93,13 @@
     import axios from "axios";
     import * as store from "../plugins/store";
     import * as VueGoogleMaps from "vue2-google-maps";
-    import iconred from "../assets/r2.svg";
-    import iconRedCovid from "../assets/r2-covid.svg";
+    import { getColoredMarkerUrl } from "../utils/marker-url-generator";
     import tune_r from "./tuneSVG_r";
     import tune_b from "./tuneSVG_b";
     import zcheckbox from "./Z-checkbox"
     // !WARNING
     // before adding new svg, edit it and add to svg attribute height and width parameters
     // e.g. <svg width="60" height="60" ...
-    import icongreen from "../assets/g2.svg";
     import InfoViewer from "../components/InfoViewer";
     import GmapCluster from 'vue2-google-maps/dist/components/cluster';
 
@@ -136,9 +134,6 @@
         name: "Gmaps",
         data: () => ({
             mapMode: 0,
-            iconr: '',
-            iconRedCovid: '',
-            icong: '',
             place: '',
             infoWindowPos: null,
             infoWinOpenMine: false,
@@ -450,14 +445,6 @@
         },
         methods: {
             getplaces() {
-                //console.log(gmapskey.key);
-                this.iconr = iconred;
-                this.iconRedCovid = iconRedCovid;
-                this.icong = icongreen;
-                //let el = document.getElementsByClassName('gm-style')[0].childNodes[0].childNodes[2].childNodes[0];
-                //el.setAttribute("style", "position: fixed; right: 20%; margin-top: 90%; height: 500px; max-height: none")//
-
-
                 try {
                     //console.log(store.apibase());
                     axios.get(store.apibase() + '/places/').then(response => {
@@ -506,9 +493,6 @@
             addrmaps() {
                 console.log(this.place);
             },
-            /**
-             * @param {Console} console
-             */
             toggleInfoWindow(marker, idx, console) {
                 //this.infoWindowPos = marker.position;
                 //this.infoOptionsM.content = marker.notes;
@@ -533,8 +517,16 @@
                 //console.log(this.currentInfo);
 
             },
+            getColor(value) {
+                //value from 0 to 1
+		            //https://stackoverflow.com/questions/7128675/from-green-to-red-color-depend-on-percentage/7128796
+                let hue = ((1 - value) * 135).toString(10);
+                return ["hsl(", hue, ",70%,45%)"].join("");
+            },
 		        getIcon(marker) {
-                return this.icong
+                const maxviolations = 23;
+				        // this calls Marker or MarkerCovid.vue with color param
+                return getColoredMarkerUrl(marker.coronavirus ? "#d5164e" : this.getColor(marker.number_of_violations / maxviolations), marker.coronavirus);
 		        },
             checkUrlMarker() {
                 let markerToShow = this.$route.query.id;
@@ -637,5 +629,6 @@
 	.fade1-enter-to {
 		transition: opacity .96s;
 	}
-
+	/* svg icon color*/
+	.st0{fill:#DFFF00!important}
 </style>

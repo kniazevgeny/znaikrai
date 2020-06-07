@@ -9,6 +9,7 @@ export const messages = {
             location: "Местоположение",
             notes: "Заметки",
             phones: "Номер телефона",
+            number_of_violations: "Кол-во нарушений",
             type: "Тип",
             warning: "",
             website: "Сайт",

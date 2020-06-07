@@ -8,6 +8,7 @@ const MarkerCovidConstructor = Vue.extend(MarkerCovid)
 
 export const getColoredMarkerUrl = (fillColor, isCovid) => {
     // create a Vue element with required props
+    // origin: https://medium.com/better-programming/dynamic-svg-markers-for-google-maps-in-vue-js-7541fa1a54a
     let iconComponent;
     if (!isCovid)
         iconComponent = new MarkerConstructor({ propsData: { fillColor } })

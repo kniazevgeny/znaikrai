@@ -6,7 +6,7 @@
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
 						<v-icon light class="pa-2 ma-0 search-icon" large style="width: 5vw; height: 60px;">search</v-icon>
 						<v-autocomplete v-if="markers0" v-model="searchName" @change="search" light height="60"
-						                class="pa-0 ma-0 search-autocomplete" style="width: 27vw; z-index: 100;" label="Поиск по учреждениям ФСИН"
+						                class="pa-0 ma-0 search-autocomplete" style="width: 30vw; z-index: 100;" label="Поиск по учреждениям ФСИН"
 						                :items="searchNames" item-text="name" item-value="searchObj"
 						                multiple flat autofocus
 						                menu-props="light, top, offsetY, tile, flat, close-on-click">
@@ -35,7 +35,7 @@
 							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchType"
 							          :items="searchTypes"
 							          label="По типу учреждения" multiple menu-props="light, top, offsetY, eager"
-							          style="z-index: 100; width: 20vw">
+							          style="z-index: 100; width: 28vw">
 								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
 									<span v-if="index === 0">
 										<span>{{ item }}</span>
@@ -441,8 +441,8 @@
                     }
                 ]
             },
-            searchTypes: ["Исправительная колония", "Воспитательная колония", "Следственный изолятор", "Лечебно-исправительное учреждение", "Колония-поселение", "Исправительный центр", "Тюрьма", "Больница", "Объединение исправительных колоний", "Лечебно-профилактическое учреждение", "Лечебное исправительное учреждение", "Колония-поселения", "Объединение колоний"],
-            searchType: ["Исправительная колония", "Воспитательная колония", "Следственный изолятор", "Лечебно-исправительное учреждение", "Колония-поселение", "Исправительный центр", "Тюрьма", "Больница", "Объединение исправительных колоний", "Лечебно-профилактическое учреждение", "Лечебное исправительное учреждение", "Колония-поселения", "Объединение колоний"],
+            searchTypes: [],
+            searchType: [],
             searchCounts: ['Все', 'Только со свидетельствами'],
             searchCount: 'Все',
             searchName: "",
@@ -469,15 +469,20 @@
                             let y = b.name.toLowerCase();
                             return x < y ? -1 : x > y ? 1 : 0;
                         });
+                        let set_types = new Set();
                         sorted.forEach(val => {
                             // removes xyz«INFO»xyz
                             val.name = val.name.slice(val.name.indexOf("«") + 1, val.name.indexOf("»"));
                             // removes space after №
 		                        if (val.name.indexOf("№") !== -1)
                               val.name = val.name.slice(0, val.name.indexOf("№") + 1) + val.name.slice(val.name.indexOf("№") + 2, val.name.length);
+		                        set_types.add(val.type);
                             this.markers0.push(val);
                             this.markers1.push(val);
                         });
+                        set_types.forEach(val => this.searchTypes.push(val));
+                        set_types.clear();
+                        this.searchType = this.searchTypes;
                         this.markers1.forEach(val => this.searchNames.push(val.name));
                         console.log(this.markers1);
                         /*let mySet = new Set();
@@ -564,7 +569,7 @@
 	                this.markers1 = this.markers1.filter(
                     tmp => this.searchName.includes(tmp.name)
                   );
-                console.log(this.searchName);
+                //console.log(this.searchName);
                 /*if (this.searchName !== ""){
 		                console.log(this.markers1);
                     this.markers1 = this.markers1.forEach((val, i) => {

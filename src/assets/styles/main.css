@@ -65,9 +65,12 @@
     caret-color: #000!important;
 }
 .v-menu__content > .v-list > .v-list-item--active {
-    background-color: #111;
-    caret-color: #111!important;
+    background-color: #000;
+    caret-color: #000!important;
     color: #fff!important;
+}
+.v-menu__content > .v-list > .v-list-item:before{
+    opacity: 0!important;
 }
 .v-list-item--active > .search-select-menu {
     color: #fff;

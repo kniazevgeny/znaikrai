@@ -4,13 +4,13 @@
 			<v-layout dark id="search" height="60" raised tile style="z-index: 4;">
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap color="white">
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
-						<v-icon light class="pa-2 ma-0" id="search-icon" large style="height: 60px;">search</v-icon>
-						<v-autocomplete v-if="markers0" v-model="searchName" @input="search" light height="60"
-						                class="pa-0 ma-0 search-autocomplete" style="width: 30vw; z-index: 100;" label="Поиск по учреждениям ФСИН"
+						<v-icon light class="pa-2 ma-0 search-icon" large style="width: 5vw; height: 60px;">search</v-icon>
+						<v-autocomplete v-if="markers0" v-model="searchName" @change="search" light height="60"
+						                class="pa-0 ma-0 search-autocomplete" style="width: 25vw; z-index: 100;" label="Поиск по учреждениям ФСИН"
 						                :items="searchNames" item-text="name" item-value="searchObj"
 						                return-object flat hide-no-data hide-details
 						                menu-props="light, top, offsetY, tile, flat, close-on-click"></v-autocomplete>
-						<!-- TODO: v-icon>close</v-icon-->
+							<v-icon light meduim class="pa-2 ma-0 search-icon" style="z-index: 101; height: 60px;" @click="searchName = ''; search()">mdi-window-close</v-icon>
 					</v-layout>
 				</v-card>
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap>
@@ -73,7 +73,7 @@
 				</GmapCluster>
 				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="m.position"
 				             :clickable="true"
-				             @click="toggleInfoWindow(m,i)" :icon="m.coronavirus ? iconRedCovid : icong"></gmap-marker>
+				             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker> <!-- m.coronavirus ? iconRedCovid : icong-->
 			</google-map>
 		</v-layout>
 		<transition name="slide-fade" mode="in-out" style="z-index: 101">
@@ -533,6 +533,9 @@
                 //console.log(this.currentInfo);
 
             },
+		        getIcon(marker) {
+                return this.icong
+		        },
             checkUrlMarker() {
                 let markerToShow = this.$route.query.id;
                 if (markerToShow !== undefined) {
@@ -547,9 +550,10 @@
                 this.markers1 = this.markers1.filter(
                     tmp => this.searchType.includes(tmp.type)
                 );
-                this.markers1 = this.markers1.filter(
+                if (this.searchName !== "")
+	                this.markers1 = this.markers1.filter(
                     tmp => this.searchName.includes(tmp.name)
-                );
+                  );
                 console.log(this.searchName);
                 /*if (this.searchName !== ""){
 		                console.log(this.markers1);

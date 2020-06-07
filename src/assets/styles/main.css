@@ -50,7 +50,7 @@
 .search-select > .v-input__control > .v-input__slot::before {
     display: none!important;
 }
-#search-icon {
+.search-icon {
     padding: 15px!important;
     border: none!important;
 }

@@ -520,8 +520,8 @@
             getColor(value) {
                 //value from 0 to 1
 		            //https://stackoverflow.com/questions/7128675/from-green-to-red-color-depend-on-percentage/7128796
-                let hue = (((1 - value)^0.5) * 125).toString(10);
-                return ["hsl(", hue, ",70%,45%)"].join("");
+                let hue = (Math.pow(1 - value, 3) * 105).toString(10);
+                return ["hsl(", hue, ",85%,40%)"].join("");
             },
 		        getIcon(marker) {
                 const maxviolations = 15;

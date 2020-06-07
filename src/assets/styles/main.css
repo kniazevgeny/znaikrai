@@ -62,4 +62,13 @@
     line-height: 19px;
     display: flex;
     align-items: center;
+    caret-color: #000!important;
+}
+.v-menu__content > .v-list > .v-list-item--active {
+    background-color: #111;
+    caret-color: #111!important;
+    color: #fff!important;
+}
+.v-list-item--active > .search-select-menu {
+    color: #fff;
 }

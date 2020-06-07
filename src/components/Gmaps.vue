@@ -6,10 +6,26 @@
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
 						<v-icon light class="pa-2 ma-0 search-icon" large style="width: 5vw; height: 60px;">search</v-icon>
 						<v-autocomplete v-if="markers0" v-model="searchName" @change="search" light height="60"
-						                class="pa-0 ma-0 search-autocomplete" style="width: 25vw; z-index: 100;" label="Поиск по учреждениям ФСИН"
+						                class="pa-0 ma-0 search-autocomplete" style="width: 27vw; z-index: 100;" label="Поиск по учреждениям ФСИН"
 						                :items="searchNames" item-text="name" item-value="searchObj"
-						                return-object flat hide-no-data hide-details
-						                menu-props="light, top, offsetY, tile, flat, close-on-click"></v-autocomplete>
+						                multiple flat autofocus
+						                menu-props="light, top, offsetY, tile, flat, close-on-click">
+							<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
+									<span v-if="index === 0">
+										<span>{{ item }}</span>
+									</span>
+								<span
+									v-if="index === 1"
+									class="grey--text caption"
+								>(+{{ searchName.length - 1 }})</span>
+							</template>
+							<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
+										<span class="search-select-menu">
+											<z-checkbox :checked="attrs.inputValue"></z-checkbox>
+											{{ item }}
+										</span>
+							</template>
+						</v-autocomplete>
 							<v-icon light meduim class="pa-2 ma-0 search-icon" style="z-index: 101; height: 60px;" @click="searchName = ''; search()">mdi-window-close</v-icon>
 					</v-layout>
 				</v-card>
@@ -542,6 +558,8 @@
                 this.markers1 = this.markers1.filter(
                     tmp => this.searchType.includes(tmp.type)
                 );
+                this.searchNames = [];
+                this.markers1.forEach(val => this.searchNames.push(val.name));
                 if (this.searchName !== "")
 	                this.markers1 = this.markers1.filter(
                     tmp => this.searchName.includes(tmp.name)

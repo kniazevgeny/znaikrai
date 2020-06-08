@@ -126,35 +126,82 @@
 	</v-card>
 </template>
 
-<script>
+<script lang="ts">
+    import Vue from 'vue';
     import * as store from "../plugins/store";
-    import BarChart from '../components/LinearCh'
+    //import BarChart from '../components/LinearCh'
+    import axios from "axios";
+    import {Component, Prop, Watch} from "vue-property-decorator";
 
-    export default {
-        name: "InfoViewer",
-        props: ['info'],
+    /*@Component({
         components: {
-            BarChart: BarChart
-        },
-        data: () => ({
-            activeBtn: 1,
-        }),
-        methods: {
-            //getWord()
-            share() {
-                // warning: this works only over https
-		            // on localhost it has no effect
-                navigator.clipboard.writeText(window.location.host + '/?id=' + this.info._id);
-                store.setSnackbar({
-                    message: "Ссылка скопирована",
-                    color: "success",
-                    active: true
-                });
+            BarChart
+        }
+    })*/
+
+    @Component
+    export default class InfoViewer extends Vue {
+        @Prop({required: true})
+        public _info!: object;
+
+        activeBtn: number = 1;
+        info: Array<any> = [];
+        loading = true;
+
+        //getWord()
+        share() {
+            // warning: this works only over https
+            // on localhost it has no effect
+            navigator.clipboard.writeText(window.location.host + '/?id=' + (this.info as any)._id);
+            store.setSnackbar({
+                message: "Ссылка скопирована",
+                color: "success",
+                active: true
+            });
+        }
+
+        deleteEmpty() {
+            for (let propName in this.info) {
+                if ( (propName !== "warning") && (this.info[propName] === null || this.info[propName].toString() === "" || this.info[propName] === undefined) ) {
+                    // deletes empty props
+                    delete this.info[propName];
+                }
             }
-        },
-        mounted() {
+        }
+
+        checkPlace() {
+            let id = (this._info as any)._id;
+            // console.log(id);
+            // console.log(store.isPlace((this._info as any)._id));
+            if ( (this._info as any) !== undefined && (this._info as any)._id !== undefined )
+                // if it's in the storage
+                if ( store.isPlace(id)) {
+                    // @ts-ignore
+                    this.info = store.place((this._info as any)._id);
+                }
+                else
+                    axios.get(store.apibase() + '/places/' + (this._info as any)._id).then(response => {
+                        console.log(response.data.place);
+                        let resp = response.data.place;
+                        resp.name = resp.name.slice(resp.name.indexOf("«") + 1, resp.name.indexOf("»"));
+                        // removes space after №
+                        if (resp.name.indexOf("№") !== -1)
+                            resp.name = resp.name.slice(0, resp.name.indexOf("№") + 1) + resp.name.slice(resp.name.indexOf("№") + 2, resp.name.length);
+
+                        this.info = resp;
+                        this.deleteEmpty();
+                        store.setPlace(resp);
+                    });
             console.log(this.$t('infoViewer.type').toString() !== ('infoViewer.ty'));
         }
+
+        @Watch('_info')
+        onInfoChange(value: object) {
+            console.log(value);
+            this.info = [];
+            this.checkPlace();
+        }
+
     }
 </script>
 
@@ -183,11 +230,11 @@
 			transition: all 500ms;*!
 	}*/
 	.inform {
-		position: absolute!important;
+		position: absolute !important;
 		z-index: 91;
 		left: 1vh;
 		width: 40vw;
-		bottom: 1vh!important;
+		bottom: 1vh !important;
 		height: 75vh;
 		border-radius: 2px;
 	}

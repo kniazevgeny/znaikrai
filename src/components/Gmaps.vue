@@ -6,7 +6,8 @@
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
 						<v-icon light class="pa-2 ma-0 search-icon" large style="width: 5vw; height: 60px;">search</v-icon>
 						<v-autocomplete v-if="markers0" v-model="searchName" @change="search" light height="60"
-						                class="pa-0 ma-0 search-autocomplete" style="width: 30vw; z-index: 100;" label="Поиск по учреждениям ФСИН"
+						                class="pa-0 ma-0 search-autocomplete" style="width: 30vw; z-index: 100;"
+						                label="Поиск по учреждениям ФСИН"
 						                :items="searchNames" item-text="name" item-value="searchObj"
 						                multiple flat autofocus
 						                menu-props="light, top, offsetY, tile, flat, close-on-click">
@@ -26,7 +27,9 @@
 										</span>
 							</template>
 						</v-autocomplete>
-							<v-icon light meduim class="pa-2 ma-0 search-icon" style="z-index: 101; height: 60px;" @click="searchName = ''; search()">mdi-window-close</v-icon>
+						<v-icon light meduim class="pa-2 ma-0 search-icon" style="z-index: 101; height: 60px;"
+						        @click="searchName = ''; search()">mdi-window-close
+						</v-icon>
 					</v-layout>
 				</v-card>
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap>
@@ -89,12 +92,13 @@
 				</GmapCluster>
 				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="m.position"
 				             :clickable="true"
-				             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker> <!-- m.coronavirus ? iconRedCovid : icong-->
+				             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker>
+				<!-- m.coronavirus ? iconRedCovid : icong-->
 			</google-map>
 		</v-layout>
 		<transition name="slide-fade" mode="in-out" style="z-index: 101">
 			<v-layout v-show="infoWinOpenMine" class="inform" style="position: absolute !important; margin-bottom: 20vh">
-				<InfoViewer :info="currentInfo" @closes="closes()"></InfoViewer>
+				<InfoViewer :_info="currentInfo" @closes="closes()"></InfoViewer>
 			</v-layout>
 		</transition>
 
@@ -109,7 +113,7 @@
     import axios from "axios";
     import * as store from "../plugins/store";
     import * as VueGoogleMaps from "vue2-google-maps";
-    import { getColoredMarkerUrl } from "../utils/marker-url-generator";
+    import {getColoredMarkerUrl} from "../utils/marker-url-generator";
     import tune_r from "./tuneSVG_r";
     import tune_b from "./tuneSVG_b";
     import zcheckbox from "./Z-checkbox"
@@ -464,7 +468,7 @@
                 try {
                     //console.log(store.apibase());
                     axios.get(store.apibase() + '/places/').then(response => {
-                        let sorted = response.data.places.sort(function(a,b) {
+                        let sorted = response.data.places.sort(function (a, b) {
                             let x = a.name.toLowerCase();
                             let y = b.name.toLowerCase();
                             return x < y ? -1 : x > y ? 1 : 0;
@@ -474,9 +478,9 @@
                             // removes xyz«INFO»xyz
                             val.name = val.name.slice(val.name.indexOf("«") + 1, val.name.indexOf("»"));
                             // removes space after №
-		                        if (val.name.indexOf("№") !== -1)
-                              val.name = val.name.slice(0, val.name.indexOf("№") + 1) + val.name.slice(val.name.indexOf("№") + 2, val.name.length);
-		                        set_types.add(val.type);
+                            if (val.name.indexOf("№") !== -1)
+                                val.name = val.name.slice(0, val.name.indexOf("№") + 1) + val.name.slice(val.name.indexOf("№") + 2, val.name.length);
+                            set_types.add(val.type);
                             this.markers0.push(val);
                             this.markers1.push(val);
                         });
@@ -485,6 +489,7 @@
                         this.searchType = this.searchTypes;
                         this.markers1.forEach(val => this.searchNames.push(val.name));
                         console.log(this.markers1);
+                        store.setPlaces(this.markers0);
                         /*let mySet = new Set();
                         this.markers0.forEach(val => {
                             mySet.add(val.type);
@@ -514,7 +519,7 @@
             addrmaps() {
                 console.log(this.place);
             },
-            toggleInfoWindow(marker, idx, console) {
+            toggleInfoWindow(marker, idx) {
                 //this.infoWindowPos = marker.position;
                 //this.infoOptionsM.content = marker.notes;
                 //check if its the same marker that was selected if yes toggle
@@ -540,15 +545,15 @@
             },
             getColor(value) {
                 //value from 0 to 1
-		            //https://stackoverflow.com/questions/7128675/from-green-to-red-color-depend-on-percentage/7128796
+                //https://stackoverflow.com/questions/7128675/from-green-to-red-color-depend-on-percentage/7128796
                 let hue = (Math.pow(1 - value, 3) * 105).toString(10);
                 return ["hsl(", hue, ",85%,40%)"].join("");
             },
-		        getIcon(marker) {
+            getIcon(marker) {
                 const maxviolations = 15;
-				        // this calls Marker or MarkerCovid.vue with color param
+                // this calls Marker or MarkerCovid.vue with color param
                 return getColoredMarkerUrl(this.getColor(marker.number_of_violations / maxviolations), marker.coronavirus);
-		        },
+            },
             checkUrlMarker() {
                 let markerToShow = this.$route.query.id;
                 if (markerToShow !== undefined) {
@@ -566,9 +571,9 @@
                 this.searchNames = [];
                 this.markers1.forEach(val => this.searchNames.push(val.name));
                 if (this.searchName !== "")
-	                this.markers1 = this.markers1.filter(
-                    tmp => this.searchName.includes(tmp.name)
-                  );
+                    this.markers1 = this.markers1.filter(
+                        tmp => this.searchName.includes(tmp.name)
+                    );
                 //console.log(this.searchName);
                 /*if (this.searchName !== ""){
 		                console.log(this.markers1);
@@ -652,6 +657,9 @@
 	.fade1-enter-to {
 		transition: opacity .96s;
 	}
+
 	/* svg icon color*/
-	.st0{fill:#DFFF00!important}
+	.st0 {
+		fill: #DFFF00 !important
+	}
 </style>

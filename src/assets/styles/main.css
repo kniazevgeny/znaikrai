@@ -72,6 +72,9 @@
 .v-menu__content > .v-list > .v-list-item:before{
     opacity: 0!important;
 }
+.v-autocomplete__content.v-menu__content {
+    margin-left: -5vw;
+}
 .v-list-item--active > .search-select-menu {
     color: #fff;
 }

@@ -2,70 +2,90 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import {findIndex} from "vee-validate/dist/types/utils";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export interface State {
-  snackbar: SnackbarState
-  language?: String
-  dark: Boolean,
-  apibase: String,
-  infowindow: Boolean
+    places: object[];
+    isPlace : boolean[];
+    snackbar: SnackbarState
+    language?: String
+    dark: Boolean,
+    apibase: String,
+    infowindow: Boolean
 }
 
 interface LocalizedError {
-  en: string
-  ru: string
+    en: string
+    ru: string
 }
 
 interface SnackbarState {
-  message: String | LocalizedError
-  active: Boolean
-  color: String
+    message: String | LocalizedError
+    active: Boolean
+    color: String
 }
 
 const storeOptions = {
-  state: {
-    snackbar: {
-      message: '',
-      active: false,
-      color: 'success',
+    state: {
+        snackbar: {
+            message: '',
+            active: false,
+            color: 'success',
+        },
+        language: undefined,
+        dark: false,
+        apibase: '',
+        infowindow: false,
+        places: [],
+        isPlace: []
     },
-    language: undefined,
-    dark: false,
-    apibase: '',
-    infowindow: false
-  },
 
-  mutations: {/*
+    mutations: {/*
     setUser(state: State, user: User) {
       state.user = user
     },
     logout(state: State) {
       state.user = undefined
     },*/
-    setSnackbar(state: State, snackbar: SnackbarState) {
-      state.snackbar = snackbar
+        setSnackbar(state: State, snackbar: SnackbarState) {
+            state.snackbar = snackbar
+        },
+        setLanguage(state: State, language: String) {
+            state.language = language
+        },
+        setDark(state: State, dark: Boolean) {
+            state.dark = dark
+        },
+        setInfowindow(state: State, infowindow: Boolean) {
+            state.infowindow = infowindow
+        },
+        setPlaces(state: State, places: object[]) {
+            state.places = places;
+            let tmp = [];
+            for (let i  = 0; i < places.length; i++) {
+                tmp.push(false);
+            }
+            state.isPlace = tmp;
+        },
+        setPlace(state: State, place: object) {
+            state.isPlace[findIndex_((place as any)._id)] = true;
+            state.places[findIndex_((place as any)._id)] = place;
+        }
     },
-    setLanguage(state: State, language: String) {
-      state.language = language
-    },
-    setDark(state: State, dark: Boolean) {
-      state.dark = dark
-    },
-    setInfowindow(state: State, infowindow: Boolean) {
-      state.infowindow = infowindow
-    },
-  },
-  getters: {
-    snackbar: (state: State) => state.snackbar,
-    language: (state: State) => state.language,
-    dark: (state: State) => state.dark,
-    apibase: (state: State) => 'https://api-znaikrai.herokuapp.com',
-    infowindow: (state: State) => state.infowindow
+    getters: {
+        snackbar: (state: State) => state.snackbar,
+        language: (state: State) => state.language,
+        dark: (state: State) => state.dark,
+        apibase: (state: State) => 'https://api-znaikrai.herokuapp.com',
+        infowindow: (state: State) => state.infowindow,
+        places: (state: State) => state.places,
+        place: (state: State) => (id: string) => state.places[findIndex_(id)] as object,
+        isPlace: (state: State) => (id: string) => state.isPlace[findIndex_(id)] as boolean,
 
-  },
-  plugins: [createPersistedState()],
+    },
+    plugins: [createPersistedState()],
 }
 
 export const store = new Vuex.Store<State>(storeOptions)
@@ -78,7 +98,17 @@ export const language = () => getters.language as string | undefined
 export const dark = () => getters.dark as boolean
 export const apibase = () => getters.apibase as string | undefined
 export const infowindow = () => getters.infowindow as boolean
-
+export const places = () => getters.places as object
+export function place(id: string) {
+    return getters.place(id) as object
+}
+export function isPlace(id: string) {
+    return getters.isPlace(id) as boolean
+}
+export function findIndex_(id: string) {
+    // @ts-ignore
+    return getters.places.findIndex(s => s._id === id);
+}
 // Mutations
 /*
 export const setUser = (user: User) => {
@@ -86,17 +116,23 @@ export const setUser = (user: User) => {
 }
 */
 export const setSnackbar = (snackbar: SnackbarState) => {
-  store.commit('setSnackbar', snackbar)
+    store.commit('setSnackbar', snackbar)
 }
 export const hideSnackbar = () => {
-  store.commit('setSnackbar', { ...store.state.snackbar, active: false })
+    store.commit('setSnackbar', {...store.state.snackbar, active: false})
 }
 export const setLanguage = (language: String) => {
-  store.commit('setLanguage', language)
+    store.commit('setLanguage', language)
 }
 export const setDark = (dark: Boolean) => {
-  store.commit('setDark', dark);
+    store.commit('setDark', dark);
 }
 export const setInfowindow = (infowindow: Boolean) => {
-  store.commit('setInfowindow', infowindow);
+    store.commit('setInfowindow', infowindow);
+}
+export const setPlaces = (places: object) => {
+    store.commit('setPlaces', places);
+}
+export const setPlace = (place: object) => {
+    store.commit('setPlace', place);
 }

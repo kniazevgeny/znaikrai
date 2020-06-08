@@ -1,4 +1,5 @@
 <template>
+	<!-- TODO: v-skeleton-->
 	<v-card
 		class="inform"
 		max-width="50vw"

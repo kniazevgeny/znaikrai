@@ -15,10 +15,6 @@
 </template>
 
 <script lang="ts">
-	//TODO
-	//Помещать метки карты в хранилище
-
-
     import Navbar from "./components/Navbar.vue";
     import Snackbar from "./components/Snackbar.vue";
     import Home from "./views/Home.vue";

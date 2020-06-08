@@ -64,6 +64,7 @@ const storeOptions = {
         setPlaces(state: State, places: object[]) {
             state.places = places;
             let tmp = [];
+            state.isPlace = [];
             for (let i  = 0; i < places.length; i++) {
                 tmp.push(false);
             }

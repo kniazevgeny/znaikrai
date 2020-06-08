@@ -564,7 +564,7 @@
                 }
             },
             search() {
-                this.markers1 = this.markers0;
+                this.markers1 = store.places();
                 this.markers1 = this.markers1.filter(
                     tmp => this.searchType.includes(tmp.type)
                 );

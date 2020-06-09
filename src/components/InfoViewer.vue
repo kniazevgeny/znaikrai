@@ -90,20 +90,17 @@
 											<v-divider></v-divider>
 										</v-flex>
 									</v-layout>
-
 								</v-row>
-								<v-row cols="12">
 
+								<v-row cols="12" v-if="loading">
 									<v-layout style="width: 100%;" wrap v-for="j in 4" :key="j">
 										<v-flex xs6 class="info-table-name">
 											<v-skeleton-loader
-												v-if="loading"
 												type="card-heading"
 											></v-skeleton-loader>
 										</v-flex>
 										<v-flex xs6 class="info-table-value">
 											<v-skeleton-loader
-												v-if="loading"
 												type="list-item-two-line"
 											></v-skeleton-loader>
 										</v-flex>
@@ -113,15 +110,16 @@
 								</v-row>
 							</div>
 						</v-window-item>
+
 						<v-window-item>
-							<v-layout v-for="(proof, i) in proofs" wrap style="margin-top: 10px">
+							<v-layout v-for="(proof) in proofs" wrap style="margin-top: 10px">
 								<!--h4>{{proof.title}}</h4-->
 								<v-layout>
 									<div class="stats-digit"><p style="align-items: center; margin-left: 5px;">
 										<b>{{proof.time}}:</b>
 										<br>
 										{{proof.text}}</p>
-									<v-divider style="width: 100%;"></v-divider>
+										<v-divider style="width: 100%;"></v-divider>
 									</div>
 								</v-layout>
 								<br>
@@ -144,7 +142,6 @@
 <script lang="ts">
     import Vue from 'vue';
     import * as store from "../plugins/store";
-    //import BarChart from '../components/LinearCh'
     import ViolationChart from "@/components/ViolationChart.vue"
     import axios from "axios";
     import {Component, Prop, Watch} from "vue-property-decorator";
@@ -202,7 +199,7 @@
                             if ( value == "additional_information" ) {
                                 this.proofs.push({text: val[value], time: val["time_of_offence"]});
                             }
-                            console.log(value);
+                            //console.log(value);
                             this.maxViolations = v.get(value).counter > this.maxViolations ? v.get(value).counter : this.maxViolations;
                         }
                     });
@@ -251,7 +248,6 @@
             this.proofs = [];
             this.checkPlace();
         }
-
     }
 </script>
 

@@ -24,7 +24,7 @@ export const messages = {
             corruption_from_employees: "Коррупция",
             violations_of_medical_care: "Оказание медецинской помощи",
             violations_of_food: "Питанием",
-            violations_of_clothes: "Одеждой",
+            violations_of_clothes: "Одежда",
             labor_slavery: "Трудовое рабство",
             can_prisoners_submit_complaints: "Возможность направлять жалобы",
             visits_with_relatives: "Предоставление свиданий",

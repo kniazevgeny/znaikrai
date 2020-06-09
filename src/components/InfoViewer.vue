@@ -135,6 +135,7 @@
 
         checkViolations() {
             let _v = (this.info as any).violations; //raw data
+		        this.violations = new Map();
             let v = this.violations;
             console.log(_v);
             if ( _v != undefined ) {

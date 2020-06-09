@@ -109,7 +109,6 @@
         activeBtn: number = 1;
         info: Array<any> = [];
         violations = new Map();
-        violationt: Array<any> = [];
         maxViolations: number = 0;
         loading = true;
 
@@ -151,11 +150,9 @@
                                 });
                             else v.set(value, {counter: 1, comments: [val[value]]});
                             //console.log(val[value]);
-                            this.violationt.push(value);
                             this.maxViolations = v.get(value).counter > this.maxViolations ? v.get(value).counter : this.maxViolations;
                         }
                     });
-                    console.log(this.violationt);
                 })
             }
             console.log(v);

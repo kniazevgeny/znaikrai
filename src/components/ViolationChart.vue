@@ -41,10 +41,10 @@
                 this.color = "#1F870E"
             } else if ( this.count <= 5 ) {
                 this.color = "#FFB800"
-            } else {
+            } else if ( this.count > 5 ) {
                 this.color = "#D50000"
-            };
-            console.log(this.value, this.color);
+            }
+            //console.log(this.value, this.color, this.count);
             if ( this.value > 100 ) this.value = 100;
         }
     }

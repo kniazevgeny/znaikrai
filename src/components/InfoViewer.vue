@@ -46,10 +46,18 @@
 					</v-layout>
 					<v-window v-model="activeBtn">
 						<v-window-item>
-							<violationChart v-if="violations.size && $t('violation_types.' + violation[0]).toString() !== ('violation_types.' + violation[0])" v-for="(violation, i) in violations" :key="i"
-							                :title="$t('violation_types.' + violation[0])" :comments="violation[1].comments"
-							                :count="violation[1].counter"></violationChart>
-							<p v-if="!violations.size">Нарушения не зафиксированы</p>
+							<violationChart
+								v-if="violations.size && $t('violation_types.' + violation[0]).toString() !== ('violation_types.' + violation[0])"
+								v-for="(violation, i) in violations" :key="i"
+								:title="$t('violation_types.' + violation[0])" :comments="violation[1].comments"
+								:count="violation[1].counter"></violationChart>
+							<p v-if="!loading && !violations.size">Нарушения не зафиксированы</p>
+							<v-skeleton-loader
+								v-if="loading"
+								type="article"
+								v-for="j in 4"
+								:key="j"
+							></v-skeleton-loader>
 						</v-window-item>
 						<v-window-item>
 							<div class="text--primary" style="color:#000!important; width: 90%; margin-left: 3%; padding-top: 30px">
@@ -79,10 +87,49 @@
 									</v-layout>
 
 								</v-row>
+								<v-row cols="12">
+
+									<v-layout style="width: 100%;" wrap v-for="j in 8" :key="j">
+										<v-flex xs6 class="info-table-name">
+											<v-skeleton-loader
+												v-if="loading"
+												type="card-heading"
+											></v-skeleton-loader>
+										</v-flex>
+										<v-flex xs6 class="info-table-value">
+											<v-skeleton-loader
+												v-if="loading"
+												type="list-item-two-line"
+											></v-skeleton-loader>
+										</v-flex>
+										<br>
+
+									</v-layout>
+								</v-row>
 							</div>
 						</v-window-item>
 						<v-window-item>
-							Скоро появятся
+							<v-layout v-for="(proof, i) in proofs" wrap style="margin-top: 0px">
+								<!--h4>{{proof.title}}</h4-->
+								<v-layout style="width: 100%;">
+									<div class="stats-digit"><p style="align-items: center">
+										{{proof}}</p></div>
+								</v-layout>
+								<br>
+								<p style="width: 100%;">
+									<!--span style="margin-bottom: 20px;" v-for="(comment, j) in comments" :key="j">
+										<span style="">{{j + 1}}: {{comment}}</span>
+										<br>
+									</span-->
+									<v-divider style="width: 100%;"></v-divider>
+								</p>
+							</v-layout>
+							<v-skeleton-loader
+								v-if="loading"
+								type="paragraph"
+								v-for="j in 4"
+								:key="j"
+							></v-skeleton-loader>
 						</v-window-item>
 					</v-window>
 				</v-card-text>
@@ -109,6 +156,7 @@
 
         activeBtn: number = 1;
         info: Array<any> = [];
+        proofs: Array<any> = [];
         violations = new Map();
         maxViolations: number = 0;
         loading = true;
@@ -136,27 +184,31 @@
 
         checkViolations() {
             let _v = (this.info as any).violations; //raw data
-		        this.violations = new Map();
+            this.violations = new Map();
             let v = this.violations;
             if ( _v != undefined ) {
                 _v.forEach((val) => {
                     Object.keys(val).forEach(value => {
                         //console.log(value, typeof(val[value]));
                         if ( val[value] != undefined && typeof (val[value]) == "string"
-		                        && val[value] != "" && val[value].toLowerCase().slice(0, 2) != "не" ) {
+                            && val[value] != "" && val[value].toLowerCase().slice(0, 2) != "не" ) {
                             if ( v.get(value) != undefined )
                                 v.set(value, {
                                     counter: v.get(value).counter + 1,
                                     comments: v.get(value).comments.concat(val[value])
                                 });
                             else v.set(value, {counter: 1, comments: [val[value]]});
-                            //console.log(val[value]);
+                            if ( value == "additional_information" ) {
+                                this.proofs.push(val[value]);
+                            }
+                            console.log(value);
                             this.maxViolations = v.get(value).counter > this.maxViolations ? v.get(value).counter : this.maxViolations;
                         }
                     });
                 })
             }
             console.log(v);
+            console.log(this.proofs);
         }
 
         checkPlace() {
@@ -169,6 +221,7 @@
                     // @ts-ignore
                     this.info = store.place((this._info as any)._id);
                     this.checkViolations();
+                    this.loading = false;
                 } else
                     axios.get(store.apibase() + '/places/' + (this._info as any)._id).then(response => {
                         console.log(response.data.place);
@@ -182,6 +235,7 @@
                         this.deleteEmpty();
                         store.setPlace(resp);
                         this.checkViolations();
+                        this.loading = false;
                     });
             console.log(this.$t('infoViewer.type').toString() !== ('infoViewer.ty'));
         }

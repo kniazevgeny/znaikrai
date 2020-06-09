@@ -46,45 +46,9 @@
 					</v-layout>
 					<v-window v-model="activeBtn">
 						<v-window-item>
-							<v-layout wrap style="padding-top: 30px">
-								<h4>Физическое воздействие (ФСИН)</h4>
-								<v-layout style="width: 100%;">
-									<div class="stats-digit" style="background-color: #D50000;"><p style="align-items: center">5</p></div>
-									<v-progress-linear background-color="white" color="#D50000" value="65"
-									                   height="20"></v-progress-linear>
-								</v-layout>
-								<br>
-								<p>
-									Нахождение в неотапливаемом помещении без теплой одежды в холодное время года
-								</p>
-							</v-layout>
-							<v-divider></v-divider>
-							<v-layout wrap style="padding-top: 20px">
-								<h4>Физическое воздействие (ФСИН)</h4>
-								<v-layout style="width: 100%;">
-									<div class="stats-digit" style="background-color: #FFB800;"><p style="align-items: center">3</p></div>
-									<v-progress-linear background-color="white" color="#FFB800" value="35"
-									                   height="20"></v-progress-linear>
-								</v-layout>
-								<br>
-								<p>
-									Нахождение в неотапливаемом помещении без теплой одежды в холодное время года
-								</p>
-							</v-layout>
-							<v-divider></v-divider>
-							<v-layout wrap style="padding-top: 20px">
-								<h4>Физическое воздействие (ФСИН)</h4>
-								<v-layout style="width: 100%;">
-									<div class="stats-digit" style="background-color: #1F870E;"><p style="align-items: center">0</p></div>
-									<v-progress-linear background-color="white" color="#1F870E" value="1"
-									                   height="20"></v-progress-linear>
-								</v-layout>
-								<br>
-								<p>
-									Статистика пока не сформирована из табличных значений, поэтому данные везде одинаковые
-								</p>
-							</v-layout>
-
+							<violationChart v-if="violations.size && $t('violation_types.' + violation[0]).toString() !== ('violation_types.' + violation[0])" v-for="(violation, i) in violations" :key="i"
+							                :title="$t('violation_types.' + violation[0])" :comments="violation[1].comments"
+							                :count="violation[1].counter"></violationChart>
 						</v-window-item>
 						<v-window-item>
 							<div class="text--primary" style="color:#000!important; width: 90%; margin-left: 3%; padding-top: 30px">
@@ -131,14 +95,11 @@
     import Vue from 'vue';
     import * as store from "../plugins/store";
     //import BarChart from '../components/LinearCh'
+    import ViolationChart from "@/components/ViolationChart.vue"
     import axios from "axios";
     import {Component, Prop, Watch} from "vue-property-decorator";
 
-    /*@Component({
-        components: {
-            BarChart
-        }
-    })*/
+    Vue.component('violationChart', ViolationChart);
 
     @Component
     export default class InfoViewer extends Vue {
@@ -147,6 +108,9 @@
 
         activeBtn: number = 1;
         info: Array<any> = [];
+        violations = new Map();
+        violationt: Array<any> = [];
+        maxViolations: number = 0;
         loading = true;
 
         //getWord()
@@ -170,28 +134,57 @@
             }
         }
 
+        checkViolations() {
+            let _v = (this.info as any).violations; //raw data
+            let v = this.violations;
+            console.log(_v);
+            if ( _v != undefined ) {
+                _v.forEach((val) => {
+                    Object.keys(val).forEach(value => {
+                        //console.log(value, typeof(val[value]));
+                        if ( val[value] != undefined && typeof (val[value]) == "string"
+		                        && val[value] != "" && val[value].toLowerCase().slice(0, 2) != "не" ) {
+                            if ( v.get(value) != undefined )
+                                v.set(value, {
+                                    counter: v.get(value).counter + 1,
+                                    comments: v.get(value).comments.concat(val[value])
+                                });
+                            else v.set(value, {counter: 1, comments: [val[value]]});
+                            //console.log(val[value]);
+                            this.violationt.push(value);
+                            this.maxViolations = v.get(value).counter > this.maxViolations ? v.get(value).counter : this.maxViolations;
+                        }
+                    });
+                    console.log(this.violationt);
+                })
+            }
+            console.log(v);
+            console.log(this.maxViolations);
+        }
+
         checkPlace() {
             let id = (this._info as any)._id;
             // console.log(id);
             // console.log(store.isPlace((this._info as any)._id));
             if ( (this._info as any) !== undefined && (this._info as any)._id !== undefined )
-                // if it's in the storage
-                if ( store.isPlace(id)) {
+            // if it's in the storage
+                if ( store.isPlace(id) ) {
                     // @ts-ignore
                     this.info = store.place((this._info as any)._id);
-                }
-                else
+                    this.checkViolations();
+                } else
                     axios.get(store.apibase() + '/places/' + (this._info as any)._id).then(response => {
                         console.log(response.data.place);
                         let resp = response.data.place;
                         resp.name = resp.name.slice(resp.name.indexOf("«") + 1, resp.name.indexOf("»"));
                         // removes space after №
-                        if (resp.name.indexOf("№") !== -1)
+                        if ( resp.name.indexOf("№") !== -1 )
                             resp.name = resp.name.slice(0, resp.name.indexOf("№") + 1) + resp.name.slice(resp.name.indexOf("№") + 2, resp.name.length);
 
                         this.info = resp;
                         this.deleteEmpty();
                         store.setPlace(resp);
+                        this.checkViolations();
                     });
             console.log(this.$t('infoViewer.type').toString() !== ('infoViewer.ty'));
         }
@@ -292,26 +285,6 @@
 		line-height: 150%;
 		/* or 21px */
 		color: #070809;
-	}
-
-	.stats-digit {
-		width: 29px;
-		height: 20px;
-		color: #fff;
-		font-family: 'Roboto';
-		font-style: normal;
-		font-weight: 500;
-		font-size: 16px;
-		line-height: 150%;
-		margin-right: 20px;
-		display: flex;
-		align-content: flex-start;
-		align-items: flex-start;
-		justify-content: center;
-	}
-
-	.stats-digit > p {
-		margin-top: -1px !important;
 	}
 
 	.v-window-item > .layout > h4 {

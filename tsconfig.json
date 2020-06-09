@@ -16,7 +16,7 @@
     "experimentalDecorators": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "typeRoots": ["./types/*", "./node_modules/@types"],
     "types": ["node"],
     "paths": {

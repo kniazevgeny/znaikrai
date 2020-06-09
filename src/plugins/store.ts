@@ -66,6 +66,7 @@ const storeOptions = {
             let tmp = [];
             state.isPlace = [];
             for (let i  = 0; i < places.length; i++) {
+                // @ts-ignore
                 tmp.push(false);
             }
             state.isPlace = tmp;

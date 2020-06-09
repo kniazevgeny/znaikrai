@@ -13,6 +13,11 @@
 				<v-card-actions style="align-items: start">
 					<v-container md10 xs10 class="inf-name">
 						{{info.name}}
+						<v-skeleton-loader
+							v-if="loading"
+							type="card-heading"
+							min-width="200%"
+						></v-skeleton-loader>
 					</v-container>
 					<v-spacer></v-spacer>
 					<v-btn @click="share" md1 xs1 text depressed text x-large style="margin-top: 20px">
@@ -55,7 +60,7 @@
 							<v-skeleton-loader
 								v-if="loading"
 								type="article"
-								v-for="j in 4"
+								v-for="j in 2"
 								:key="j"
 							></v-skeleton-loader>
 						</v-window-item>
@@ -89,7 +94,7 @@
 								</v-row>
 								<v-row cols="12">
 
-									<v-layout style="width: 100%;" wrap v-for="j in 8" :key="j">
+									<v-layout style="width: 100%;" wrap v-for="j in 4" :key="j">
 										<v-flex xs6 class="info-table-name">
 											<v-skeleton-loader
 												v-if="loading"
@@ -116,14 +121,8 @@
 										{{proof}}</p></div>
 								</v-layout>
 								<br>
-								<p style="width: 100%;">
-									<!--span style="margin-bottom: 20px;" v-for="(comment, j) in comments" :key="j">
-										<span style="">{{j + 1}}: {{comment}}</span>
-										<br>
-									</span-->
-									<v-divider style="width: 100%;"></v-divider>
-								</p>
 							</v-layout>
+							<v-divider style="width: 100%;"></v-divider>
 							<v-skeleton-loader
 								v-if="loading"
 								type="paragraph"
@@ -184,7 +183,6 @@
 
         checkViolations() {
             let _v = (this.info as any).violations; //raw data
-            this.violations = new Map();
             let v = this.violations;
             if ( _v != undefined ) {
                 _v.forEach((val) => {
@@ -243,7 +241,11 @@
         @Watch('_info')
         onInfoChange(value: object) {
             console.log(value);
+            // erase previous information
             this.info = [];
+            this.violations = new Map();
+            this.loading = true;
+            this.proofs = [];
             this.checkPlace();
         }
 

@@ -36,7 +36,7 @@
         color: string = "";
 
         mounted(): void {
-            this.value = this.count * 7;
+            this.value = this.count * 6.5;
             if ( this.count <= 2 ) {
                 this.color = "#1F870E"
             } else if ( this.count <= 5 ) {

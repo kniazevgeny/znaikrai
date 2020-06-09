@@ -114,15 +114,18 @@
 							</div>
 						</v-window-item>
 						<v-window-item>
-							<v-layout v-for="(proof, i) in proofs" wrap style="margin-top: 0px">
+							<v-layout v-for="(proof, i) in proofs" wrap style="margin-top: 10px">
 								<!--h4>{{proof.title}}</h4-->
-								<v-layout style="width: 100%;">
-									<div class="stats-digit"><p style="align-items: center">
-										{{proof}}</p></div>
+								<v-layout>
+									<div class="stats-digit"><p style="align-items: center; margin-left: 5px;">
+										{{proof.time}}:
+										<br>
+										{{proof.text}}</p>
+									<v-divider style="width: 100%;"></v-divider>
+									</div>
 								</v-layout>
 								<br>
 							</v-layout>
-							<v-divider style="width: 100%;"></v-divider>
 							<v-skeleton-loader
 								v-if="loading"
 								type="paragraph"
@@ -155,7 +158,7 @@
 
         activeBtn: number = 1;
         info: Array<any> = [];
-        proofs: Array<any> = [];
+        proofs: Array<object> = [];
         violations = new Map();
         maxViolations: number = 0;
         loading = true;
@@ -197,7 +200,7 @@
                                 });
                             else v.set(value, {counter: 1, comments: [val[value]]});
                             if ( value == "additional_information" ) {
-                                this.proofs.push(val[value]);
+                                this.proofs.push({text: val[value], time: val["time_of_offence"]});
                             }
                             console.log(value);
                             this.maxViolations = v.get(value).counter > this.maxViolations ? v.get(value).counter : this.maxViolations;

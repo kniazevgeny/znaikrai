@@ -42,8 +42,9 @@
 
         getQuestions() {
             axios.get(store.apibase() + "/formQuestions").then((response) => {
-                console.log(response.status);
-                this.questions = response.data;
+                console.log("questions", response.status);
+                //console.log(response.data);
+                this.questions = response.data.questions;
             })
                 .catch(err => {
                     console.log(err);

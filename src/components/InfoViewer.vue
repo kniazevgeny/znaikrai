@@ -118,7 +118,7 @@
 								<!--h4>{{proof.title}}</h4-->
 								<v-layout>
 									<div class="stats-digit"><p style="align-items: center; margin-left: 5px;">
-										{{proof.time}}:
+										<b>{{proof.time}}:</b>
 										<br>
 										{{proof.text}}</p>
 									<v-divider style="width: 100%;"></v-divider>

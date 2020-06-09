@@ -49,6 +49,7 @@
 							<violationChart v-if="violations.size && $t('violation_types.' + violation[0]).toString() !== ('violation_types.' + violation[0])" v-for="(violation, i) in violations" :key="i"
 							                :title="$t('violation_types.' + violation[0])" :comments="violation[1].comments"
 							                :count="violation[1].counter"></violationChart>
+							<p v-if="!violations.size">Нарушения не зафиксированы</p>
 						</v-window-item>
 						<v-window-item>
 							<div class="text--primary" style="color:#000!important; width: 90%; margin-left: 3%; padding-top: 30px">
@@ -137,7 +138,6 @@
             let _v = (this.info as any).violations; //raw data
 		        this.violations = new Map();
             let v = this.violations;
-            console.log(_v);
             if ( _v != undefined ) {
                 _v.forEach((val) => {
                     Object.keys(val).forEach(value => {
@@ -157,7 +157,6 @@
                 })
             }
             console.log(v);
-            console.log(this.maxViolations);
         }
 
         checkPlace() {

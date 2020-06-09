@@ -23,7 +23,7 @@ export const messages = {
             extortions_from_employees: "Вымогательство (заключённые)",
             corruption_from_employees: "Коррупция",
             violations_of_medical_care: "Оказание медецинской помощи",
-            violations_of_food: "Питанием",
+            violations_of_food: "Питание",
             violations_of_clothes: "Одежда",
             labor_slavery: "Трудовое рабство",
             can_prisoners_submit_complaints: "Возможность направлять жалобы",

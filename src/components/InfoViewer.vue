@@ -208,19 +208,17 @@
                         if ( val.info != "" ) {
                             let i = val.info.indexOf("http");
                             console.log(i, val.info);
-                            if ( i != -1 ) {
-                                val.site = val.info.slice(i, -1);
-                                val.info = val.info.slice(0, i);
-                            }
+                            val.site = val.info.slice(i, -1);
+                            val.info = val.info.slice(0, i);
+
                         }
                         console.log(val);
                         if ( val.comment_fsin != "" ) {
                             let j = val.comment_fsin.indexOf("http");
                             console.log(j, val.comment_fsin);
-                            if ( j != -1 ) {
-                                val.sitefsin = val.comment_fsin.slice(j, -1);
-                                val.comment_fsin = val.comment_fsin.slice(0, j);
-                            }
+                            val.sitefsin = val.comment_fsin.slice(j, -1);
+                            val.comment_fsin = val.comment_fsin.slice(0, j);
+
                         }
                         console.log(val);
                         v.push(val);

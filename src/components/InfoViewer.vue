@@ -68,7 +68,7 @@
 							<div class="text--primary" style="color:#000!important; width: 100%; padding-top: 30px">
 
 								<div v-if="info.coronavirus" class="mb-12 ml-1">
-									<h1 style="color: #D50000; font-family: Akrobat">Зафиксированы случаи COVID-19</h1>
+									<h1 style="color: #D50000; font-family: Akrobat">Мониторинг ситуации с коронавирусом</h1>
 									<v-card style="width: 95%;" wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
 										<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px; font-family: 'Roboto';">{{cases.name_of_fsin}},
 											{{cases.region}}, {{cases.date}}</h3>

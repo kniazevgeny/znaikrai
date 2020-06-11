@@ -34,6 +34,7 @@ export const messages = {
             communication_with_lawyer: "Обшение с адвокатом",
             violations_religious_rites_from_employees: "Религиозные обряды",
             additional_information: "",
+            salary_of_prisoners: "Зарплата заключенных"
             //time_of_offence: "Когда происходили нарушения"
         },
         analytics: {

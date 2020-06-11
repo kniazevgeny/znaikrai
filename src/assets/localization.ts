@@ -58,10 +58,22 @@ export const messages = {
                 title: "",
                 subtitle: ""
             },
-            medical_care: {
+            violations_of_medical_care: {
                 title: "Медицинская помощь",
                 subtitle: "Еще одна проблема содержания в местах лишения свободы связана с медицинским обслуживанием. 83% сообщений осужденных связаны с отказом в оказании медицинской помощи. Если же осужденный добивается приема врача, то она либо неэффективна, либо оказывается слишком поздно."
-            }
+            },
+            communication: {
+                title: "Коммуникация",
+                subtitle: ""
+            },
+            violations_of_clothes: {
+                title: "Одежда",
+                subtitle: ""
+            },
+            violations_of_food: {
+                title: "Еда",
+                subtitle: ""
+            },
         }
     },
     en: {

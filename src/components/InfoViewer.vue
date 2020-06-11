@@ -206,14 +206,14 @@
                     _v.forEach((val) => {
                         if ( val.info != "" ) {
                             let i = val.info.indexOf("http");
-                            if ( !i + 1 ) {
+                            if ( !(i + 1) ) {
                                 val.site = val.info.slice(i, -1);
                                 val.info = val.info.slice(0, i);
                             }
                         }
                         if ( val.comment_fsin != "" ) {
                             let i = val.comment_fsin.indexOf("http");
-                            if ( !i + 1 ) {
+                            if ( !(i + 1) ) {
                                 val.sitefsin = val.comment_fsin.slice(i, -1);
                                 val.comment_fsin = val.comment_fsin.slice(0, i);
                             }

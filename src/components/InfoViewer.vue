@@ -67,8 +67,6 @@
 						<v-window-item>
 							<div class="text--primary" style="color:#000!important; width: 90%; margin-left: 3%; padding-top: 30px">
 
-								<v-row cols="12">
-
 									<div v-if="info.coronavirus" style="width: 100%;">
 										<h1 style="color: #D50000; font-family: Akrobat">Зафиксированы случаи COVID-19</h1>
 										<v-card wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
@@ -84,7 +82,9 @@
 											</p>
 										</v-card>
 									</div>
-									<v-layout style="width: 100%;" class="mt-12" wrap v-for="(value, i) in info" :key="i"
+								<v-row cols="12" class="mt-12">
+
+									<v-layout style="width: 100%;" wrap v-for="(value, i) in info" :key="i"
 									          v-if="i !== 'name' && i !== 'warning' && i !== 'coronavirus' && $t('infoViewer.' + i).toString() !== ('infoViewer.' + i)">
 										<!-- Special parameters↑                                                if localisation.ts contains this name↑ -->
 										<v-flex xs4 class="info-table-name">{{ $t('infoViewer.' + i).toString() }}</v-flex>

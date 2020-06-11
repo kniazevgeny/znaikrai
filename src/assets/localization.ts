@@ -36,15 +36,6 @@ export const messages = {
             additional_information: "",
             //time_of_offence: "Когда происходили нарушения"
         },
-        covidViolations: {
-            comment_fsin: "Комментарий ФСИН",
-            date: "",
-            info: "Информация",
-            region: "",
-            name_of_fsin: ""
-
-        }
-
     },
     en: {
         title: 'Frontend template',

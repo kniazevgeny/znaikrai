@@ -66,9 +66,25 @@
 						</v-window-item>
 						<v-window-item>
 							<div class="text--primary" style="color:#000!important; width: 90%; margin-left: 3%; padding-top: 30px">
+
 								<v-row cols="12">
 
-									<v-layout style="width: 100%;" wrap v-for="(value, i) in info" :key="i"
+									<div v-if="info.coronavirus" style="width: 100%;">
+										<h1 style="color: #D50000; font-family: Akrobat">Зафиксированы случаи COVID-19</h1>
+										<v-card wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
+											<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px">{{cases.name_of_fsin}},
+												{{cases.region}}, {{cases.date}}</h3>
+											<p class="mb-2">{{cases.info}}
+												<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
+											</p>
+											<p>Комментарий ФСИН:
+												<span v-if="cases.comment_fsin !== ''">{{cases.comment_fsin}}</span>
+												<a v-if="cases.sitefsin" :href="cases.sitefsin" target="_blank">{{cases.sitefsin}}</a>
+												<span v-else>отсутствует</span>
+											</p>
+										</v-card>
+									</div>
+									<v-layout style="width: 100%;" class="mt-12" wrap v-for="(value, i) in info" :key="i"
 									          v-if="i !== 'name' && i !== 'warning' && i !== 'coronavirus' && $t('infoViewer.' + i).toString() !== ('infoViewer.' + i)">
 										<!-- Special parameters↑                                                if localisation.ts contains this name↑ -->
 										<v-flex xs4 class="info-table-name">{{ $t('infoViewer.' + i).toString() }}</v-flex>
@@ -82,7 +98,7 @@
 												<v-flex class="info-table-value"><a :href="'tel:' + value2">{{ value2 }}</a></v-flex>
 											</v-layout>
 											<v-flex v-if="i === 'website'" xs8>
-												<a :href="value">{{ value }}</a>
+												<a :href="value" target="_blank">{{ value }}</a>
 											</v-flex>
 										</v-flex>
 
@@ -112,7 +128,7 @@
 						</v-window-item>
 
 						<v-window-item>
-							<v-layout v-for="(proof, i) in proofs" :key="i" wrap style="margin-top: 10px">
+							<v-layout v-for="(proof, u) in proofs" :key="u" wrap style="margin-top: 10px">
 								<!--h4>{{proof.title}}</h4-->
 								<v-layout>
 									<div class="stats-digit"><p style="align-items: center; margin-left: 5px;">
@@ -183,14 +199,30 @@
         }
 
         checkCovidViolations() {
-            let _v = (this.info as any).corona_violations; //raw data
-            let v = this.covidViolations;
-            if ( _v != undefined ) {
-                _v.forEach((val) => {
-                    v.push(val);
-                })
+            if ( (this.info as any).coronavirus ) {
+                let _v = (this.info as any).corona_violations; //raw data
+                let v = this.covidViolations;
+                if ( _v != undefined ) {
+                    _v.forEach((val) => {
+                        if ( val.info != "" ) {
+                            let i = val.info.indexOf("http");
+                            if ( !i + 1 ) {
+                                val.site = val.info.slice(i, -1);
+                                val.info = val.info.slice(0, i);
+                            }
+                        }
+                        if ( val.comment_fsin != "" ) {
+                            let i = val.comment_fsin.indexOf("http");
+                            if ( !i + 1 ) {
+                                val.sitefsin = val.comment_fsin.slice(i, -1);
+                                val.comment_fsin = val.comment_fsin.slice(0, i);
+                            }
+                        }
+                        v.push(val);
+                    })
+                }
+                console.log(this.covidViolations);
             }
-            console.log(this.covidViolations);
         }
 
         checkViolations() {
@@ -259,6 +291,7 @@
             this.info = [];
             this.violations = new Map();
             this.loading = true;
+            this.covidViolations = [];
             this.proofs = [];
             this.checkPlace();
         }
@@ -311,7 +344,7 @@
 		align-items: flex-end;
 		text-transform: uppercase;
 		color: #D50000 !important;
-		font-family: 'Akrobat';
+		font-family: 'Akrobat' !important;
 		font-weight: 900;
 	}
 

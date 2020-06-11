@@ -6,15 +6,19 @@ import 'vuetify/dist/vuetify.min.css'
 Vue.use(Vuetify)
 
 export default new Vuetify({
-  icons: {
-    iconfont: 'mdi',
-  },
-  theme: {
-    themes: {
-      light: {
-        grey_e5: '#E5E5E5',
-        red_main: '#D50000'
-      },
+    icons: {
+        iconfont: 'mdi',
     },
-  },
+    theme: {
+        themes: {
+            light: {
+                grey_e5: '#E5E5E5',
+                red_main: '#D50000'
+            },
+            dark: {
+                grey_e5: '#E5E5E5',
+                red_main: '#D50000'
+            }
+        },
+    },
 })

@@ -61,7 +61,8 @@
 							          placeholder="Все"
 							          multiple dense style="z-index: 100; width: 20vw">
 								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-									<span v-if="(searchCovid.indexOf('Да') !== -1 && searchCovid.indexOf('Нет') !== -1) || searchCovid.length === 0">
+									<span
+										v-if="(searchCovid.indexOf('Да') !== -1 && searchCovid.indexOf('Нет') !== -1) || searchCovid.length === 0">
 										<span v-if="index === 0 || searchCovid.length === 0">Все</span>
 									</span>
 									<span v-else>{{ item }}</span>
@@ -95,7 +96,7 @@
 					</v-btn>
 				</v-btn-toggle>
 			</div>
-			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="3"
+			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="4"
 			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;" :options="mapStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
 				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
@@ -595,7 +596,7 @@
         mounted() {
             // load places onload, but load from store on site navigation
             if (store.places().length === 0)
-              this.getPlaces();
+                this.getPlaces();
             else this.processPlaces(store.places())
             // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
         },
@@ -653,7 +654,7 @@
 	}
 
 	.fade1-enter-active, .fade1-leave-active {
-		transition: opacity .4s;
+		transition: opacity .2s;
 	}
 
 	.fade1-enter, .fade1-leave-to {

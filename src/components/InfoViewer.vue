@@ -65,12 +65,12 @@
 							></v-skeleton-loader>
 						</v-window-item>
 						<v-window-item>
-							<div class="text--primary" style="color:#000!important; width: 90%; margin-left: 3%; padding-top: 30px">
+							<div class="text--primary" style="color:#000!important; width: 100%; padding-top: 30px">
 
-								<div v-if="info.coronavirus" style="width: 100%;" class="mb-12">
+								<div v-if="info.coronavirus" class="mb-12 ml-1">
 									<h1 style="color: #D50000; font-family: Akrobat">Зафиксированы случаи COVID-19</h1>
-									<v-card wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
-										<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px">{{cases.name_of_fsin}},
+									<v-card style="width: 95%;" wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
+										<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px; font-family: 'Roboto';">{{cases.name_of_fsin}},
 											{{cases.region}}, {{cases.date}}</h3>
 										<p class="mb-2">{{cases.info}}
 											<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
@@ -80,11 +80,12 @@
 											<span v-else>отсутствует</span>
 											<a v-if="cases.sitefsin" :href="cases.sitefsin" target="_blank">{{cases.sitefsin}}</a>
 										</p>
+										<v-divider></v-divider>
 									</v-card>
 								</div>
-								<v-row cols="12">
+								<v-row cols="12" class="ml-1">
 
-									<v-layout style="width: 100%;" wrap v-for="(value, i) in info" :key="i"
+									<v-layout style="width: 90%;" wrap v-for="(value, i) in info" :key="i"
 									          v-if="i !== 'name' && i !== 'warning' && i !== 'coronavirus' && $t('infoViewer.' + i).toString() !== ('infoViewer.' + i)">
 										<!-- Special parameters↑                                                if localisation.ts contains this name↑ -->
 										<v-flex xs4 class="info-table-name">{{ $t('infoViewer.' + i).toString() }}</v-flex>
@@ -175,7 +176,6 @@
         proofs: Array<object> = [];
         violations = new Map();
         covidViolations: Array<object> = [];
-        maxViolations: number = 0;
         loading = true;
 
         //getWord()
@@ -207,24 +207,19 @@
                     _v.forEach((val) => {
                         if ( val.info != "" ) {
                             let i = val.info.indexOf("http");
-                            console.log(i, val.info);
                             val.site = val.info.slice(i, -1);
                             val.info = val.info.slice(0, i);
 
                         }
-                        console.log(val);
                         if ( val.comment_fsin != "" ) {
                             let j = val.comment_fsin.indexOf("http");
-                            console.log(j, val.comment_fsin);
                             val.sitefsin = val.comment_fsin.slice(j, -1);
                             val.comment_fsin = val.comment_fsin.slice(0, j);
 
                         }
-                        console.log(val);
                         v.push(val);
                     })
                 }
-                console.log(this.covidViolations);
             }
         }
 

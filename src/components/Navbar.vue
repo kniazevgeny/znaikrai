@@ -5,7 +5,7 @@
 			// Title//span {{$t('title')}}
 			v-row(justify="start", style="width: 30%; max-width: 45%; z-index: 1", v-if="!$store.state.infowindow || 0")
 				v-btn(tile text class="navbar-text" :to="'/'" x-large) КАРТА
-				v-btn(tile text class="navbar-text", x-large) АНАЛИТИКА
+				v-btn(tile text class="navbar-text", :to="'analytics'" x-large) АНАЛИТИКА
 				v-btn(tile text class="navbar-text", :to="'stories'" x-large) ИСТОРИИ
 				v-btn(tile text class="navbar-text", :to="'about'" x-large) О ПРОЕКТЕ
 			// Dark mode
@@ -52,7 +52,7 @@
         changeLanguage(locale: string) {
             i18n.locale = locale;
             store.setLanguage(locale);
-            document.title = i18n.t("Znaikrai") as string;
+            document.title = i18n.t("Знай край") as string;
         }
         mounted(): void {
             store.setLanguage('ru');

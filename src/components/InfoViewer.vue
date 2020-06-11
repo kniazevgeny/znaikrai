@@ -67,22 +67,22 @@
 						<v-window-item>
 							<div class="text--primary" style="color:#000!important; width: 90%; margin-left: 3%; padding-top: 30px">
 
-									<div v-if="info.coronavirus" style="width: 100%;">
-										<h1 style="color: #D50000; font-family: Akrobat">Зафиксированы случаи COVID-19</h1>
-										<v-card wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
-											<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px">{{cases.name_of_fsin}},
-												{{cases.region}}, {{cases.date}}</h3>
-											<p class="mb-2">{{cases.info}}
-												<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
-											</p>
-											<p>Комментарий ФСИН:
-												<span v-if="cases.comment_fsin !== ''">{{cases.comment_fsin}}</span>
-												<a v-if="cases.sitefsin" :href="cases.sitefsin" target="_blank">{{cases.sitefsin}}</a>
-												<span v-else>отсутствует</span>
-											</p>
-										</v-card>
-									</div>
-								<v-row cols="12" class="mt-12">
+								<div v-if="info.coronavirus" style="width: 100%;" class="mb-12">
+									<h1 style="color: #D50000; font-family: Akrobat">Зафиксированы случаи COVID-19</h1>
+									<v-card wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
+										<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px">{{cases.name_of_fsin}},
+											{{cases.region}}, {{cases.date}}</h3>
+										<p class="mb-2">{{cases.info}}
+											<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
+										</p>
+										<p>Комментарий ФСИН:
+											<span v-if="cases.comment_fsin !== ''">{{cases.comment_fsin}}</span>
+											<span v-else>отсутствует</span>
+											<a v-if="cases.sitefsin" :href="cases.sitefsin" target="_blank">{{cases.sitefsin}}</a>
+										</p>
+									</v-card>
+								</div>
+								<v-row cols="12">
 
 									<v-layout style="width: 100%;" wrap v-for="(value, i) in info" :key="i"
 									          v-if="i !== 'name' && i !== 'warning' && i !== 'coronavirus' && $t('infoViewer.' + i).toString() !== ('infoViewer.' + i)">
@@ -140,6 +140,7 @@
 								</v-layout>
 								<br>
 							</v-layout>
+							<p v-if="!loading && !proofs.length">Свидетельства отсутствуют</p>
 							<v-skeleton-loader
 								v-if="loading"
 								type="paragraph"
@@ -206,18 +207,22 @@
                     _v.forEach((val) => {
                         if ( val.info != "" ) {
                             let i = val.info.indexOf("http");
-                            if ( !(i + 1) ) {
+                            console.log(i, val.info);
+                            if ( i != -1 ) {
                                 val.site = val.info.slice(i, -1);
                                 val.info = val.info.slice(0, i);
                             }
                         }
+                        console.log(val);
                         if ( val.comment_fsin != "" ) {
-                            let i = val.comment_fsin.indexOf("http");
-                            if ( !(i + 1) ) {
-                                val.sitefsin = val.comment_fsin.slice(i, -1);
-                                val.comment_fsin = val.comment_fsin.slice(0, i);
+                            let j = val.comment_fsin.indexOf("http");
+                            console.log(j, val.comment_fsin);
+                            if ( j != -1 ) {
+                                val.sitefsin = val.comment_fsin.slice(j, -1);
+                                val.comment_fsin = val.comment_fsin.slice(0, j);
                             }
                         }
+                        console.log(val);
                         v.push(val);
                     })
                 }

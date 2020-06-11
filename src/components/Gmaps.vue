@@ -561,6 +561,7 @@
             getIcon(marker) {
                 const maxviolations = 15;
                 // this calls Marker or MarkerCovid.vue with color param
+                if (!marker.number_of_violations && !marker.coronavirus) return getColoredMarkerUrl(["hsl(0, 0%, 50%)"], marker.coronavirus);
                 return getColoredMarkerUrl(this.getColor(marker.number_of_violations / maxviolations), marker.coronavirus);
             },
             checkUrlMarker() {

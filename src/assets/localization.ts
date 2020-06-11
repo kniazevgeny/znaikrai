@@ -35,6 +35,14 @@ export const messages = {
             violations_religious_rites_from_employees: "Религиозные обряды",
             additional_information: "",
             //time_of_offence: "Когда происходили нарушения"
+        },
+        covidViolations: {
+            comment_fsin: "Комментарий ФСИН",
+            date: "",
+            info: "Информация",
+            region: "",
+            name_of_fsin: ""
+
         }
 
     },

@@ -112,7 +112,7 @@
 						</v-window-item>
 
 						<v-window-item>
-							<v-layout v-for="(proof) in proofs" wrap style="margin-top: 10px">
+							<v-layout v-for="(proof, i) in proofs" :key="i" wrap style="margin-top: 10px">
 								<!--h4>{{proof.title}}</h4-->
 								<v-layout>
 									<div class="stats-digit"><p style="align-items: center; margin-left: 5px;">
@@ -157,6 +157,7 @@
         info: Array<any> = [];
         proofs: Array<object> = [];
         violations = new Map();
+        covidViolations: Array<object> = [];
         maxViolations: number = 0;
         loading = true;
 
@@ -181,6 +182,17 @@
             }
         }
 
+        checkCovidViolations() {
+            let _v = (this.info as any).corona_violations; //raw data
+            let v = this.covidViolations;
+            if ( _v != undefined ) {
+                _v.forEach((val) => {
+                    v.push(val);
+                })
+            }
+            console.log(this.covidViolations);
+        }
+
         checkViolations() {
             let _v = (this.info as any).violations; //raw data
             let v = this.violations;
@@ -200,7 +212,7 @@
                                 this.proofs.push({text: val[value], time: val["time_of_offence"]});
                             }
                             //console.log(value);
-                            this.maxViolations = v.get(value).counter > this.maxViolations ? v.get(value).counter : this.maxViolations;
+                            //this.maxViolations = v.get(value).counter > this.maxViolations ? v.get(value).counter : this.maxViolations;
                         }
                     });
                 })
@@ -219,6 +231,7 @@
                     // @ts-ignore
                     this.info = store.place((this._info as any)._id);
                     this.checkViolations();
+                    this.checkCovidViolations();
                     this.loading = false;
                 } else
                     axios.get(store.apibase() + '/places/' + (this._info as any)._id).then(response => {
@@ -233,6 +246,7 @@
                         this.deleteEmpty();
                         store.setPlace(resp);
                         this.checkViolations();
+                        this.checkCovidViolations();
                         this.loading = false;
                     });
             console.log(this.$t('infoViewer.type').toString() !== ('infoViewer.ty'));

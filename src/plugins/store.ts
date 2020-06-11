@@ -87,7 +87,7 @@ const storeOptions = {
         isPlace: (state: State) => (id: string) => state.isPlace[findIndex_(id)] as boolean,
 
     },
-    plugins: [createPersistedState()],
+    //plugins: [createPersistedState()],
 }
 
 export const store = new Vuex.Store<State>(storeOptions)

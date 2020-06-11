@@ -58,10 +58,11 @@
 							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchCovid"
 							          :items="searchCovids"
 							          label="По наличию COVID-19" menu-props="top, offsetY, light"
+							          placeholder="Все"
 							          multiple dense style="z-index: 100; width: 20vw">
 								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-									<span v-if="searchCovid.indexOf('Да') !== -1 && searchCovid.indexOf('Нет') !== -1">
-										<span v-if="index === 0">Все</span>
+									<span v-if="(searchCovid.indexOf('Да') !== -1 && searchCovid.indexOf('Нет') !== -1) || searchCovid.length === 0">
+										<span v-if="index === 0 || searchCovid.length === 0">Все</span>
 									</span>
 									<span v-else>{{ item }}</span>
 								</template>
@@ -115,7 +116,7 @@
 			</v-layout>
 		</transition>
 
-		<!--v-btn @click="getplaces">get</v-btn-->
+		<!--v-btn @click="getPlaces">get</v-btn-->
 
 		<!--a v-if="markers1" v-text="markers1"></a-->
 	</v-layout>
@@ -477,43 +478,37 @@
             InfoViewer: InfoViewer
         },
         methods: {
-            getplaces() {
+            processPlaces(raw) {
+                let sorted = raw.sort(function (a, b) {
+                    let x = a.name.toLowerCase();
+                    let y = b.name.toLowerCase();
+                    return x < y ? -1 : x > y ? 1 : 0;
+                });
+                let set_types = new Set();
+                sorted.forEach(val => {
+                    // removes xyz«INFO»xyz
+                    val.name = val.name.slice(val.name.indexOf("«") + 1, val.name.indexOf("»"));
+                    // removes space after №
+                    if (val.name.indexOf("№") !== -1)
+                        val.name = val.name.slice(0, val.name.indexOf("№") + 1) + val.name.slice(val.name.indexOf("№") + 2, val.name.length);
+                    set_types.add(val.type);
+                    this.markers0.push(val);
+                    this.markers1.push(val);
+                });
+                set_types.forEach(val => this.searchTypes.push(val));
+                set_types.clear();
+                this.searchType = this.searchTypes;
+                this.markers1.forEach(val => this.searchNames.push(val.name));
+                console.log(this.markers1);
+                store.setPlaces(this.markers0);
+                this.checkUrlMarker();
+            },
+            getPlaces() {
                 try {
                     //console.log(store.apibase());
                     axios.get(store.apibase() + '/places/').then(response => {
-                        let sorted = response.data.places.sort(function (a, b) {
-                            let x = a.name.toLowerCase();
-                            let y = b.name.toLowerCase();
-                            return x < y ? -1 : x > y ? 1 : 0;
-                        });
-                        let set_types = new Set();
-                        sorted.forEach(val => {
-                            // removes xyz«INFO»xyz
-                            val.name = val.name.slice(val.name.indexOf("«") + 1, val.name.indexOf("»"));
-                            // removes space after №
-                            if (val.name.indexOf("№") !== -1)
-                                val.name = val.name.slice(0, val.name.indexOf("№") + 1) + val.name.slice(val.name.indexOf("№") + 2, val.name.length);
-                            set_types.add(val.type);
-                            this.markers0.push(val);
-                            this.markers1.push(val);
-                        });
-                        set_types.forEach(val => this.searchTypes.push(val));
-                        set_types.clear();
-                        this.searchType = this.searchTypes;
-                        this.markers1.forEach(val => this.searchNames.push(val.name));
-                        console.log(this.markers1);
-                        store.setPlaces(this.markers0);
-                        /*let mySet = new Set();
-                        this.markers0.forEach(val => {
-                            mySet.add(val.type);
-                        });
-                        let a = [];
-                        mySet.forEach(val => {
-                            a.push(val);
-                        });
-                        console.log(mySet);
-                        console.log(a);*/
-                        this.checkUrlMarker();
+                        this.processPlaces(response.data.places);
+
                     });
                     //this.$router.replace("cabinet");
                 } catch (err) {
@@ -584,7 +579,7 @@
                 this.markers1 = this.markers1.filter(
                     tmp => {
                         if (this.searchCovid.length === 1)
-                            if (this.searchCovid[0] === "Да") return tmp.coronavirus === true ;
+                            if (this.searchCovid[0] === "Да") return tmp.coronavirus === true;
                             else return tmp.coronavirus === false;
                         return true
                     }
@@ -595,23 +590,13 @@
                     this.markers1 = this.markers1.filter(
                         tmp => this.searchName.includes(tmp.name)
                     );
-                //console.log(this.searchName);
-                /*if (this.searchName !== ""){
-		                console.log(this.markers1);
-                    this.markers1 = this.markers1.forEach((val, i) => {
-                      if (val.name !== this.searchName) {console.log(val.name, this.searchName); delete this.markers1[i];}
-                    });
-		                console.log(this.markers1);
-                }*/
-                /*if (this.searchCount !== 'Все'){
-                    this.markers1 = this.markers1.filter(
-                        tmp => tmp.notes !== ''
-                    );
-                }*/
             }
         },
-        created() {
-            this.getplaces();
+        mounted() {
+            // load places onload, but load from store on site navigation
+            if (store.places().length === 0)
+              this.getPlaces();
+            else this.processPlaces(store.places())
             // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
         },
 

@@ -55,10 +55,23 @@
 										</span>
 								</template>
 							</v-select>
-							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchCount"
-							          :items="searchCounts"
-							          label="По количеству отзывов" menu-props="top, offsetY, light"
-							          dense style="z-index: 100; width: 20vw"></v-select>
+							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchCovid"
+							          :items="searchCovids"
+							          label="По наличию COVID-19" menu-props="top, offsetY, light"
+							          multiple dense style="z-index: 100; width: 20vw">
+								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
+									<span v-if="searchCovid.indexOf('Да') !== -1 && searchCovid.indexOf('Нет') !== -1">
+										<span v-if="index === 0">Все</span>
+									</span>
+									<span v-else>{{ item }}</span>
+								</template>
+								<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
+										<span class="search-select-menu">
+											<z-checkbox :checked="attrs.inputValue"></z-checkbox>
+											{{ item }}
+										</span>
+								</template>
+							</v-select>
 						</v-layout>
 					</transition>
 				</v-card>
@@ -447,8 +460,8 @@
             },
             searchTypes: [],
             searchType: [],
-            searchCounts: ['Все', 'Только со свидетельствами'],
-            searchCount: 'Все',
+            searchCovids: ['Да', 'Нет'],
+            searchCovid: ['Да', 'Нет'],
             searchName: "",
             searchNames: [],
             options: false,
@@ -567,6 +580,14 @@
                 this.markers1 = store.places();
                 this.markers1 = this.markers1.filter(
                     tmp => this.searchType.includes(tmp.type)
+                );
+                this.markers1 = this.markers1.filter(
+                    tmp => {
+                        if (this.searchCovid.length === 1)
+                            if (this.searchCovid[0] === "Да") return tmp.coronavirus === true ;
+                            else return tmp.coronavirus === false;
+                        return true
+                    }
                 );
                 this.searchNames = [];
                 this.markers1.forEach(val => this.searchNames.push(val.name));

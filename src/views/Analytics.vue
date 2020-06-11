@@ -68,8 +68,8 @@
 
         getWidth(val) {
             let max_ = this.totalCountAppeals;
-            if ( val < max_ / 20 ) return 60;
-            if ( val < max_ / 14 ) return 85;
+            if ( val < max_ / 20 ) return 55;
+            if ( val < max_ / 14 ) return 87;
             return 100;
         }
 

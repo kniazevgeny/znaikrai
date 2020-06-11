@@ -595,9 +595,7 @@
         },
         mounted() {
             // load places onload, but load from store on site navigation
-            if (store.places().length === 0)
-                this.getPlaces();
-            else this.processPlaces(store.places())
+            this.getPlaces();
             // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
         },
 

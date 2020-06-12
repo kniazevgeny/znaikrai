@@ -49,7 +49,9 @@ const router = new Router({
 
 router.beforeEach((to, _, next) => {
     //next()
-
+    if ( to.path !== '/' ) {
+        store.setDark(false);
+    }
     if ( to.path != 'home' && store.infowindow() ) {
         store.setInfowindow(false)
     }

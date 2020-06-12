@@ -96,8 +96,18 @@
 					</v-btn>
 				</v-btn-toggle>
 			</div>
+			<div id="themePicker">
+				<v-btn-toggle v-model="mapTheme" mandatory tile active-class="v-btn--disabled">
+					<v-btn @click="window.location.reload(true)">
+						<v-icon>wb_sunny</v-icon>
+					</v-btn>
+					<v-btn>
+						<v-icon style="transform: rotate(-90deg)">brightness_3</v-icon>
+					</v-btn>
+				</v-btn-toggle>
+			</div>
 			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="4"
-			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;" :options="mapStyle">
+			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;" :options="mapTheme === 0 ? mapLightStyle : mapDarkStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
 				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
 				</gmap-info-window>
@@ -169,6 +179,7 @@
         name: "Gmaps",
         data: () => ({
             mapMode: 0,
+            mapTheme: 0,
             place: '',
             infoWindowPos: null,
             infoWinOpenMine: false,
@@ -180,7 +191,48 @@
                 content: '',
                 //optional: offset infowindow so it visually sits nicely on top of our marker
             },
-            mapStyle: {
+		        mapLightStyle: {
+                styles: [
+                    [
+                        {
+                            "featureType": "administrative.land_parcel",
+                            "elementType": "labels",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        },
+                        {
+                            "featureType": "poi.business",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        },
+                        {
+                            "featureType": "poi.park",
+                            "elementType": "labels.text",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        },
+                        {
+                            "featureType": "road.local",
+                            "elementType": "labels",
+                            "stylers": [
+                                {
+                                    "visibility": "off"
+                                }
+                            ]
+                        }
+                    ]
+                ]
+		        },
+            mapDarkStyle: {
                 styles: [
                     {
                         "elementType": "geometry",
@@ -626,6 +678,14 @@
 	#modePicker {
 		position: absolute;
 		bottom: 40px;
+		right: 0;
+		clear: right;
+		z-index: 10;
+		transform: rotate(90deg);
+	}
+	#themePicker {
+		position: absolute;
+		bottom: 160px;
 		right: 0;
 		clear: right;
 		z-index: 10;

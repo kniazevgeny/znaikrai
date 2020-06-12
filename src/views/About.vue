@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-card(:dark='$store.state.dark' style=" background: #E5E5E5" flat)
+	v-card(:dark='$store.state.dark' style=" background: #E5E5E5" text)
 		v-container(style="margin-top: 5rem;")
 			v-row(wrap)
 				span(class="headlinetxt", id="about-headline") ЗНАЙ КРАЙ
@@ -11,7 +11,7 @@
 			v-container(style="margin-top: 100px")
 				v-layout(wrap)
 					a(href="https://zekovnet.ru/help-us/" target="_blank" style="width: 100%; text-decoration: none")
-						v-btn(block tile flat class="navbar-text" outlined large ) Поддержать проект
+						v-btn(block tile text class="navbar-text" outlined large ) Поддержать проект
 					//div(style="width: 25vw")
 							v-select(:items="ways" outlined v-model="current" label="" background-color="grey_e5" color="black" style="" class="about-select")
 					//div(style="width: 6vw; margin-left: 15px")
@@ -21,7 +21,7 @@
 					//div(style="margin-left: 15px")
 							v-btn(tile, flat, color="red_main", style="margin-right: 4%;", class="btn-text", x-large, id="send", elevetion="0") Отправить
 		v-footer(dark padless)
-			v-card(flat tile width="100%").text-center.pa-6
+			v-card(text tile width="100%").text-center.pa-6
 				v-card-text.pt-0 Над проектом работали:
 					p Татьяна Абгаджава, Вита Чикнаева, Семен Новиков, Евгений Князев, Алексей Шевцов
 				v-card-text.pt-0

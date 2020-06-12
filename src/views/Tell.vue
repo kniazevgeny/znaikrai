@@ -9,20 +9,23 @@
 					span(class="subtitle1") Ваше свидетельство поможет пролить свет на происходящее в российских тюрьмах. Мы помогаем людям, чьи права были нарушены. Спасибо, что делаете это вместе с нами.
 				br
 				v-row(style="margin-top: 35px")
+					v-col(v-if="loading" cols='9', style="width: 88%; margin-left: 6vw" class="analyse-loader" v-for="j in 6" :key="j")
+						v-skeleton-loader(type="card-heading")
+						v-skeleton-loader(type="sentences")
 					v-col(cols='9' v-for="(value, i) in questions" :key="i")
-						div(v-if="value.type === 'text'")
+						div(v-if="value.type === 'textfield' || value.type === 'textarea'")
 							span(class="question") {{ value.question }}
 							v-text-field(class="question-textfield" v-if="value.required", label='', v-model='form[value.name]', required, hint='Обязательное поле', persistent-hint, filled)
 							v-text-field(class="question-textfield" v-else, label='', v-model='form[value.name]', filled)
 						div(v-if="value.type === 'choose_one'")
 							span(class="question") {{ value.question }}
 							v-item-group(v-model="form[value.name]" :mandatory="value.required")
-								div(v-for="(n, i) in checkboxes[value.name]" :key="i" )
+								div(v-for="(n, j) in checkboxes[value.name]" :key="j" )
 									v-item(v-slot:default="{ active, toggle }")
 										span(class="question-checkbox" @click="toggle")
 											z-checkbox(:checked="active" style="transform: scale(1.5);" class="ml-1") {{ n }}
 											span(class="ml-6") {{n}}
-								span(v-if="checkboxes[value.name][form[value.name]] === 'Другое'")
+								span(v-if="checkboxes[value.name][form[value.name]] === 'другое'")
 									v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled)
 								span(v-if="value.required" class="caption") Обязательное поле
 				v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent") Отправить
@@ -54,11 +57,12 @@
         checkboxes: object[] = []; //checkbox values
         other: object[] = []; //other values
         form = {};
+        loading = true;
 
 
         setCheckboxes() {
             this.questions.forEach(value => {
-                if ( "text" !== (value as any).type ) {
+                if ( "textfield" !== (value as any).type ) {
                     this.checkboxes[(value as any).name] = (value as any).values;
                     return (value as any).values;
                 }
@@ -72,6 +76,7 @@
                 this.questions = response.data;
                 console.log(this.questions);
                 this.setCheckboxes();
+                this.loading = false;
             })
                 .catch(err => {
                     console.log(err);
@@ -97,7 +102,7 @@
             let ans = true;
             this.questions.forEach(value => {
                 if ( (value as any).required ) {
-                    if ( (value as any).type === 'text' ) {
+                    if ( (value as any).type === 'textfield' ) {
                         //console.log(this.checkField((this.form as any)[(value as any).name]) == false, (value as any).name);
                         if ( this.checkField((this.form as any)[(value as any).name]) == false) ans = false;
                     }
@@ -121,7 +126,7 @@
                     if ( typeof ans == 'number' ) {
                         //convert checkbox answers (0, 1, 2) to Strings (Да, Нет)
                         // @ts-ignore
-                        if ( this.checkboxes[this.questions[i].name][(this.form as any)[this.questions[i].name]] === 'Другое' ) {
+                        if ( this.checkboxes[this.questions[i].name][(this.form as any)[this.questions[i].name]] === 'другое' ) {
                             //if checkbox select is Other, take its value
                             // @ts-ignore
                             b[this.questions[i].name] = this.other[this.questions[i].name];
@@ -229,6 +234,9 @@
 
 		display: flex;
 		align-items: center;
+	}
+	.question-checkbox > span::first-letter{
+		text-transform: uppercase;
 	}
 
 </style>

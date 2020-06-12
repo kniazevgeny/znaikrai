@@ -98,16 +98,17 @@
 			</div>
 			<div id="themePicker">
 				<v-btn-toggle v-model="mapTheme" mandatory tile active-class="v-btn--disabled">
-					<v-btn @click="window.location.reload(true)">
+					<v-btn @click="changeTheme()">
 						<v-icon>wb_sunny</v-icon>
 					</v-btn>
-					<v-btn>
+					<v-btn @click="changeTheme()">
 						<v-icon style="transform: rotate(-90deg)">brightness_3</v-icon>
 					</v-btn>
 				</v-btn-toggle>
 			</div>
 			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="4"
-			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;" :options="mapTheme === 0 ? mapLightStyle : mapDarkStyle">
+			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;"
+			            :options="mapTheme === 0 ? mapLightStyle : mapDarkStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
 				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
 				</gmap-info-window>
@@ -191,7 +192,7 @@
                 content: '',
                 //optional: offset infowindow so it visually sits nicely on top of our marker
             },
-		        mapLightStyle: {
+            mapLightStyle: {
                 styles: [
                     [
                         {
@@ -231,7 +232,7 @@
                         }
                     ]
                 ]
-		        },
+            },
             mapDarkStyle: {
                 styles: [
                     {
@@ -556,6 +557,9 @@
                 store.setPlaces(this.markers0);
                 this.checkUrlMarker();
             },
+            changeTheme() {
+              store.setDark(!this.mapTheme);
+            },
             getPlaces() {
                 try {
                     //console.log(store.apibase());
@@ -649,6 +653,9 @@
         },
         mounted() {
             // load places onload, but load from store on site navigation
+		        this.mapTheme = 1;
+		        this.changeTheme(); //set theme
+		        this.mapTheme = 0;
             this.getPlaces();
             // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
         },
@@ -683,6 +690,7 @@
 		z-index: 10;
 		transform: rotate(90deg);
 	}
+
 	#themePicker {
 		position: absolute;
 		bottom: 160px;

@@ -21,25 +21,19 @@
 							span(class="question") {{ value.question }}
 							v-textarea(class="question-textfield" auto-grow v-if="value.required", label='', v-model='form[value.name]', required, hint='Обязательное поле', persistent-hint, filled)
 							v-textarea(class="question-textfield" auto-grow v-else, label='', v-model='form[value.name]', filled)
-						div(v-if="value.type === 'choose_one'")
+						div(v-if="value.type === 'choose_one' || value.type === 'choose_multiply'")
 							span(class="question") {{ value.question }}
-							v-item-group(v-model="form[value.name]" :mandatory="value.required")
-								div(v-for="(n, j) in checkboxes[value.name]" :key="j" )
+							v-item-group(v-model="form[value.name]" :mandatory="value.required" :multiple="value.type === 'choose_multiply'")
+								div(v-for="(n, j) in checkboxes[value.name]" :key="j")
 									v-item(v-slot:default="{ active, toggle }")
 										span(class="question-checkbox" @click="toggle")
 											z-checkbox(:checked="active" style="transform: scale(1.5);" class="ml-1") {{ n }}
 											span(class="ml-6") {{n}}
-								span(v-if="checkboxes[value.name][form[value.name]] === 'другое'")
+								span(v-show="isOtherChoosed(value.name, value.type === 'choose_multiply')")
 									v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled)
 								span(v-if="value.required" class="caption") Обязательное поле
+
 				v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent") Отправить
-
-		//v-menu(offset-y)
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		template(v-slot:activator='{ on }')
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		 v-btn(text icon color='grey' v-on='on') {{currentLocale.icon}}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		v-list
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																		v-list-item(v-for='locale in locales' @click='changeLanguage(locale.code)' :key="locale.code")
-
 </template>
 
 <script lang="ts">
@@ -63,6 +57,20 @@
         form = {};
         loading = true;
 
+        isOtherChoosed(name, mode) {
+            //only for checkboxes
+            //mode = 0 means there's one available answer
+            if ( !mode ) {
+                return this.checkboxes[name][this.form[name]] === 'другое'
+            } else {
+                let ans = false;
+                if ( this.form[name] === undefined ) return false;
+                this.form[name].forEach(i => {
+                    if ( this.checkboxes[name][i] === "другое" ) ans = true
+                });
+                return ans;
+            }
+        }
 
         setCheckboxes() {
             this.questions.forEach(value => {
@@ -108,7 +116,7 @@
                 if ( (value as any).required ) {
                     if ( (value as any).type === 'textfield' || (value as any).type === 'textarea' ) {
                         //console.log(this.checkField((this.form as any)[(value as any).name]) == false, (value as any).name);
-                        if ( this.checkField((this.form as any)[(value as any).name]) == false) ans = false;
+                        if ( this.checkField((this.form as any)[(value as any).name]) == false ) ans = false;
                     }
                     //checkboxes processing is below
                 }
@@ -127,6 +135,7 @@
                     b[this.questions[i].name] = (this.form as any)[this.questions[i].name] == undefined ? "" : (this.form as any)[this.questions[i].name];
                     // @ts-ignore
                     let ans = b[this.questions[i].name];
+                    console.log(typeof ans);
                     if ( typeof ans == 'number' ) {
                         //convert checkbox answers (0, 1, 2) to Strings (Да, Нет)
                         // @ts-ignore
@@ -134,14 +143,34 @@
                             //if checkbox select is Other, take its value
                             // @ts-ignore
                             b[this.questions[i].name] = this.other[this.questions[i].name];
-                            // @ts-ignore
-                            console.log(b[this.questions[i].name]);
                         }
                         // @ts-ignore
                         else b[this.questions[i].name] = this.checkboxes[this.questions[i].name][(this.form as any)[this.questions[i].name]];
 
+                    } else if ( typeof ans == 'object' ) {
+                        //same as above, but for arrays
+		                    let ans = "";
+                        // @ts-ignore
+                        (this.form as any)[this.questions[i].name].forEach(j => {
+                            // @ts-ignore
+                            if ( this.checkboxes[this.questions[i].name][j] === 'другое' ) {
+                                if (ans == "")
+                                // @ts-ignore
+                                ans = ans.concat(this.other[this.questions[i].name]);
+                                // @ts-ignore
+                                else ans = ans.concat(", " + this.other[this.questions[i].name]);
+                            }
+                            else {
+                                if (ans == "")
+                                // @ts-ignore
+                                ans = ans.concat(this.checkboxes[this.questions[i].name][j]);
+                                // @ts-ignore
+                                else ans = ans.concat(", " + this.checkboxes[this.questions[i].name][j]);
+                            }
+                        });
+                        // @ts-ignore
+                        b[this.questions[i].name] = ans;
                     }
-                    //TODO: checkbox processing
                 }
                 //console.log(b);
                 this.loadingbtn = true;
@@ -190,14 +219,28 @@
 		font-weight: 900;
 		font-style: normal;
 	}
+
 	@media screen and (min-width: 960px) {
-		.headlinetxt { font-size: 7rem; line-height: 6rem; }
+		.headlinetxt {
+			font-size: 7rem;
+			line-height: 6rem;
+		}
 	}
+
 	@media screen and (min-width: 600px) and (max-width: 960px) {
-		.headlinetxt { font-size: 5rem; line-height: 5rem; margin-left: 30px; }
+		.headlinetxt {
+			font-size: 5rem;
+			line-height: 5rem;
+			margin-left: 30px;
+		}
 	}
+
 	@media screen and (max-width: 600px) {
-		.headlinetxt { font-size: 3rem; line-height: 4rem; margin-left: 30px }
+		.headlinetxt {
+			font-size: 3rem;
+			line-height: 4rem;
+			margin-left: 30px
+		}
 	}
 
 	.question {
@@ -235,11 +278,12 @@
 		font-size: 17px;
 		line-height: 200%;
 		/* or 32px */
-
+		user-select: none;
 		display: flex;
 		align-items: center;
 	}
-	.question-checkbox > span::first-letter{
+
+	.question-checkbox > span::first-letter {
 		text-transform: uppercase;
 	}
 

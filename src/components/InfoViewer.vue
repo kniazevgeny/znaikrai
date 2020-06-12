@@ -69,6 +69,8 @@
 
 								<div v-if="info.coronavirus" class="mb-12 ml-1">
 									<h1 style="color: #D50000; font-family: Akrobat">Мониторинг ситуации с коронавирусом</h1>
+									<p style="background: #fac4b7; border-radius: 3px" class="mt-2 mb-2 pa-6">Обращаем внимание, что информация, которая содержится в этом разделе, поступает к нам от родственников заключённых, самих осуждённых, сотрудников ФСИН, защитников или членов ОНК.
+										Эта информация нуждается в дополнительной проверке, однако в связи с информационной непрозрачностью ФСИН и нашего обоснованного недоверия к официальным сообщениям этого ведомства, проверка сведений крайне затруднена.</p>
 									<v-card style="width: 95%;" wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
 										<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px; font-family: 'Roboto';">{{cases.name_of_fsin}},
 											{{cases.region}}, {{cases.date}}</h3>

@@ -39,9 +39,9 @@
         get buttonSize() {
             switch (this.$vuetify.breakpoint.name) {
                 case 'xs': return 'medium';
-                case 'sm': return 'medium';
-                case 'md': return 'medium';
-                case 'lg': return 'large';
+                case 'sm': return 'large';
+                case 'md': return 'large';
+                case 'lg': return 'x-large';
                 case 'xl': return 'x-large'
             }
         }
@@ -120,10 +120,15 @@
 		align-items: center!important;
 	}
 
+	@media screen and (max-width: 1100px) {
+		#letter {top: -10px}
+	}
+	@media screen and (min-width: 1100px) {
+		#letter {top: 0px}
+	}
 	#letter
 	{
 		position:absolute;
-		top: -10px;
 		right: -8px;
 		font-size: 20px;
 		background-color:transparent;

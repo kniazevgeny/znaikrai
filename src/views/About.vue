@@ -10,14 +10,16 @@
 				br
 			v-container(style="margin-top: 100px")
 				v-layout(wrap)
-					div(style="width: 25vw")
-						v-select(:items="ways" outlined v-model="current" label="" background-color="grey_e5" color="black" style="" class="about-select")
-					div(style="width: 6vw; margin-left: 15px")
-						v-text-field(filled, v-model="amount", background-color="gray_e5")
-					div(style="width: 20vw; margin-left: 15px")
-						v-text-field(filled, placeholder="Ваш email", background-color="gray_e5")
-					div(style="margin-left: 15px")
-						v-btn(tile, flat, color="red_main", style="margin-right: 4%;", class="btn-text", x-large, id="send", elevetion="0") Отправить
+					a(href="https://zekovnet.ru/help-us/" target="_blank" style="width: 100%; text-decoration: none")
+						v-btn(block tile flat class="navbar-text" outlined large ) Поддержать проект
+					//div(style="width: 25vw")
+							v-select(:items="ways" outlined v-model="current" label="" background-color="grey_e5" color="black" style="" class="about-select")
+					//div(style="width: 6vw; margin-left: 15px")
+							v-text-field(filled, v-model="amount", background-color="gray_e5")
+					//div(style="width: 20vw; margin-left: 15px")
+							v-text-field(filled, placeholder="Ваш email", background-color="gray_e5")
+					//div(style="margin-left: 15px")
+							v-btn(tile, flat, color="red_main", style="margin-right: 4%;", class="btn-text", x-large, id="send", elevetion="0") Отправить
 		v-footer(absolute dark padless)
 			v-card(flat tile width="100%").text-center.pa-6
 				v-card-text.pt-0
@@ -77,12 +79,13 @@
 		}
 	}
 
-	.v-input__control>.gray_e5{
+	.v-input__control > .gray_e5 {
 		height: 62px;
 		border: 2px solid #000000 !important;
 		box-sizing: border-box !important;
 		border-radius: 1px !important;
 	}
+
 	.about-select > .v-input__control > .select {
 		border: 2px solid #000000 !important;
 		box-sizing: border-box !important;
@@ -117,7 +120,8 @@
 	fieldset {
 		border: none
 	}
-	#send{
+
+	#send {
 		font-family: Akrobat;
 		font-style: normal;
 		font-weight: bold;

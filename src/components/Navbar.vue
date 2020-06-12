@@ -92,7 +92,6 @@
 	}
 	@media screen and (min-width: 1100px) {
 		.navbar-text{ font-size: 1.1rem!important; }
-
 	}
 	@media screen and (max-width: 1100px) {
 		.navbar-text{ font-size: 0.9rem!important; }

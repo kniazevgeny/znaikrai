@@ -20,7 +20,7 @@
 							v-text-field(filled, placeholder="Ваш email", background-color="gray_e5")
 					//div(style="margin-left: 15px")
 							v-btn(tile, flat, color="red_main", style="margin-right: 4%;", class="btn-text", x-large, id="send", elevetion="0") Отправить
-		v-footer(absolute dark padless)
+		v-footer(dark padless)
 			v-card(flat tile width="100%").text-center.pa-6
 				v-card-text.pt-0 Над проектом работали:
 					p Татьяна Абгаджава, Вита Чикнаева, Семен Новиков, Евгений Князев, Алексей Шевцов

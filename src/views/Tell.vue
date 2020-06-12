@@ -180,8 +180,15 @@
 		font-family: 'Akrobat' !important;
 		font-weight: 900;
 		font-style: normal;
-		font-size: 7rem !important;
-		line-height: 6rem;
+	}
+	@media screen and (min-width: 960px) {
+		.headlinetxt { font-size: 7rem; line-height: 6rem; }
+	}
+	@media screen and (min-width: 600px) and (max-width: 960px) {
+		.headlinetxt { font-size: 5rem; line-height: 5rem; margin-left: 30px; }
+	}
+	@media screen and (max-width: 600px) {
+		.headlinetxt { font-size: 3rem; line-height: 4rem; margin-left: 30px }
 	}
 
 	.question {

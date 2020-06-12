@@ -13,7 +13,7 @@
 <script>
     export default {
         props: ['checked'],
-        name: "Z-checkbox"
+        name: "Z-checkbox",
     }
 </script>
 

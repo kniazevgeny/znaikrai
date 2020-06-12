@@ -22,12 +22,14 @@
 							v-btn(tile, flat, color="red_main", style="margin-right: 4%;", class="btn-text", x-large, id="send", elevetion="0") Отправить
 		v-footer(absolute dark padless)
 			v-card(flat tile width="100%").text-center.pa-6
+				v-card-text.pt-0 Над проектом работали:
+					p Татьяна Абгаджава, Вита Чикнаева, Семен Новиков, Евгений Князев, Алексей Шевцов
 				v-card-text.pt-0
 					span Данный проект имеет открытый исходный код:
 					br
-					a(href="https://github.com/kniazevgeny/znaikrai/" style="color: #3fcff6") Фронтенд
+					a(href="https://github.com/kniazevgeny/znaikrai/" target="_blank" style="color: #3fcff6") Фронтенд
 					br
-					a(href="https://github.com/semyon-dev/znai-krai" style="color: #3fcff6") Бекенд
+					a(href="https://github.com/semyon-dev/znai-krai" target="_blank" style="color: #3fcff6") Бекенд
 
 </template>
 

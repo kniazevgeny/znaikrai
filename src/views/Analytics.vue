@@ -18,13 +18,13 @@
 			span ---///----///----///----///----//
 			span(style="color: #D50000") ---///--
 		v-layout(v-for="(value, name, i) in analytics" :key='i' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
-			p(class="analyse-headline") {{$t("analytics." + name + ".title")}}
-			span(class="analyse-subtitle mt-4 mb-4") {{$t("analytics." + name + ".subtitle")}}
+			p(class="analyse-headline mt-8") {{$t("analytics." + name + ".title")}}
+			span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
 			div(v-for="(value1, name1) in value")
 				v-layout(v-if="typeof value1 === 'object'" column, class="mt-4")
 					h4(class="ml-0") {{ $t("violation_types." + name1) }}
 					v-layout(v-if="typeof value1 === 'object'" row, class="ml-0", :style="'width:' + getWidth(value1.total_count) + '%'")
-						div(class="stats-digit" style="margin-left: -55px" :style="'background-color:' + getColor(value1.total_count)")
+						div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(value1.total_count)")
 							p(style="align-items: center") {{value1.total_count || value1.total_count_appeals}}
 						v-layout( v-for="(value2, name2, j) in value1", :key="j" column v-if="name2 !== 'total_count' && name2 !== 'total_count_appeals' && value2 > 10" :style="'width:' + value2 / (value1.total_count || value1.total_count_appeals) + '%'")
 							v-progress-linear(
@@ -220,7 +220,7 @@
 		font-weight: 500;
 		font-size: 16px;
 		line-height: 150%;
-		margin-right: 20px;
+		margin-right: 10px;
 		display: flex;
 		align-content: flex-start;
 		align-items: flex-start;

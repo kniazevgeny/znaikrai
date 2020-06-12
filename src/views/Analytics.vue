@@ -1,6 +1,6 @@
 <template lang="pug">
 	v-card(:dark='$store.state.dark' style=" background: #F3F3F3;" flat)
-		v-layout( wrap style="margin-top: 5rem; margin-left: 6vw")
+		v-layout( wrap style="margin-top: 5rem;")
 			v-row(wrap)
 				v-card-title(class="headlinetxt" id="analytics-headline")
 					span(style="color: #D50000") {{totalCount}}
@@ -10,13 +10,20 @@
 					br
 					span  о нарушениях
 
-		v-layout(style="margin-left: 6vw")
-			div(style="width: 45vw")
+		v-layout()
+			div(id="analytics-subtitle")
 				span(class="subtitle1") С 2018 благотворительный фонд «Русь сидящая» проводит мониторинг условий в учреждениях фсин. Сообщения о различных нарушениях присылали как сами осужденные, так и их близкие, адвокаты или журналисты.
 		div(id="analytics-letter" class="mt-8 mb-12")
 			span ---///----///----///----///----//
 			span ---///----///----///----///----//
 			span(style="color: #D50000") ---///--
+		v-layout(v-if="loading" column, style="width: 88%; margin-left: 6vw" class="mt-12 analyse-loader" v-for="i in 3" :key="i")
+			v-skeleton-loader(type="article")
+			v-skeleton-loader(type="sentences@2")
+			v-skeleton-loader(type="card-heading")
+			v-skeleton-loader(type="sentences")
+			v-skeleton-loader(type="card-heading")
+			v-skeleton-loader(type="sentences" class="mb-12")
 		v-layout(v-for="(value, name, i) in analytics" :key='i' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
 			p(class="analyse-headline mt-8") {{$t("analytics." + name + ".title")}}
 			span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
@@ -25,8 +32,8 @@
 					h4(class="ml-0") {{ $t("violation_types." + name1) }}
 					v-layout(v-if="typeof value1 === 'object'" row, class="ml-0", :style="'width:' + getWidth(value1.total_count) + '%'")
 						div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(value1.total_count)")
-							p(style="align-items: center") {{value1.total_count || value1.total_count_appeals}}
-						v-layout( v-for="(value2, name2, j) in value1", :key="j" column v-if="name2 !== 'total_count' && name2 !== 'total_count_appeals' && value2 > 10" :style="'width:' + value2 / (value1.total_count || value1.total_count_appeals) + '%'")
+							p(style="align-items: center") {{value1.total_count }}
+						v-layout( v-for="(value2, name2, j) in value1", :key="j" column v-if="name2 !== 'total_count' && name2 !== 'total_count_appeals' && value2 > 10" :style="'width:' + value2 / (value1.total_count) + '%'")
 							v-progress-linear(
 							value="99"
 							buffer-value="99"
@@ -65,6 +72,7 @@
         skill: number = 90;
         totalCount: number = 371;
         totalCountAppeals: number = 0;
+        loading = true;
 
         getWidth(val) {
             let max_ = this.totalCountAppeals;
@@ -75,8 +83,8 @@
 
         getColor(val) {
             let max_ = this.totalCountAppeals;
-            if ( val < max_ / 20 ) return "#1F870E";
-            if ( val < max_ / 14 ) return "#FFB800";
+            if ( val < max_ / 20 ) return "#e9e706";
+            if ( val < max_ / 14 ) return "#ff9e00";
             else return "#D50000";
         }
 
@@ -84,14 +92,9 @@
             axios.get(store.apibase() + '/analytics').then(response => {
                 console.log(response.data.violations_stats);
                 this.analytics = response.data.violations_stats;
-                let a = this.analytics;
-                /*Object.keys(a).forEach(value => {
-                    Object.values(a[value]).forEach(val => {
-                      console.log(val)
-                    })
-                });*/
                 this.totalCount = response.data.total_count_appeals;
                 this.totalCountAppeals = response.data.violations_stats.total_count;
+                this.loading = false;
             })
         };
 
@@ -150,13 +153,37 @@
 		font-family: 'Akrobat';
 		font-style: normal;
 		font-weight: 900;
-		font-size: 60px !important;
-		line-height: 60px !important;
 		display: flex;
 		align-items: flex-end;
 		text-transform: uppercase;
-		width: 40vw;
+	}
 
+	@media screen and (min-width: 1100px) {
+		#analytics-headline {
+			width: 40vw;
+			font-size: 60px !important;
+			line-height: 60px !important;
+			margin-left: 6vw;
+		}
+
+		#analytics-subtitle {
+			width: 45vw;
+			margin-left: 6vw;
+		}
+	}
+
+	@media screen and (max-width: 1100px) {
+		#analytics-headline {
+			width: 90vw;
+			font-size: 40px !important;
+			line-height: 40px !important;
+			margin-left: 40px;
+		}
+
+		#analytics-subtitle {
+			width: 75vw;
+			margin-left: 45px;
+		}
 	}
 
 	.analyse-headline {
@@ -211,6 +238,7 @@
 
 		color: #000000;
 	}
+
 	.stats-digit {
 		width: 35px;
 		height: 25px;
@@ -230,5 +258,9 @@
 
 	.stats-digit > p {
 		margin-top: -1px !important;
+	}
+
+	.analyse-loader > .v-skeleton-loader > .v-skeleton-loader__bone {
+		background: transparent !important;
 	}
 </style>

@@ -29,7 +29,7 @@
 					br
 					a(href="https://github.com/kniazevgeny/znaikrai/" target="_blank" style="color: #3fcff6") Фронтенд
 					br
-					a(href="https://github.com/semyon-dev/znai-krai" target="_blank" style="color: #3fcff6") Бекенд
+					a(href="https://github.com/semyon-dev/znai-krai" target="_blank" style="color: #3fcff6") Бэкенд
 
 </template>
 

@@ -30,9 +30,11 @@ export const messages = {
             visits_with_relatives: "Предоставление свиданий",
             violations_staging: "Этапирование заключенных",
             violations_penalties_related_to_placement: "Применение мер взыскания (карцер, ШИЗО, ПКТ...)",
+            violations_with_placement_in_punishment_cell: "Применение мер взыскания (карцер, ШИЗО, ПКТ...)",
             communication_with_relatives: "Общение с родственниками",
             communication_with_lawyer: "Обшение с адвокатом",
-            violations_religious_rites_from_employees: "Религиозные обряды",
+            violations_religious_rites_from_employees: "Религиозные обряды (ФСИН)",
+            violations_religious_rites_from_prisoners: "Религиозные обряды (заключённые)",
             additional_information: "",
             salary_of_prisoners: "Зарплата заключенных"
             //time_of_offence: "Когда происходили нарушения"
@@ -74,6 +76,18 @@ export const messages = {
                 title: "Еда",
                 subtitle: ""
             },
+            violations_staging: {
+                title: "Этапирование заключенных",
+                subtitle: ""
+            },
+            religion: {
+                title: "Религия",
+                subtitle: ""
+            },
+            violations_with_placement_in_punishment_cell: {
+                title: "Применение мер взыскания",
+                subtitle: ""
+            }
         }
     },
     en: {

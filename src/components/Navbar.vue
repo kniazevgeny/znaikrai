@@ -4,19 +4,19 @@
 		:dark='$store.state.dark', prominent, :style=`$store.state.infowindow || 0 ? "width: 45%; right: 6.85%; left: auto": "width: 90%; margin-left: 5%;"`)
 			// Title//span {{$t('title')}}
 			v-row(justify="start", style="width: 30%; max-width: 45%; z-index: 1", v-if="!$store.state.infowindow || 0")
-				v-btn(tile text class="navbar-text" :to="'/'" x-large) КАРТА
-				v-btn(tile text class="navbar-text", :to="'analytics'" x-large) АНАЛИТИКА
-				v-btn(tile text class="navbar-text", :to="'stories'" x-large) ИСТОРИИ
-				v-btn(tile text class="navbar-text", :to="'about'" x-large) О ПРОЕКТЕ
+				v-btn(tile text class="navbar-text" :to="'/'" :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'") КАРТА
+				v-btn(tile text class="navbar-text", :to="'analytics'" :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'") АНАЛИТИКА
+				v-btn(tile text class="navbar-text", :to="'stories'"  :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'") ИСТОРИИ
+				v-btn(tile text class="navbar-text", :to="'about'"  :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'") О ПРОЕКТЕ
 			// Dark mode
 			// v-btn(text icon color='grey' @click='toggleMode')
 				v-icon(small) brightness_2
 			// Language picker//v-row(justify='center')
 			v-spacer
-			v-btn(tile, outlined, style="margin-right: 4%; padding: 0 16px!important", class="navbar-text", :to="'/tell'", x-large, id="tellus") СООБЩИТЬ О НАРУШЕНИИ
+			v-btn(tile, outlined, style="margin-right: 4%; padding: 0 16px!important", class="navbar-text", :to="'/tell'",  :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'", id="tellus") СООБЩИТЬ О НАРУШЕНИИ
 				div(id="letter", :style='$store.state.dark ? "color: white" : "color: black"') ///      ///      ///
 		div(:style=`$router.currentRoute.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 15px; left: 0; right: 0; margin: auto; position: absolute')
-			img(src="../assets/logo.svg", width=70, height=70, :style='$store.state.dark ? "filter: none" : "filter: invert()"' style="position: absolute; top: 100px; bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;")
+			img(src="../assets/logo.svg", width=70, height=70, :style='$store.state.dark ? "filter: none" : "filter: invert()"' id="navbar-logo" style="position: absolute; bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;")
 
 
 </template>
@@ -34,6 +34,16 @@
 
         get locales() {
             return [{icon: "🇺🇸", code: "en"}, {icon: "🇷🇺", code: "ru"}];
+        }
+
+        get buttonSize() {
+            switch (this.$vuetify.breakpoint.name) {
+                case 'xs': return 'medium';
+                case 'sm': return 'medium';
+                case 'md': return 'medium';
+                case 'lg': return 'large';
+                case 'xl': return 'x-large'
+            }
         }
 
         get currentLocale() {
@@ -80,18 +90,30 @@
 		font-weight: 700!important;
 		font-size: 1.1rem!important;
 	}
+	@media screen and (min-width: 1100px) {
+		.navbar-text{ font-size: 1.1rem!important; }
 
+	}
+	@media screen and (max-width: 1100px) {
+		.navbar-text{ font-size: 0.9rem!important; }
+	}
+	@media screen and (max-width: 620px) {
+		#navbar-logo {top: 310px}
+	}
+	@media screen and (min-width: 620px) {
+		#navbar-logo {top: 100px}
+	}
 	.navbar-text.v-btn--active:not(#tellus):not(.map-underline) > .v-btn__content {
 	  color: #D50000!important;
 	}
 
-	.v-btn:before{
+	.navbar-text.v-btn:before{
 		background-color: transparent!important;
 	}
-	.v-btn:not(.v-btn--round).v-size--default {
+	.navbar-text.v-btn:not(.v-btn--round).v-size--default {
 		padding: 0 8px!important;
 	}
-	.v-btn--outlined {
+	.navbar-text.v-btn--outlined {
 		border: 1.5px solid!important;
 	}
 
@@ -102,7 +124,7 @@
 	#letter
 	{
 		position:absolute;
-		top: 0;
+		top: -10px;
 		right: -8px;
 		font-size: 20px;
 		background-color:transparent;

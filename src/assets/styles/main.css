@@ -1,80 +1,52 @@
-.search-select > .v-input__control > .v-input__slot {
-    background-color: #000;
+/* SELECTS */
+.select > .v-input__control > .v-input__slot > fieldset{
+    border: 2px solid #000000;
+    box-sizing: border-box;
+    border-radius: 1px;
 }
-.search-select > .v-input__control > .v-input__slot > .v-select__slot > label {
-    font-family: Roboto;
-    margin-top: 10px;
-    margin-left: 15px;
+.select > .v-input__control > .v-input__slot > .v-select__slot{
+    font-family: 'Roboto';
     font-style: normal;
-    font-weight: 300;
+    font-weight: bold;
     font-size: 15px;
-    line-height: 15px;
+    line-height: 17px;
     display: flex;
     align-items: center;
-    color: #585858;
-}
-.search-select > .v-input__control > .v-input__slot > .v-select__slot > .v-select__selections {
-    font-family: Roboto;
-    padding-left: 15px;
-    margin-top: 10px;
+    margin-left: 10px;
 
-    font-style: normal;
-    font-weight: 300;
-    font-size: 17px;
-    line-height: 19px;
-    display: flex;
-    align-items: center;
+    color: #000000;
 }
-
-.search-autocomplete > .v-input__control > .v-input__slot {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 19px;
-    display: flex;
-    align-items: center;
-    border: none!important;
+.v-application  > .v-menu__content {
+    background: #F3F3F3;
+    border: 2px solid #000000;
+    box-sizing: border-box;
+    border-radius: 1px;
+    margin-top: -2px;
 }
-.search-select > .v-input__control > .v-input__slot::after{
-    color: #D50000!important;
-    border-width: 1.5px!important;
+.v-application  > .v-menu__content > .v-list {
+    background: #F3F3F3!important;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 1px;
 }
-.search-autocomplete > .v-input__control > .v-input__slot::after {
-    display: none!important;
+.v-application  > .v-menu__content > .v-list .v-list-item {
+    min-height: 40px!important;
+    height: 40px!important;
 }
-.search-autocomplete > .v-input__control > .v-input__slot::before {
-    display: none!important;
-    border: none!important;
+.v-application  > .v-menu__content > .v-list .v-list-item:first-letter {
+    text-transform: uppercase!important;
 }
-.search-select > .v-input__control > .v-input__slot::before {
-    display: none!important;
+.v-application  > .v-menu__content > .v-list .v-list-item.primary--text.v-list-item--active.v-list-item--link {
+    font-weight: bold;
+    color: #000!important;
+    caret-color: #F3F3F3!important;
 }
-.search-icon {
-    padding: 15px!important;
-    border: none!important;
+.v-application  > .v-menu__content > .v-list .v-list-item.primary--text.v-list-item--active.v-list-item--link:before{
+    opacity: 0;
 }
-.v-menu__content.v-autocomplete__content > .v-list > .v-list-item {
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 19px;
-    display: flex;
-    align-items: center;
-    caret-color: #000!important;
+.v-select__selection:first-letter{
+    text-transform: uppercase!important;
 }
-.v-menu__content > .v-list > .v-list-item--active {
-    background-color: #000;
-    caret-color: #000!important;
-    color: #fff!important;
-}
-.v-menu__content > .v-list > .v-list-item:before{
-    opacity: 0!important;
-}
-.v-autocomplete__content.v-menu__content {
-    margin-left: -5vw;
-}
-.v-list-item--active > .search-select-menu {
-    color: #fff;
+.question-select:first-letter {
+    text-transform: uppercase!important;
 }

@@ -49,6 +49,7 @@ const router = new Router({
 
 router.beforeEach((to, _, next) => {
     //next()
+    console.log(router.currentRoute.path)
     if ( to.path !== '/' ) {
         store.setDark(false);
     }

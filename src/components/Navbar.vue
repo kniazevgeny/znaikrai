@@ -1,6 +1,6 @@
 <template lang="pug">
 	nav(style="background-color: transparent; z-index: 100")
-		v-app-bar(flat, justify="space-between",
+		v-app-bar(flat :app='$route.path === "/"', justify="space-between",
 		:dark='$store.state.dark', prominent, :style=`$store.state.infowindow || 0 ? "width: 45%; right: 6.85%; left: auto": "width: 90%; margin-left: 5%;"`)
 			// Title//span {{$t('title')}}
 			v-row(justify="start", style="width: 30%; max-width: 45%; z-index: 1", v-if="!$store.state.infowindow || 0")
@@ -15,7 +15,7 @@
 			v-spacer
 			v-btn(tile, outlined, style="margin-right: 4%; padding: 0 16px!important", class="navbar-text", :to="'/tell'",  :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'", id="tellus") СООБЩИТЬ О НАРУШЕНИИ
 				div(id="letter", :style='$store.state.dark ? "color: white" : "color: black"') ///      ///      ///
-		div(:style=`$router.currentRoute.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 15px; left: 0; right: 0; margin: auto; position: absolute')
+		div(:style=`$route.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 15px; left: 0; right: 0; margin: auto; position: absolute')
 			img(src="../assets/logo.svg", width=70, height=70, :style='$store.state.dark ? "filter: none" : "filter: invert()"' id="navbar-logo" style="position: absolute; bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;")
 
 
@@ -28,6 +28,7 @@
     import {i18n} from "../plugins/i18n";
     import axios from "axios";
     import * as api from "../utils/api";
+    import router from "@/plugins/router";
 
 	 @Component
     export default class Navbar extends Vue {
@@ -65,6 +66,7 @@
             document.title = i18n.t("Знай край") as string;
         }
         mounted(): void {
+            console.log(router.currentRoute);
             store.setLanguage('ru');
         }
 

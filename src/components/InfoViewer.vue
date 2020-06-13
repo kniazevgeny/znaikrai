@@ -1,5 +1,4 @@
 <template>
-	<!-- TODO: v-skeleton-->
 	<v-card
 		class="inform"
 		max-width="50vw"
@@ -30,7 +29,7 @@
 				</v-card-actions>
 				<v-card-text>
 					<v-layout justify-space-around style="width: 32%; margin-left: 0%;">
-						<v-btn-toggle v-model="activeBtn" tile mandatory color="white">
+						<v-btn-toggle v-model="activeBtn" tile mandatory color="white" class="info-navigation">
 							<v-btn block :outlined="activeBtn !== 0" :dark="activeBtn === 0" :ripple="false" :depressed="false"
 							       style="border-color: black!important">
 								Нарушения
@@ -134,7 +133,7 @@
 							<v-layout v-for="(proof, u) in proofs" :key="u" wrap style="margin-top: 10px">
 								<!--h4>{{proof.title}}</h4-->
 								<v-layout>
-									<div class="stats-digit"><p style="align-items: center; margin-left: 5px;">
+									<div><p style="align-items: center; margin-left: 5px;">
 										<b>{{proof.time}}:</b>
 										<br>
 										{{proof.text}}</p>

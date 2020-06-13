@@ -90,7 +90,7 @@
 
         getAnalytics() {
             axios.get(store.apibase() + '/analytics').then(response => {
-                console.log(response.data.violations_stats);
+                //console.log(response.data.violations_stats);
                 this.analytics = response.data.violations_stats;
 
                 // preprocessing: removes elements <=10 and rare ones
@@ -98,7 +98,6 @@
                 Object.keys(this.analytics).forEach(key => {
                     // @ts-ignore
                     Object.values(this.analytics[key]).forEach(val => {
-                        if ( typeof val == 'object' ) console.log(val);
                         let values = [];
                         let valuesToDelete = [];
                         // @ts-ignore
@@ -131,8 +130,6 @@
                                 // @ts-ignore
                                 if (valuesToDelete.includes(val[_name])) delete val[_name];
                             });
-                            console.log(values);
-                            console.log(valuesToDelete);
                         }
 
                     })

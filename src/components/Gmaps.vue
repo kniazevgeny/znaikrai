@@ -4,15 +4,17 @@
 			<v-layout dark id="search" height="60" raised tile style="z-index: 4;">
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap color="white">
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
-						<v-icon light class="pa-2 ma-0 search-icon" large style="width: 5vw; height: 60px;">search</v-icon>
+						<v-icon light class="pa-2 ma-0 search-icon"  large style="width: 5vw; height: 60px;">search
+						</v-icon>
+						<i id="attach0"></i>
 						<v-autocomplete v-if="markers0" v-model="searchName" @change="search" light height="60"
-						                class="pa-0 ma-0 search-autocomplete" style="width: 30vw; z-index: 100;"
+						                class="pa-0 ma-0 search-autocomplete" style="width: 32vw; z-index: 100; "
 						                label="Поиск по учреждениям ФСИН"
 						                :items="searchNames" item-text="name" item-value="searchObj"
-						                multiple flat autofocus
+						                multiple flat attach="#attach0"
 						                menu-props="light, top, offsetY, tile, flat, close-on-click">
 							<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-									<span v-if="index === 0">
+								<span v-if="index === 0">
 										<span>{{ item }}</span>
 									</span>
 								<span
@@ -36,10 +38,11 @@
 					<transition name="fade1" mode="out-in">
 						<v-layout v-if="options" wrap style="max-width: 50vw">
 							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchType"
-							          :items="searchTypes"
-							          label="По типу учреждения" multiple menu-props="light, top, offsetY, eager"
-							          style="z-index: 100; width: 28vw">
+							          :items="searchTypes" attach="#attach1"
+							          label="По типу учреждения" multiple menu-props="light, top, offsetY"
+							          style="z-index: 100; width: 33vw">
 								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
+									<span id="attach1"></span>
 									<span v-if="index === 0">
 										<span>{{ item }}</span>
 									</span>
@@ -58,9 +61,10 @@
 							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchCovid"
 							          :items="searchCovids"
 							          label="По наличию COVID-19" menu-props="top, offsetY, light"
-							          placeholder="Все"
-							          multiple dense style="z-index: 100; width: 20vw">
+							          placeholder="Все" attach="#attach2"
+							          multiple dense style="z-index: 100; width: 15vw">
 								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
+									<span id="attach2"></span>
 									<span
 										v-if="(searchCovid.indexOf('Да') !== -1 && searchCovid.indexOf('Нет') !== -1) || searchCovid.length === 0">
 										<span v-if="index === 0 || searchCovid.length === 0">Все</span>
@@ -558,7 +562,7 @@
                 this.checkUrlMarker();
             },
             changeTheme() {
-              store.setDark(!this.mapTheme);
+                store.setDark(!this.mapTheme);
             },
             getPlaces() {
                 try {
@@ -653,9 +657,9 @@
         },
         mounted() {
             // load places onload, but load from store on site navigation
-		        this.mapTheme = 1;
-		        this.changeTheme(); //set theme
-		        this.mapTheme = 0;
+            this.mapTheme = 1;
+            this.changeTheme(); //set theme
+            this.mapTheme = 0;
             this.getPlaces();
             // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
         },
@@ -665,7 +669,165 @@
 
 
 <style>
-	@import '../assets/styles/main.css';
+	.search-select > .v-input__control > .v-input__slot {
+		background-color: #000;
+	}
+
+	.search-select > .v-input__control > .v-input__slot > .v-select__slot > label {
+		font-family: 'Roboto';
+		margin-top: 10px;
+		margin-left: 15px;
+		font-style: normal;
+		font-weight: 300;
+		font-size: 15px;
+		line-height: 15px;
+		display: flex;
+		align-items: center;
+		color: #585858;
+	}
+
+	.search-select > .v-input__control > .v-input__slot > .v-select__slot > .v-select__selections {
+		font-family: 'Roboto';
+		padding-left: 15px;
+		margin-top: 10px;
+
+		font-style: normal;
+		font-weight: 300;
+		font-size: 17px;
+		line-height: 19px;
+		display: flex;
+		align-items: center;
+	}
+
+	.search-autocomplete > .v-input__control > .v-input__slot {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 300;
+		font-size: 16px;
+		line-height: 19px;
+		display: flex;
+		align-items: center;
+		border: none !important;
+	}
+
+	.search-select > .v-input__control > .v-input__slot::after {
+		color: #D50000 !important;
+		border-width: 1.5px !important;
+	}
+
+	.search-autocomplete > .v-input__control > .v-input__slot::after {
+		display: none !important;
+	}
+
+	.search-autocomplete > .v-input__control > .v-input__slot::before {
+		display: none !important;
+		border: none !important;
+	}
+
+	.search-select > .v-input__control > .v-input__slot::before {
+		display: none !important;
+	}
+
+	.search-icon {
+		padding: 15px !important;
+		border: none !important;
+	}
+
+	span > .v-menu__content.v-autocomplete__content > .v-list > .v-list-item {
+		width: 40px !important;
+		display: flex;
+		align-items: center;
+		color: #999;
+		caret-color: #EEEEEE !important;
+		background: #EEEEEE !important;
+	}
+
+	span > .v-menu__content > .v-list > .v-list-item--active {
+		color: #000 !important;
+	}
+
+	span > .v-menu__content > .v-list > .v-list-item:before {
+		opacity: 0 !important;
+	}
+
+	#attach1 > .v-menu__content {
+		width: 400px !important;
+		min-width: 400px !important;
+		margin-top: -10px;
+	}
+
+	#attach2 > .v-menu__content {
+		margin-top: -14px;
+	}
+
+	span > .v-menu__content > .v-list > .v-list-item {
+		min-height: 40px !important;
+		height: 40px !important;
+		background: #EEEEEE !important;
+
+	}
+
+	.v-autocomplete__content > .v-list > .v-list-item {
+		min-height: 40px !important;
+		height: 40px !important;
+		background: #EEEEEE !important;
+		сaret-color: #EEEEEE !important;
+	}
+
+	.v-autocomplete__content {
+		margin-top: -2px!important;
+		left: 5vw!important;
+		min-width: 40vw!important;
+		width: 40vw!important;
+	}
+
+	.v-autocomplete__content > .v-list > .v-list-item--link:before {
+		сaret-color: #EEEEEE !important;
+		background: #000;
+	}
+	.v-autocomplete__content > .v-list > .v-list-item > .v-ripple__container > .v-ripple__animation {
+		сaret-color: #DDDDDD !important;
+		color: #666 !important;
+	}
+
+	i > .v-autocomplete__content > .v-list > .primary--text {
+		сaret-color: #EEEEEE !important;
+	}
+
+	.v-autocomplete__content.v-menu__content {
+		margin-left: -5vw;
+		z-index: 103!important;
+	}
+
+	.v-list-item > .search-select-menu {
+		color: #333;
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: 300;
+		font-size: 15px !important;
+		line-height: 13px;
+		background: #EEEEEE;
+
+	}
+
+	.v-input.pa-0.ma-0.search-autocomplete.v-input--is-focused.theme--light.v-text-field.v-text-field--solo-flat.v-text-field--is-booted.v-select.v-select--is-multi.v-autocomplete.primary--text {
+		сaret-color: #000 !important;
+		color: #000 !important;
+	}
+
+	.v-label.v-label--active.theme--light.primary--text {
+		сaret-color: #000 !important;
+		color: #000 !important;
+	}
+
+	.v-list-item--active > .search-select-menu {
+		color: #000;
+	}
+
+	.info-navigation > button.theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
+		background: #070809;
+		border: 1px solid #070809;
+	}
 
 	.gm-style-iw.gm-style-iw-c {
 		position: fixed;

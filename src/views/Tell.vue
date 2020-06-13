@@ -21,7 +21,17 @@
 							span(class="question") {{ value.question }}
 							v-textarea(class="question-textfield" auto-grow v-if="value.required", label='', v-model='form[value.name]', required, hint='Обязательное поле', persistent-hint, filled)
 							v-textarea(class="question-textfield" auto-grow v-else, label='', v-model='form[value.name]', filled)
-						div(v-if="value.type === 'choose_one' || value.type === 'choose_multiply'")
+						div(v-if="value.type === 'choose_one'")
+							span(class="question") {{ value.question }}
+							p {{ checkboxes[value.name] }} {{ form[value.name] }}
+							v-select(v-model="form[value.name]" :mandatory="value.required" :items="checkboxes[value.name]" outlined class="select" menu-props="rounded='0'")
+								template(v-slot:item="{ item, attrs }")
+									span(class="question-select")
+										span(class="ml-6") {{item}}
+							span(v-if="form[value.name] === 'другое'")
+								v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled, :required="value.required")
+							span(v-if="value.required" class="caption") Обязательное поле
+						div(v-if="value.type === 'choose_multiply'")
 							span(class="question") {{ value.question }}
 							v-item-group(v-model="form[value.name]" :mandatory="value.required" :multiple="value.type === 'choose_multiply'")
 								div(v-for="(n, j) in checkboxes[value.name]" :key="j")
@@ -29,7 +39,7 @@
 										span(class="question-checkbox" @click="toggle")
 											z-checkbox(:checked="active" style="transform: scale(1.5);" class="ml-1") {{ n }}
 											span(class="ml-6") {{n}}
-								span(v-show="isOtherChoosed(value.name, value.type === 'choose_multiply')")
+								span(v-show="isOtherChoosed(value.name)")
 									v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled)
 								span(v-if="value.required" class="caption") Обязательное поле
 
@@ -57,19 +67,14 @@
         form = {};
         loading = true;
 
-        isOtherChoosed(name, mode) {
+        isOtherChoosed(name) {
             //only for checkboxes
-            //mode = 0 means there's one available answer
-            if ( !mode ) {
-                return this.checkboxes[name][this.form[name]] === 'другое'
-            } else {
-                let ans = false;
-                if ( this.form[name] === undefined ) return false;
-                this.form[name].forEach(i => {
-                    if ( this.checkboxes[name][i] === "другое" ) ans = true
-                });
-                return ans;
-            }
+            let ans = false;
+            if ( this.form[name] === undefined ) return false;
+            this.form[name].forEach(i => {
+                if ( this.checkboxes[name][i] === "другое" ) ans = true
+            });
+            return ans;
         }
 
         setCheckboxes() {
@@ -118,6 +123,9 @@
                         //console.log(this.checkField((this.form as any)[(value as any).name]) == false, (value as any).name);
                         if ( this.checkField((this.form as any)[(value as any).name]) == false ) ans = false;
                     }
+                    else if ( (value as any).type === 'choose_one' && (this.form as any)[(value as any).name] === 'другое' ){
+                        if ( this.checkField((this.other as any)[(value as any).name]) == false ) ans = false;
+                    }
                     //checkboxes processing is below
                 }
             });
@@ -136,34 +144,33 @@
                     // @ts-ignore
                     let ans = b[this.questions[i].name];
                     console.log(typeof ans);
-                    if ( typeof ans == 'number' ) {
+                    if ( ans == 'другое' ) {
                         //convert checkbox answers (0, 1, 2) to Strings (Да, Нет)
                         // @ts-ignore
-                        if ( this.checkboxes[this.questions[i].name][(this.form as any)[this.questions[i].name]] === 'другое' ) {
+                        if ( ans === 'другое' ) {
                             //if checkbox select is Other, take its value
                             // @ts-ignore
                             b[this.questions[i].name] = this.other[this.questions[i].name];
                         }
                         // @ts-ignore
-                        else b[this.questions[i].name] = this.checkboxes[this.questions[i].name][(this.form as any)[this.questions[i].name]];
+                        else b[this.questions[i].name] = this.checkboxes[this.questions[i].name];
 
                     } else if ( typeof ans == 'object' ) {
                         //same as above, but for arrays
-		                    let ans = "";
+                        let ans = "";
                         // @ts-ignore
                         (this.form as any)[this.questions[i].name].forEach(j => {
                             // @ts-ignore
                             if ( this.checkboxes[this.questions[i].name][j] === 'другое' ) {
-                                if (ans == "")
+                                if ( ans == "" )
                                 // @ts-ignore
-                                ans = ans.concat(this.other[this.questions[i].name]);
+                                    ans = ans.concat(this.other[this.questions[i].name]);
                                 // @ts-ignore
                                 else ans = ans.concat(", " + this.other[this.questions[i].name]);
-                            }
-                            else {
-                                if (ans == "")
+                            } else {
+                                if ( ans == "" )
                                 // @ts-ignore
-                                ans = ans.concat(this.checkboxes[this.questions[i].name][j]);
+                                    ans = ans.concat(this.checkboxes[this.questions[i].name][j]);
                                 // @ts-ignore
                                 else ans = ans.concat(", " + this.checkboxes[this.questions[i].name][j]);
                             }
@@ -214,6 +221,8 @@
 	}
 </style>
 <style>
+	@import '../assets/styles/main.css';
+
 	.headlinetxt {
 		font-family: 'Akrobat' !important;
 		font-weight: 900;
@@ -282,8 +291,7 @@
 		display: flex;
 		align-items: center;
 	}
-
-	.question-checkbox > span::first-letter {
+	.question-checkbox > span:first-letter {
 		text-transform: uppercase;
 	}
 

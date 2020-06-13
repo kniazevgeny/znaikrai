@@ -17,14 +17,14 @@
 			span ---///----///----///----///----//
 			span ---///----///----///----///----//
 			span(style="color: #D50000") ---///--
-		v-layout(v-if="loading" column, style="width: 88%; margin-left: 6vw" class="mt-12 analyse-loader" v-for="i in 3" :key="i")
+		v-layout(v-if="loading" column, style="width: 88%; margin-left: 6vw" class="mt-12 analyse-loader" v-for="v in 3" :key="v")
 			v-skeleton-loader(type="article")
 			v-skeleton-loader(type="sentences@2")
 			v-skeleton-loader(type="card-heading")
 			v-skeleton-loader(type="sentences")
 			v-skeleton-loader(type="card-heading")
 			v-skeleton-loader(type="sentences" class="mb-12")
-		v-layout(v-for="(value, name, i) in analytics" :key='i' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
+		v-layout(v-for="(value, name, j) in analytics" :key='j' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
 			p(class="analyse-headline mt-8") {{$t("analytics." + name + ".title")}}
 			span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
 			div(v-for="(value1, name1) in value")
@@ -33,7 +33,7 @@
 					v-layout(v-if="typeof value1 === 'object'" row, class="ml-0", :style="'width:' + getWidth(value1.total_count) + '%'")
 						div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(value1.total_count)")
 							p(style="align-items: center") {{value1.total_count }}
-						v-layout( v-for="(value2, name2, j) in value1", :key="j" column v-if="name2 !== 'total_count' && name2 !== 'total_count_appeals' && value2 > 10" :style="'width:' + value2 / (value1.total_count) + '%'")
+						v-layout( v-for="(value2, name2, u) in value1", :key="u" column v-if="name2 !== 'total_count' && name2 !== 'total_count_appeals'" :style="'width:' + value2 / (value1.total_count) + '%'")
 							v-progress-linear(
 							value="99"
 							buffer-value="99"
@@ -42,7 +42,7 @@
 							class="progress-bar")
 								template
 									span(style="color: white") {{ value2 }}
-							span {{ name2 }}
+							span(class="analyse-explainer") {{ name2 }}
 		v-footer(height="162", color="white", padless, class="mt-12")
 			v-layout(style="width: 90%; margin-left: 5%; margin-right: 5%" justify-space-around)
 				v-btn(x-large, text, class="footerBtn", :to="'/'")
@@ -92,6 +92,52 @@
             axios.get(store.apibase() + '/analytics').then(response => {
                 console.log(response.data.violations_stats);
                 this.analytics = response.data.violations_stats;
+
+                // preprocessing: removes elements <=10 and rare ones
+                // @ts-ignore
+                Object.keys(this.analytics).forEach(key => {
+                    // @ts-ignore
+                    Object.values(this.analytics[key]).forEach(val => {
+                        if ( typeof val == 'object' ) console.log(val);
+                        let values = [];
+                        let valuesToDelete = [];
+                        // @ts-ignore
+                        if ( typeof val == 'object' ) Object.keys(val).forEach(_name => {
+                            // @ts-ignore
+                            if ( _name != 'total_count' && _name != 'total_count_appeals' && val[_name] != undefined ) {
+                                // delete rare values
+                                // @ts-ignore
+                                if ( val[_name] <= 10 ) delete val[_name];
+                                // @ts-ignore
+                                else values.push(val[_name]);
+                            }
+                        });
+                        let isMobile = window.innerWidth < 600;
+                        // if mobile, shows only 4 elements. unless 6 elements
+                        if ( values.length != 0 ) {
+                            // delete values if there's more than 6 on desktop or more then 4 on mobiles
+                            if (values.length > (isMobile ? 4 : 6)){
+                                values.sort((a, b) => {
+                                    return a - b;
+                                });
+                                let i = 0;
+                                for (i; i < values.length; i++){
+                                    if (i < values.length - (isMobile ? 4 : 6))
+                                      valuesToDelete.push(values[i]);
+                                }
+                            }
+                            // @ts-ignore
+                            Object.keys(val).forEach(_name => {
+                                // @ts-ignore
+                                if (valuesToDelete.includes(val[_name])) delete val[_name];
+                            });
+                            console.log(values);
+                            console.log(valuesToDelete);
+                        }
+
+                    })
+                });
+
                 this.totalCount = response.data.total_count_appeals;
                 this.totalCountAppeals = response.data.violations_stats.total_count;
                 this.loading = false;
@@ -262,5 +308,23 @@
 
 	.analyse-loader > .v-skeleton-loader > .v-skeleton-loader__bone {
 		background: transparent !important;
+	}
+	.analyse-explainer{
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: normal;
+		font-size: 14px;
+		line-height: 16px;
+		/* identical to box height */
+
+
+		color: #070809;
+	}
+
+	@media screen and (max-width: 600px){
+		.analyse-explainer {
+			font-size: 12px;
+			line-height: 14px;
+		}
 	}
 </style>

@@ -1,6 +1,6 @@
 <template lang="pug">
 	nav(style="background-color: transparent; z-index: 100")
-		v-app-bar(flat :app=`$router.currentRoute.path == "/"`, justify="space-between",
+		v-app-bar(flat, justify="space-between",
 		:dark='$store.state.dark', prominent, :style=`$store.state.infowindow || 0 ? "width: 45%; right: 6.85%; left: auto": "width: 90%; margin-left: 5%;"`)
 			// Title//span {{$t('title')}}
 			v-row(justify="start", style="width: 30%; max-width: 45%; z-index: 1", v-if="!$store.state.infowindow || 0")

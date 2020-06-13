@@ -37,12 +37,13 @@
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap>
 					<transition name="fade1" mode="out-in">
 						<v-layout v-if="options" wrap style="max-width: 50vw">
+							<span id="attach1"></span>
+							<span id="attach2"></span>
 							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchType"
 							          :items="searchTypes" attach="#attach1"
 							          label="По типу учреждения" multiple menu-props="light, top, offsetY"
 							          style="z-index: 100; width: 33vw">
 								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-									<span id="attach1"></span>
 									<span v-if="index === 0">
 										<span>{{ item }}</span>
 									</span>
@@ -64,7 +65,6 @@
 							          placeholder="Все" attach="#attach2"
 							          multiple dense style="z-index: 100; width: 15vw">
 								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-									<span id="attach2"></span>
 									<span
 										v-if="(searchCovid.indexOf('Да') !== -1 && searchCovid.indexOf('Нет') !== -1) || searchCovid.length === 0">
 										<span v-if="index === 0 || searchCovid.length === 0">Все</span>
@@ -751,13 +751,14 @@
 	}
 
 	#attach1 > .v-menu__content {
-		width: 400px !important;
+		width: 15vw!important;
 		min-width: 400px !important;
-		margin-top: -10px;
+		margin-top: -1px;
 	}
 
 	#attach2 > .v-menu__content {
-		margin-top: -14px;
+		margin-top: -1px;
+		margin-left: 33vw;
 	}
 
 	span > .v-menu__content > .v-list > .v-list-item {

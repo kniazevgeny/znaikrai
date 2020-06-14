@@ -8,7 +8,7 @@
 		tile
 	>
 		<v-row>
-			<v-col style="width: 94%; margin-left: 3%;">
+			<v-col id="info-main">
 				<v-card-actions style="align-items: start">
 					<v-container md10 xs10 class="inf-name">
 						{{info.name}}
@@ -28,8 +28,8 @@
 					</v-btn>
 				</v-card-actions>
 				<v-card-text>
-					<v-layout justify-space-around style="width: 32%; margin-left: 0%;">
-						<v-btn-toggle v-model="activeBtn" tile mandatory color="white" class="info-navigation">
+					<v-layout justify-space-around style="width: 33%; margin-left: 0%;">
+						<v-btn-toggle v-model="activeBtn" tile mandatory color="white" class="info-navigation" small>
 							<v-btn block :outlined="activeBtn !== 0" :dark="activeBtn === 0" :ripple="false" :depressed="false"
 							       style="border-color: black!important">
 								Нарушения
@@ -68,10 +68,15 @@
 
 								<div v-if="info.coronavirus" class="mb-12 ml-1">
 									<h1 style="color: #D50000; font-family: Akrobat">Мониторинг ситуации с коронавирусом</h1>
-									<p style="background: #fac4b7; border-radius: 3px" class="mt-2 mb-2 pa-6">Обращаем внимание, что информация, которая содержится в этом разделе, поступает к нам от родственников заключённых, самих осуждённых, сотрудников ФСИН, защитников или членов ОНК.
-										Эта информация нуждается в дополнительной проверке, однако в связи с информационной непрозрачностью ФСИН и нашего обоснованного недоверия к официальным сообщениям этого ведомства, проверка сведений крайне затруднена.</p>
+									<p style="background: #fac4b7; border-radius: 3px" class="mt-2 mb-2 pa-6">Обращаем внимание, что
+										информация, которая содержится в этом разделе, поступает к нам от родственников заключённых, самих
+										осуждённых, сотрудников ФСИН, защитников или членов ОНК.
+										Эта информация нуждается в дополнительной проверке, однако в связи с информационной непрозрачностью
+										ФСИН и нашего обоснованного недоверия к официальным сообщениям этого ведомства, проверка сведений
+										крайне затруднена.</p>
 									<v-card style="width: 95%;" wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
-										<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px; font-family: 'Roboto';">{{cases.name_of_fsin}},
+										<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px; font-family: 'Roboto';">
+											{{cases.name_of_fsin}},
 											{{cases.region}}, {{cases.date}}</h3>
 										<p class="mb-2">{{cases.info}}
 											<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
@@ -358,6 +363,27 @@
 		font-family: 'Akrobat';
 		font-weight: 800;
 		font-size: 1rem;
+	}
+
+	#info-main {
+		width: 94%;
+		margin-left: 3%;
+	}
+
+	@media screen and (max-width: 960px) {
+		.v-item-group > .v-btn > span {
+			font-size: 0.8rem !important;
+		}
+
+		#info-main {
+			width: 100vw;
+			margin: 0;
+		}
+
+		.inform {
+			left: 0;
+			right: 0;
+		}
 	}
 
 	.divide {

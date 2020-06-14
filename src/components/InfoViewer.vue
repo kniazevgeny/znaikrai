@@ -81,7 +81,7 @@
 										<p class="mb-2">{{cases.info}}
 											<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
 										</p>
-										<p>Комментарий ФСИН:
+										<p>Официальное подтверждение со стороны ФСИН:
 											<span v-if="cases.comment_fsin !== ''">{{cases.comment_fsin}}</span>
 											<span v-else>отсутствует</span>
 											<a v-if="cases.sitefsin" :href="cases.sitefsin" target="_blank">{{cases.sitefsin}}</a>

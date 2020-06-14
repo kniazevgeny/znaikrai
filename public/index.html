@@ -23,9 +23,11 @@
       var markerCluster = new MarkerClusterer(map, markers,
           {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 	</script>
-	<!--<script lang="js"> // https upgrade-->
-		<!--console.log()-->
-	<!--</script>-->
+	<script lang="js"> // https upgrade
+  if (window.location.protocol === 'http:' && window.location.hostname !== "localhost") {
+      window.location.href = "https://" + window.location.href.slice(7, -1);
+  }
+	</script>
 	<style>
 		@font-face {
 			font-family: 'Akrobat';

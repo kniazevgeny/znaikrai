@@ -16,13 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Static content
 app.use(express.static(STATIC));
 
-app.use(function(req,res,next){
-    if (req.secure) {
-        return next();
-    } else {
-        return res.redirect(PORT, 'https://' + req.headers.host + req.url);
-    }
-});
 // All GET request handled by INDEX file
 app.get('*', function (req, res) {
     res.sendFile(INDEX);

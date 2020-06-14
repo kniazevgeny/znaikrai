@@ -66,7 +66,6 @@
             document.title = i18n.t("Знай край") as string;
         }
         mounted(): void {
-            console.log(router.currentRoute);
             store.setLanguage('ru');
         }
 

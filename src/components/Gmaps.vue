@@ -90,22 +90,23 @@
 				</v-btn>
 			</v-layout>
 
-			<div id="modePicker">
+			<div id="modePicker" :style="$vuetify.breakpoint.name === 'xs' ? 'margin-right: -15px' : ''">
 				<v-btn-toggle v-model="mapMode" mandatory tile active-class="v-btn--disabled">
-					<v-btn>
+					<v-btn :small="$vuetify.breakpoint.name === 'xs'" fab>
 						<v-icon>adjust</v-icon>
+					{{ $vuetify.breakpoint.mobile }}
 					</v-btn>
-					<v-btn>
+					<v-btn :small="$vuetify.breakpoint.name === 'xs'" fab>
 						<v-icon>blur_on</v-icon>
 					</v-btn>
 				</v-btn-toggle>
 			</div>
-			<div id="themePicker">
+			<div id="themePicker" :style="$vuetify.breakpoint.name === 'xs' ? 'margin-right: -15px' : ''">
 				<v-btn-toggle v-model="mapTheme" mandatory tile active-class="v-btn--disabled">
-					<v-btn @click="changeTheme()">
+					<v-btn @click="changeTheme()" :small="$vuetify.breakpoint.name === 'xs'" fab>
 						<v-icon>wb_sunny</v-icon>
 					</v-btn>
-					<v-btn @click="changeTheme()">
+					<v-btn @click="changeTheme()" :small="$vuetify.breakpoint.name === 'xs'" fab>
 						<v-icon style="transform: rotate(-90deg)">brightness_3</v-icon>
 					</v-btn>
 				</v-btn-toggle>
@@ -828,6 +829,10 @@
 	.info-navigation > button.theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
 		background: #070809;
 		border: 1px solid #070809;
+	}
+
+	.gm-fullscreen-control {
+		display: none;
 	}
 
 	.gm-style-iw.gm-style-iw-c {

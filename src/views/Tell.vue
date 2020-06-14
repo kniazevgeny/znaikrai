@@ -15,12 +15,12 @@
 					v-col(cols='9' v-for="(value, i) in questions" :key="i")
 						div(v-if="value.type === 'textfield'")
 							span(class="question") {{ value.question }}
-							v-text-field(class="question-textfield" v-if="value.required", label='', :placeholder="value.hint" v-model='form[value.name]', required, :hint='"Обязательное поле"', persistent-hint, filled)
-							v-text-field(class="question-textfield" v-else, label='', hint='' v-model='form[value.name]', filled)
+							v-text-field(class="question-textfield" v-if="value.required", label='', :placeholder="value.hint", v-model='form[value.name]', required, :hint='"Обязательное поле"', persistent-hint, filled)
+							v-text-field(class="question-textfield" v-else, label='', :placeholder="value.hint", hint='' v-model='form[value.name]', filled)
 						div(v-if="value.type === 'textarea'")
 							span(class="question") {{ value.question }}
-							v-textarea(class="question-textfield" auto-grow v-if="value.required", label='', v-model='form[value.name]', required, hint='Обязательное поле', persistent-hint, filled)
-							v-textarea(class="question-textfield" auto-grow v-else, label='', v-model='form[value.name]', filled)
+							v-textarea(class="question-textfield" auto-grow v-if="value.required", label='', :placeholder="value.hint", v-model='form[value.name]', required, hint='Обязательное поле', persistent-hint, filled)
+							v-textarea(class="question-textfield" auto-grow v-else, label='', :placeholder="value.hint", v-model='form[value.name]', filled)
 						div(v-if="value.type === 'choose_one'")
 							span(class="question") {{ value.question }}
 							v-select(v-model="form[value.name]" :mandatory="value.required" :items="checkboxes[value.name]" outlined class="select" menu-props="rounded='0'")

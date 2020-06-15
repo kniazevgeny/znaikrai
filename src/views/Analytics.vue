@@ -6,7 +6,9 @@
 					span(style="color: #D50000") {{totalCount}}
 					div(id="analytics-headline-letter")
 						span ---///----///----///----///----//
-					span  свидетельств 
+					span  свидетельств
+					span {{ headlineEnding }}
+					// TODO:Окончания
 					br
 					span  о нарушениях
 
@@ -73,6 +75,7 @@
         totalCount: number = 371;
         totalCountAppeals: number = 0;
         loading = true;
+        headlineEnding: string = "о";
 
         getWidth(val) {
             let max_ = this.totalCountAppeals;
@@ -136,6 +139,12 @@
                 });
 
                 this.totalCount = response.data.total_count_appeals;
+                console.log();
+                // set headline ending: "о", "а"
+		            if (this.totalCount % 10 === 1) this.headlineEnding = "о";
+		            else if (this.totalCount % 10 >= 2 && this.totalCount % 10 <= 4) this.headlineEnding = "а";
+		            else this.headlineEnding  = "";
+                    // this.headlineEnding;
                 this.totalCountAppeals = response.data.violations_stats.total_count;
                 this.loading = false;
             })

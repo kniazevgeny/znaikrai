@@ -1,8 +1,16 @@
-# Знай край - фронтенд проекта
-## https://znaikrai.herokuapp.com/
-## https://znai-krai.zekovnet.ru/
+# Знай край [фронтенд]
+Фронтенд социального и некоммерческого проекта Руси Сидящей - Знай Край. Проект был начат [на хакатоне Новой Газеты](https://projector2020.te-st.ru/).
 
-#### backend: https://github.com/semyon-dev/znai-krai
+<img src="https://github.com/semyon-dev/znai-krai/blob/master/img.png" alt="drawing" width="500"/>
+
+## Сайт
+
+* https://znaikrai.herokuapp.com/
+* https://znai-krai.zekovnet.ru/
+
+#### Бэкенд
+* https://github.com/semyon-dev/znai-krai
+
 Информация и метки берутся с бекенда
 
 ## Project setup

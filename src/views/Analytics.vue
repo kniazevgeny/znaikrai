@@ -29,13 +29,13 @@
 		v-layout(v-for="(value, name, j) in analytics" :key='j' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
 			p(class="analyse-headline mt-8") {{$t("analytics." + name + ".title")}}
 			span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
-			div(v-for="(value1, name1) in value")
+			div(v-for="(value1, name1, v) in value")
 				v-layout(v-if="typeof value1 === 'object'" column, class="mt-4")
-					h4(class="ml-0") {{ $t("violation_types." + name1) }}
-					v-layout(v-if="typeof value1 === 'object'" row, class="ml-0", :style="'width:' + getWidth(value1.total_count) + '%'")
-						div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(value1.total_count)")
-							p(style="align-items: center") {{value1.total_count }}
-						v-layout( v-for="(value2, name2, u) in value1", :key="u" column v-if="name2 !== 'total_count' && name2 !== 'total_count_appeals'" :style="'width:' + value2 / (value1.total_count) + '%'")
+					h4(class="ml-0") {{ $t("violation_types."  + name1) }}
+					v-layout(v-if="typeof value1 === 'object'" row, class="ml-0", :style="'width:' + getWidth(getTotalCount(value1)) + '%'")
+						div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(getTotalCount(value1))")
+							p(style="align-items: center") {{ getTotalCount(value1) }}
+						v-layout( v-for="(value2, u) in value1", :key="u" column v-if="value2.name !== 'total_count' && value2.name !== 'total_count_appeals'" :style="'width:' + value2.value / (getTotalCount(value1)) * 100 + '%'")
 							v-progress-linear(
 							value="99"
 							buffer-value="99"
@@ -43,8 +43,8 @@
 							height="25"
 							class="progress-bar")
 								template
-									span(style="color: white") {{ value2 }}
-							span(class="analyse-explainer") {{ name2 }}
+									span(style="color: white") {{ value2.value }}
+							span(class="analyse-explainer") {{ value2.name }}
 		v-footer(height="162", color="white", padless, class="mt-12")
 			v-layout(style="width: 90%; margin-left: 5%; margin-right: 5%" justify-space-around)
 				v-btn(x-large, text, class="footerBtn", :to="'/'")
@@ -79,7 +79,7 @@
 
         getWidth(val) {
             let max_ = this.totalCountAppeals;
-            if ( val < max_ / 20 ) return 55;
+            if ( val < max_ / 20 ) return 57;
             if ( val < max_ / 14 ) return 87;
             return 100;
         }
@@ -91,23 +91,35 @@
             else return "#D50000";
         }
 
+        getKeyByValue(object, value) {
+            //JSON to compare objects
+            return Object.keys(object).find(key => JSON.stringify(object[key]) === JSON.stringify(value));
+        }
+
+        getTotalCount(object) {
+            if (object[0].name === "total_count") return object[0].value;
+            if (object[1].name === "total_count") return object[1].value;
+        }
+
         getAnalytics() {
             axios.get(store.apibase() + '/analytics').then(response => {
                 //console.log(response.data.violations_stats);
                 this.analytics = response.data.violations_stats;
-
                 // preprocessing: removes elements <=10 and rare ones
+		            // then object → array
                 // @ts-ignore
                 Object.keys(this.analytics).forEach(key => {
                     // @ts-ignore
                     Object.values(this.analytics[key]).forEach(val => {
                         let values = [];
                         let valuesToDelete = [];
+                        let sorted = [];
+                        let sortedKeys = [];
                         // @ts-ignore
                         if ( typeof val == 'object' ) Object.keys(val).forEach(_name => {
+                            // delete rare values
                             // @ts-ignore
                             if ( _name != 'total_count' && _name != 'total_count_appeals' && val[_name] != undefined ) {
-                                // delete rare values
                                 // @ts-ignore
                                 if ( val[_name] <= 10 ) delete val[_name];
                                 // @ts-ignore
@@ -118,33 +130,47 @@
                         // if mobile, shows only 4 elements. unless 6 elements
                         if ( values.length != 0 ) {
                             // delete values if there's more than 6 on desktop or more then 4 on mobiles
-                            if (values.length > (isMobile ? 4 : 6)){
+                            if ( values.length > (isMobile ? 4 : 6) ) {
                                 values.sort((a, b) => {
                                     return a - b;
                                 });
                                 let i = 0;
-                                for (i; i < values.length; i++){
-                                    if (i < values.length - (isMobile ? 4 : 6))
-                                      valuesToDelete.push(values[i]);
+                                for (i; i < values.length; i++) {
+                                    if ( i < values.length - (isMobile ? 4 : 6) )
+                                        valuesToDelete.push(values[i]);
                                 }
                             }
                             // @ts-ignore
                             Object.keys(val).forEach(_name => {
                                 // @ts-ignore
-                                if (valuesToDelete.includes(val[_name])) delete val[_name];
+                                if ( valuesToDelete.includes(val[_name]) ) delete val[_name];
                             });
                         }
-
+                        // @ts-ignore
+                        if ( typeof val == 'object') {
+                            // sort object "max → min" and transform into array
+                            // @ts-ignore
+                            sortedKeys = Object.keys(val).sort(function (a, b) {
+                                // @ts-ignore
+                                return val[b] - val[a]
+                            });
+                            sortedKeys.forEach(sKey => {
+                                // @ts-ignore
+                                sorted.push({name: sKey, value: val[sKey]});
+                            });
+                        }
+                        if (typeof this.analytics[key][this.getKeyByValue(this.analytics[key], val)] == "object")
+                          this.analytics[key][this.getKeyByValue(this.analytics[key], val)] = sorted;
                     })
                 });
 
                 this.totalCount = response.data.total_count_appeals;
-                console.log();
+                console.log(this.analytics);
                 // set headline ending: "о", "а"
-		            if (this.totalCount % 10 === 1) this.headlineEnding = "о";
-		            else if (this.totalCount % 10 >= 2 && this.totalCount % 10 <= 4) this.headlineEnding = "а";
-		            else this.headlineEnding  = "";
-                    // this.headlineEnding;
+                if ( this.totalCount % 10 === 1 ) this.headlineEnding = "о";
+                else if ( this.totalCount % 10 >= 2 && this.totalCount % 10 <= 4 ) this.headlineEnding = "а";
+                else this.headlineEnding = "";
+                // this.headlineEnding;
                 this.totalCountAppeals = response.data.violations_stats.total_count;
                 this.loading = false;
             })
@@ -315,7 +341,8 @@
 	.analyse-loader > .v-skeleton-loader > .v-skeleton-loader__bone {
 		background: transparent !important;
 	}
-	.analyse-explainer{
+
+	.analyse-explainer {
 		font-family: 'Roboto';
 		font-style: normal;
 		font-weight: normal;
@@ -327,7 +354,7 @@
 		color: #070809;
 	}
 
-	@media screen and (max-width: 600px){
+	@media screen and (max-width: 600px) {
 		.analyse-explainer {
 			font-size: 12px;
 			line-height: 14px;

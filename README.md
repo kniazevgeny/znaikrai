@@ -19,6 +19,7 @@ yarn install
 ```
 
 ### Compiles and hot-reloads for development
+Для отображения карты нужен google mapss API key из .env.local
 ```
 yarn serve
 ```

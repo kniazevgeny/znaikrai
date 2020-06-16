@@ -19,7 +19,7 @@ yarn install
 ```
 
 ### Compiles and hot-reloads for development
-Для отображения карты нужен google mapss API key из .env.local
+Для отображения карты нужен google maps API key. Вставьте свой ключ в компонент Gmaps.vue, туда, где берется process.env.VUE_APP_GMAPSKEY
 ```
 yarn serve
 ```

@@ -8,7 +8,6 @@
 						span ---///----///----///----///----//
 					span  свидетельств
 					span {{ headlineEnding }}
-					// TODO:Окончания
 					br
 					span  о нарушениях
 
@@ -331,7 +330,6 @@
 		align-content: flex-start;
 		align-items: flex-start;
 		justify-content: center;
-
 	}
 
 	.stats-digit > p {

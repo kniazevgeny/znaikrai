@@ -1,8 +1,6 @@
 # Знай край
 Фронтенд социального и некоммерческого проекта Руси Сидящей - Знай Край. Проект был начат [на хакатоне Новой Газеты](https://projector2020.te-st.ru/).
 
-<img src="https://github.com/semyon-dev/znai-krai/blob/master/img.png" alt="drawing" width="500"/>
-
 ## Сайт
 
 * https://znaikrai.herokuapp.com/

@@ -3,6 +3,9 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from '.././views/Home.vue'
 import Tell from '.././views/Tell.vue'
+import Stories from '.././views/Stories.vue'
+import Analytics from '.././views/Analytics.vue'
+import About from '.././views/About.vue'
 import notFound from '.././views/NotFound.vue'
 import * as store from './store'
 
@@ -17,24 +20,41 @@ const router = new Router({
             component: home,
         },
         {
+            path: '/analytics',
+            name: 'analytics',
+            component: Analytics,
+        },
+        {
+            path: '/stories',
+            name: 'stories',
+            component: Stories,
+        },
+        {
             path: '/tell',
             name: 'tell',
             component: Tell,
         },
-        /*        {
-                    path: '*',
-                    name: 'notFound',
-                    component: notFound,
-                }*/
+        {
+            path: '/about',
+            name: 'about',
+            component: About,
+        },
+        {
+            path: '*',
+            name: 'notFound',
+            component: notFound,
+        }
     ],
 })
 
 router.beforeEach((to, _, next) => {
     //next()
-    if (to.path === '/') {
-        store.setDark(true);
-    } else {
+    console.log(router.currentRoute.path)
+    if ( to.path !== '/' ) {
         store.setDark(false);
+    }
+    if ( to.path != 'home' && store.infowindow() ) {
+        store.setInfowindow(false)
     }
     console.log(store.dark());
     next()

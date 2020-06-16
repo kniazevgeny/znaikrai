@@ -1,5 +1,5 @@
 <template lang="pug">
-	v-app(@load="loaded()" :dark='$store.state.dark' :class='$store.state.dark ? "grey darken-4" : "grey lighten-4"' v-scroll="loaded()")
+	v-app(@load="loaded()" :dark='$store.state.dark' :class='$store.state.dark ? "grey darken-4" : "grey lighten-4"' :v-scroll="!mount ? loaded(): a()")
 		cookie-law(theme='blood-orange'
 		:buttonText='"Ок"'
 		:message='"Мы используем куки"')
@@ -8,7 +8,6 @@
 			v-layout(column)
 				//Home(style="z-index: 1; position: initial")
 				router-view(style="z-index: 99; position: initial" :dark='$store.state.dark')
-				v-layout(v-if="$router.currentRoute.path === '/'" style="height: 110vh")
 				//abs, z-ind height width
 								//↓fix
 			//Gmaps(v-if="mount" id="map" style="z-index: 0; position: fixed;")
@@ -33,12 +32,17 @@
         methods: {
             loaded() {
                 console.log("loaded");
+                store.setInfowindow(false);
+
                 /*if (!(this as any).mount) {
                     store.setDark(!store.dark());
                     ((this as any).$vuetify.theme as any).dark = store.dark();
                 }*/
                 (this as any).mount = true;
-            }
+            },
+		        a(){
+
+		        }
 
         },
     };

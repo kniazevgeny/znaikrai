@@ -1,0 +1,52 @@
+/* SELECTS */
+.select > .v-input__control > .v-input__slot > fieldset{
+    border: 2px solid #000000;
+    box-sizing: border-box;
+    border-radius: 1px;
+}
+.select > .v-input__control > .v-input__slot > .v-select__slot{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+
+    color: #000000;
+}
+.v-application  > .v-menu__content {
+    background: #F3F3F3;
+    border: 2px solid #000000;
+    box-sizing: border-box;
+    border-radius: 1px;
+    margin-top: -2px;
+}
+.v-application  > .v-menu__content > .v-list {
+    background: #F3F3F3!important;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    border-radius: 1px;
+}
+.v-application  > .v-menu__content > .v-list .v-list-item {
+    min-height: 40px!important;
+    height: 40px!important;
+}
+.v-application  > .v-menu__content > .v-list .v-list-item:first-letter {
+    text-transform: uppercase!important;
+}
+.v-application  > .v-menu__content > .v-list .v-list-item.primary--text.v-list-item--active.v-list-item--link {
+    font-weight: bold;
+    color: #000!important;
+    caret-color: #F3F3F3!important;
+}
+.v-application  > .v-menu__content > .v-list .v-list-item.primary--text.v-list-item--active.v-list-item--link:before{
+    opacity: 0;
+}
+.v-select__selection:first-letter{
+    text-transform: uppercase!important;
+}
+.question-select:first-letter {
+    text-transform: uppercase!important;
+}

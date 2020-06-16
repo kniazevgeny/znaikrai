@@ -15,13 +15,13 @@ function getNavigatorLanguage() {
       : (navigator as any).userLanguage ||
         navigator.language ||
         (navigator as any).browserLanguage ||
-        'en'
+        'ru'
     ).substr(0, 2)
     const allowedLanguages = ['en', 'ru']
     if (allowedLanguages.indexOf(language) > -1) {
       return language
     } else {
-      return 'en'
+      return 'ru'
     }
   }
 }

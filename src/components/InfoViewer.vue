@@ -5,97 +5,299 @@
 		light
 		style="color:#000; overflow-y: auto; overflow-x: hidden"
 		v-if="info"
+		tile
 	>
 		<v-row>
-			<v-col style="width: 94%; margin-left: 3%;">
+			<v-col id="info-main">
 				<v-card-actions style="align-items: start">
 					<v-container md10 xs10 class="inf-name">
 						{{info.name}}
+						<v-skeleton-loader
+							v-if="loading"
+							type="card-heading"
+							min-width="200%"
+						></v-skeleton-loader>
 					</v-container>
 					<v-spacer></v-spacer>
-					<v-btn md1 xs1 flat depressed text x-large style="margin-top: 20px"><v-icon>mdi-share</v-icon></v-btn>
-					<v-btn md1 xs1 flat depressed text x-large style="margin-top: 20px"
-									@click="$emit('closes')"><v-icon>mdi-window-close</v-icon></v-btn>
+					<v-btn @click="share" md1 xs1 text depressed text x-large style="margin-top: 20px">
+						<v-icon>mdi-share</v-icon>
+					</v-btn>
+					<v-btn md1 xs1 text depressed text x-large style="margin-top: 20px"
+					       @click="$emit('closes')">
+						<v-icon>mdi-window-close</v-icon>
+					</v-btn>
 				</v-card-actions>
 				<v-card-text>
-					<div class="text--primary" style="color:#000!important">
-						{{info.type}}<br>
-						{{info.location}}<br>
-						{{info.notes}}<br>
-						{{info.position.lat}}
-						{{info.position.lng}}
-						{{info.number_of_violations}}<br>
-						{{info.phone_number}}<br>
-						{{info.google_maps_rating}}<br>
-						{{info.website}}
-					</div>
-					<br><br><br>Далее те же данные, а я показываю возможность скроллить<br><br><br>
-					<div class="text--primary" style="color:#000!important">
-						{{info.type}}<br>
-						{{info.location}}<br>
-						{{info.notes}}<br>
-						{{info.position.lat}}
-						{{info.position.lng}}
-						{{info.number_of_violations}}<br>
-						{{info.phone_number}}<br>
-						{{info.google_maps_rating}}<br>
-						{{info.website}}
-					</div>
-					<div class="text--primary" style="color:#000!important">
-						{{info.type}}<br>
-						{{info.location}}<br>
-						{{info.notes}}<br>
-						{{info.position.lat}}
-						{{info.position.lng}}
-						{{info.number_of_violations}}<br>
-						{{info.phone_number}}<br>
-						{{info.google_maps_rating}}<br>
-						{{info.website}}
-					</div>
-					<div class="text--primary" style="color:#000!important">
-						{{info.type}}<br>
-						{{info.location}}<br>
-						{{info.notes}}<br>
-						{{info.position.lat}}
-						{{info.position.lng}}
-						{{info.number_of_violations}}<br>
-						{{info.phone_number}}<br>
-						{{info.google_maps_rating}}<br>
-						{{info.website}}
-					</div>
-					<div class="text--primary" style="color:#000!important">
-						{{info.type}}<br>
-						{{info.location}}<br>
-						{{info.notes}}<br>
-						{{info.position.lat}}
-						{{info.position.lng}}
-						{{info.number_of_violations}}<br>
-						{{info.phone_number}}<br>
-						{{info.google_maps_rating}}<br>
-						{{info.website}}
-					</div>
+					<v-layout justify-space-around style="width: 33%; margin-left: 0%;">
+						<v-btn-toggle v-model="activeBtn" tile mandatory color="white" class="info-navigation" small>
+							<v-btn block :outlined="activeBtn !== 0" :dark="activeBtn === 0" :ripple="false" :depressed="false"
+							       style="border-color: black!important">
+								Нарушения
+							</v-btn>
+							<v-btn block :outlined="activeBtn !== 1" :dark="activeBtn === 1" :ripple="false" :depressed="false"
+							       style="border-color: black!important">
+								Информация
+							</v-btn>
+							<v-btn block :outlined="activeBtn !== 2" :dark="activeBtn === 2" :ripple="false" :depressed="false"
+							       style="border-color: black!important">
+								Свидетельства
+							</v-btn>
+						</v-btn-toggle>
+					</v-layout>
+					<br>
+					<v-layout v-if="info.warning" style="padding-right: 4%;">
+						<v-btn large disabled block outlined color="orange">{{ info.warning }}</v-btn>
+					</v-layout>
+					<v-window v-model="activeBtn">
+						<v-window-item>
+							<violationChart
+								v-if="violations.size && $t('violation_types.' + violation[0]).toString() !== ('violation_types.' + violation[0])"
+								v-for="(violation, i) in violations" :key="i"
+								:title="$t('violation_types.' + violation[0])" :comments="violation[1].comments"
+								:count="violation[1].counter"></violationChart>
+							<p v-if="!loading && !violations.size">Нарушения не зафиксированы</p>
+							<v-skeleton-loader
+								v-if="loading"
+								type="article"
+								v-for="j in 2"
+								:key="j"
+							></v-skeleton-loader>
+						</v-window-item>
+						<v-window-item>
+							<div class="text--primary" style="color:#000!important; width: 100%; padding-top: 30px">
+
+								<div v-if="info.coronavirus" class="mb-12 ml-1">
+									<h1 style="color: #D50000; font-family: Akrobat">Мониторинг ситуации с коронавирусом</h1>
+									<p style="background: #fac4b7; border-radius: 3px" class="mt-2 mb-2 pa-6">Обращаем внимание, что
+										информация, которая содержится в этом разделе, поступает к нам от родственников заключённых, самих
+										осуждённых, сотрудников ФСИН, защитников или членов ОНК.
+										Эта информация нуждается в дополнительной проверке, однако в связи с информационной непрозрачностью
+										ФСИН и нашего обоснованного недоверия к официальным сообщениям этого ведомства, проверка сведений
+										крайне затруднена.</p>
+									<v-card style="width: 95%;" wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
+										<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px; font-family: 'Roboto';">
+											{{cases.name_of_fsin}},
+											{{cases.region}}, {{cases.date}}</h3>
+										<p class="mb-2">{{cases.info}}
+											<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
+										</p>
+										<p>Официальное подтверждение со стороны ФСИН:
+											<span v-if="cases.comment_fsin !== ''">{{cases.comment_fsin}}</span>
+											<span v-else>отсутствует</span>
+											<a v-if="cases.sitefsin" :href="cases.sitefsin" target="_blank">{{cases.sitefsin}}</a>
+										</p>
+										<v-divider></v-divider>
+									</v-card>
+								</div>
+								<v-row cols="12" class="ml-1">
+
+									<v-layout style="width: 90%;" wrap v-for="(value, i) in info" :key="i"
+									          v-if="i !== 'name' && i !== 'warning' && i !== 'coronavirus' && $t('infoViewer.' + i).toString() !== ('infoViewer.' + i)">
+										<!-- Special parameters↑                                                if localisation.ts contains this name↑ -->
+										<v-flex xs4 class="info-table-name">{{ $t('infoViewer.' + i).toString() }}</v-flex>
+										<!-- Default: -->
+										<v-flex v-if="i !== 'phones' && i !== 'website'" xs8 class="info-table-value">
+											{{ value }}
+										</v-flex>
+										<!-- Special cases: phones, websites... -->
+										<v-flex xs8 v-else wrap style="width: 100%;">
+											<v-layout v-if="i === 'phones'" v-for="value2 in info.phones" :key="value2" style="width: 100%;">
+												<v-flex class="info-table-value"><a :href="'tel:' + value2">{{ value2 }}</a></v-flex>
+											</v-layout>
+											<v-flex v-if="i === 'website'" xs8>
+												<a :href="value" target="_blank">{{ value }}</a>
+											</v-flex>
+										</v-flex>
+
+										<v-flex xs12 class="divide">
+											<v-divider></v-divider>
+										</v-flex>
+									</v-layout>
+								</v-row>
+
+								<v-row cols="12" v-if="loading">
+									<v-layout style="width: 100%;" wrap v-for="j in 4" :key="j">
+										<v-flex xs6 class="info-table-name">
+											<v-skeleton-loader
+												type="card-heading"
+											></v-skeleton-loader>
+										</v-flex>
+										<v-flex xs6 class="info-table-value">
+											<v-skeleton-loader
+												type="list-item-two-line"
+											></v-skeleton-loader>
+										</v-flex>
+										<br>
+
+									</v-layout>
+								</v-row>
+							</div>
+						</v-window-item>
+
+						<v-window-item>
+							<v-layout v-for="(proof, u) in proofs" :key="u" wrap style="margin-top: 10px">
+								<!--h4>{{proof.title}}</h4-->
+								<v-layout>
+									<div><p style="align-items: center; margin-left: 5px;">
+										<b>{{proof.time}}:</b>
+										<br>
+										{{proof.text}}</p>
+										<v-divider style="width: 100%;"></v-divider>
+									</div>
+								</v-layout>
+								<br>
+							</v-layout>
+							<p v-if="!loading && !proofs.length">Свидетельства отсутствуют</p>
+							<v-skeleton-loader
+								v-if="loading"
+								type="paragraph"
+								v-for="j in 4"
+								:key="j"
+							></v-skeleton-loader>
+						</v-window-item>
+					</v-window>
 				</v-card-text>
 
-				<v-progress-linear
-					background-color="white"
-					color="red"
-					value="35"
-					height="20px"
-
-				></v-progress-linear>
 			</v-col>
 		</v-row>
 	</v-card>
 </template>
 
-<script>
-    import BarChart from '../components/LinearCh'
+<script lang="ts">
+    import Vue from 'vue';
+    import * as store from "../plugins/store";
+    import ViolationChart from "@/components/ViolationChart.vue"
+    import axios from "axios";
+    import {Component, Prop, Watch} from "vue-property-decorator";
 
-    export default {
-        name: "InfoViewer",
-        props: ['info'],
-        components: {
-            BarChart: BarChart
+    Vue.component('violationChart', ViolationChart);
+
+    @Component
+    export default class InfoViewer extends Vue {
+        @Prop({required: true})
+        public _info!: object;
+
+        activeBtn: number = 1;
+        info: Array<any> = [];
+        proofs: Array<object> = [];
+        violations = new Map();
+        covidViolations: Array<object> = [];
+        loading = true;
+
+        //getWord()
+        share() {
+            // warning: this works only over https
+            // on localhost it has no effect
+            navigator.clipboard.writeText(window.location.host + '/?id=' + (this.info as any)._id);
+            store.setSnackbar({
+                message: "Ссылка скопирована",
+                color: "success",
+                active: true
+            });
+        }
+
+        deleteEmpty() {
+            for (let propName in this.info) {
+                if ( (propName !== "warning") && (this.info[propName] === null || this.info[propName].toString() === "" || this.info[propName] === undefined) ) {
+                    // deletes empty props
+                    delete this.info[propName];
+                }
+            }
+        }
+
+        checkCovidViolations() {
+            if ( (this.info as any).coronavirus ) {
+                let _v = (this.info as any).corona_violations; //raw data
+                let v = this.covidViolations;
+                if ( _v != undefined ) {
+                    _v.forEach((val) => {
+                        if ( val.info != "" ) {
+                            let i = val.info.indexOf("http");
+                            val.site = val.info.slice(i, -1);
+                            val.info = val.info.slice(0, i);
+
+                        }
+                        if ( val.comment_fsin != "" ) {
+                            let j = val.comment_fsin.indexOf("http");
+                            val.sitefsin = val.comment_fsin.slice(j, -1);
+                            val.comment_fsin = val.comment_fsin.slice(0, j);
+
+                        }
+                        v.push(val);
+                    })
+                }
+            }
+        }
+
+        checkViolations() {
+            let _v = (this.info as any).violations; //raw data
+            let v = this.violations;
+            if ( _v != undefined ) {
+                _v.forEach((val) => {
+                    Object.keys(val).forEach(value => {
+                        //console.log(value, typeof(val[value]));
+                        if ( val[value] != undefined && typeof (val[value]) == "string"
+                            && val[value] != "" && val[value].toLowerCase().slice(0, 2) != "не" ) {
+                            if ( v.get(value) != undefined )
+                                v.set(value, {
+                                    counter: v.get(value).counter + 1,
+                                    comments: v.get(value).comments.concat(val[value])
+                                });
+                            else v.set(value, {counter: 1, comments: [val[value]]});
+                            if ( value == "additional_information" ) {
+                                this.proofs.push({text: val[value], time: val["time_of_offence"]});
+                            }
+                            //console.log(value);
+                            //this.maxViolations = v.get(value).counter > this.maxViolations ? v.get(value).counter : this.maxViolations;
+                        }
+                    });
+                })
+            }
+            console.log(v);
+            console.log(this.proofs);
+        }
+
+        checkPlace() {
+            let id = (this._info as any)._id;
+            // console.log(id);
+            // console.log(store.isPlace((this._info as any)._id));
+            if ( (this._info as any) !== undefined && (this._info as any)._id !== undefined )
+            // if it's in the storage
+                if ( store.isPlace(id) ) {
+                    // @ts-ignore
+                    this.info = store.place((this._info as any)._id);
+                    this.checkViolations();
+                    this.checkCovidViolations();
+                    this.loading = false;
+                } else
+                    axios.get(store.apibase() + '/places/' + (this._info as any)._id).then(response => {
+                        console.log(response.data.place);
+                        let resp = response.data.place;
+                        resp.name = resp.name.slice(resp.name.indexOf("«") + 1, resp.name.indexOf("»"));
+                        // removes space after №
+                        if ( resp.name.indexOf("№") !== -1 )
+                            resp.name = resp.name.slice(0, resp.name.indexOf("№") + 1) + resp.name.slice(resp.name.indexOf("№") + 2, resp.name.length);
+
+                        this.info = resp;
+                        this.deleteEmpty();
+                        store.setPlace(resp);
+                        this.checkViolations();
+                        this.checkCovidViolations();
+                        this.loading = false;
+                    });
+            console.log(this.$t('infoViewer.type').toString() !== ('infoViewer.ty'));
+        }
+
+        @Watch('_info')
+        onInfoChange(value: object) {
+            console.log(value);
+            // erase previous information
+            this.info = [];
+            this.violations = new Map();
+            this.loading = true;
+            this.covidViolations = [];
+            this.proofs = [];
+            this.checkPlace();
         }
     }
 </script>
@@ -129,8 +331,8 @@
 		z-index: 91;
 		left: 1vh;
 		width: 40vw;
-		bottom: 3vh;
-		height: 85vh;
+		bottom: 1vh !important;
+		height: 75vh;
 		border-radius: 2px;
 	}
 
@@ -146,9 +348,84 @@
 		align-items: flex-end;
 		text-transform: uppercase;
 		color: #D50000 !important;
-		font-family: 'Akrobat';
+		font-family: 'Akrobat' !important;
 		font-weight: 900;
 	}
 
+	.v-item-group > .theme--light > span {
+		color: #000 !important;
+		font-family: 'Akrobat';
+		font-weight: 800;
+		font-size: 1rem;
+	}
 
+	.v-item-group > .theme--dark > span {
+		font-family: 'Akrobat';
+		font-weight: 800;
+		font-size: 1rem;
+	}
+
+	#info-main {
+		width: 94%;
+		margin-left: 3%;
+	}
+
+	@media screen and (max-width: 960px) {
+		.v-item-group > .v-btn > span {
+			font-size: 0.8rem !important;
+		}
+
+		#info-main {
+			width: 100vw;
+			margin: 0;
+		}
+
+		.inform {
+			left: 0;
+			right: 0;
+		}
+	}
+
+	.divide {
+		padding: 17px;
+	}
+
+	.info-table-name {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: bold;
+		font-size: 14px;
+		line-height: 150%;
+		/* or 21px */
+		text-transform: uppercase;
+		color: #070809;
+	}
+
+	.info-table-value {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: normal;
+		font-size: 14px;
+		line-height: 150%;
+		/* or 21px */
+		color: #070809;
+	}
+
+	.v-window-item > .layout > h4 {
+		padding-bottom: 9px;
+	}
+
+	.v-window-item > .layout > p {
+		padding-top: 14px;
+		padding-bottom: 10px;
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: normal;
+		font-size: 12px;
+		line-height: 150%;
+	}
+
+	.info-table-value:first-letter {
+		text-transform: uppercase;
+	}
 </style>

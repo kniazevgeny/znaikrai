@@ -6,109 +6,48 @@
 		v-card-text
 			v-container
 				div(style="width: 50vw")
-					span(class="subtitle1") Ваше свиедтельство поможет пролить свет на происходящее в российских тюрьмаХ. Мы помогаем людям, чьи права были нарушены. Спасибо, что делаете это вместе с нами.
+					span(class="subtitle1") Ваше свидетельство поможет пролить свет на происходящее в российских тюрьмах. Мы помогаем людям, чьи права были нарушены. Спасибо, что делаете это вместе с нами.
 				br
 				v-row(style="margin-top: 35px")
-					v-col(cols='9')
-						span(class="question") Каков Ваш статус?
-						v-text-field(v-model='b_status', required, hint='Обязательное поле', persistent-hint, filled)
-					v-col(cols='9')
-						span(class="question") В каком регионе находится учреждение ФСИН о котором Вы рассказали?
-						v-text-field(v-model='b_region', required, hint='Обязательное поле', persistent-hint, filled)
-					v-col(cols='9')
-						span(class="question") О каком учреждении ФСИН Вы рассказали?
-						v-text-field(label='', v-model='b_fsin_organization', required, hint='Обязательное поле', persistent-hint, filled)
-					v-col(cols='9')
-						span(class="question") Укажите когда произошли нарушения о которых Вы рассказали?
-						v-text-field(label='', v-model='b_time_of_offence', filled)
-					v-col(cols='9')
-						span(class="question") С какими фактами применения физического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?
-						v-text-field(label='', v-model='b_physical_impact_from_employees', filled)
-					v-col(cols='9')
-						span(class="question") С какими фактами применения физического воздействия со стороны заключенных Вам приходилось сталкиваться?
-						v-text-field(label='', v-model='b_physical_impact_from_prisoners', filled)
-					v-col(cols='9')
-						span(class="question") С какими фактами психологического воздействия со стороны сотрудников ФСИН Вам приходилось сталкиваться?
-						v-text-field(label='', v-model='b_psychological_impact_from_employees', filled)
-					v-col(cols='9')
-						span(class="question") С какими фактами психологического воздействия со стороны заключенных Вам приходилось сталкиваться?
-						v-text-field(label='', v-model='b_psychological_impact_from_prisoners', filled)
-					v-col(cols='9')
-						span(class="question") В каких случаях Вы сталкивались с фактами вымогательства со стороны сотрудников ФСИН?
-						v-text-field(label='', v-model='b_extortions_from_employees', filled)
-					v-col(cols='9')
-						span(class="question") Приходилось ли Вам сталкиваться с иными случаями коррупции сотрудников ФСИН?
-						v-text-field(label='', v-model='b_сorruption_from_employees', filled)
-					v-col(cols='9')
-						span(class="question") Приходилось ли Вам сталкиваться с фактами вымогательства со стороны заключенных?
-						v-text-field(label='', v-model='b_extortions_from_prisoners', filled)
-					v-col(cols='9')
-						span(class="question") Какие нарушения, связанные с оказанием медицинской помощи, Вы можете отметить?
-						v-text-field(label='', v-model='b_violations_of_medical_care', filled)
-					v-col(cols='9')
-						span(class="question") Какие нарушения, связанные с питанием, Вы можете отметить?
-						v-text-field(label='', v-model='b_violations_of_food', filled)
-					v-col(cols='9')
-						span(class="question") Какие нарушения, связанные с одеждой, Вы можете отметить?
-						v-text-field(label='', v-model='b_violations_of_clothes', filled)
-					v-col(cols='9')
-						span(class="question") Известны ли Вам случаи трудового рабства?
-						v-text-field(label='', v-model='b_labor_slavery', filled)
-					v-col(cols='9')
-						span(class="question") Укажите, в каком диапазоне находится месячная зарплата заключенных?
-						v-text-field(label='', v-model='b_salary_of_prisoners', filled)
-					v-col(cols='9')
-						span(class="question") Какие нарушения, связанные с предоставлением свиданий с Родственниками, Вам известны?
-						v-text-field(label='', v-model='b_visits_with_relatives', filled)
-					v-col(cols='9')
-						span(class="question") Какие нарушения, связанные с общением с адвокатом (иным лицом, имеющим право на оказание юридической помощи), Вам известны?
-						v-text-field(label='', v-model='b_communication_with_lawyer', filled)
-					v-col(cols='9')
-						span(class="question") Есть ли у заключенных возможность направлять жалобы, ходатайства и заявления в надзирающие органы и правозащитные организации?
-						v-text-field(label='', v-model='b_can_prisoners_submit_complaints', filled)
-					v-col(cols='9')
-						span(class="question") Если ли у Вас есть дополнительная информация, которой Вы готовы поделиться с нами, то ее можно написать здесь:
-						v-text-field(label='Опишите факты', v-model='b_additional_information', filled)
-					v-col(cols='9')
-						span(class="question") Согласны ли Вы на публичную огласку приведенных Вами фактов?
-						v-text-field(label='', v-model='b_public_disclosure', filled)
-					v-col(cols='9')
-						span(class="question") Готовы ли Вы сообщить свое имя и контакты?
-						v-text-field(label='', v-model='b_provide_name_and_contacts', filled)
-					v-col(cols='9')
-						span(class="question") Согласны ли Вы на обработку Ваших персональных данных?
-						v-text-field(label='', v-model='b_processing_personal_data', filled)
-					v-col(cols='9')
-						span(class="question") Какие нарушения, связанные с этапированием заключенных Вам известны?
-						v-text-field(label='', v-model='b_violations_staging', filled)
-					v-col(cols='9')
-						span(class="question") С какими запретами (нарушениями) на отправление религиозных обрядов со стороны сотрудников ФСИН Вам приходилось сталкиваться?
-						v-text-field(label='', v-model='b_violations_religious_rites_from_employees', filled)
-					v-col(cols='9')
-						span(class="question") С какими запретами (нарушениями) на отправление религиозных обрядов со стороны заключенных Вам приходилось сталкиваться?
-						v-text-field(label='', v-model='b_violations_religious_rites_from_prisoners', filled)
-					v-col(cols='9')
-						span(class="question") С какими нарушениями при применении мер взыскания, связанных с водворением в карцер и ШИЗО, переводом в ПКТ, ЕПКТ и на СУС, Вам приходилось сталкиваться?
-						v-text-field(label='', v-model='b_violations_penalties_related_to_placement', filled)
-					v-col(cols='9')
-						span(class="question") Мы могли бы помочь Вам в составлении жалобы в Европейский суд по поводу нарушений в местах лишения свободы. Хотели бы Вы получить такую помощь?
-						v-text-field(label='', v-model='b_help_european_court', filled)
-					v-col(cols='9')
-						span(class="question") Какие нарушения, связанные с иными формами общения с Родственниками, Вам известны?
-						v-text-field(label='', v-model='b_communication_with_relatives', filled)
+					v-col(v-if="loading" cols='9', style="width: 88%; margin-left: 6vw" class="analyse-loader" v-for="j in 6" :key="j")
+						v-skeleton-loader(type="card-heading")
+						v-skeleton-loader(type="sentences")
+					v-col(cols='9' v-for="(value, i) in questions" :key="i")
+						div(v-if="value.type === 'textfield'")
+							span(class="question") {{ value.question }}
+							v-text-field(class="question-textfield" label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
+						div(v-if="value.type === 'textarea'")
+							span(class="question") {{ value.question }}
+							v-textarea(class="question-textfield" auto-grow label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
+						div(v-if="value.type === 'choose_one'")
+							span(class="question") {{ value.question }}
+							v-select(v-model="form[value.name]" :mandatory="value.required" :items="checkboxes[value.name]" outlined class="select" menu-props="rounded='0'")
+								template(v-slot:item="{ item, attrs }")
+									span(class="question-select")
+										span(class="ml-6") {{item}}
+							span(v-if="form[value.name] === 'другое'")
+								v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled, :required="value.required")
+							span(v-if="value.required" class="caption") Обязательное поле
+						div(v-if="value.type === 'choose_multiply'")
+							span(class="question") {{ value.question }}
+							v-item-group(v-model="form[value.name]" :mandatory="value.required" :multiple="value.type === 'choose_multiply'")
+								div(v-for="(n, j) in checkboxes[value.name]" :key="j")
+									v-item(v-slot:default="{ active, toggle }")
+										span(class="question-checkbox" @click="toggle")
+											z-checkbox(:checked="active" style="transform: scale(1.5);" class="ml-1") {{ n }}
+											span(class="ml-6") {{n}}
+								span(v-show="isOtherChoosed(value.name)")
+									v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled)
+								span(v-if="value.required" class="caption") Обязательное поле
 
-				v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent") Отправить
-
-		//v-menu(offset-y)
-																																		 template(v-slot:activator='{ on }')
-																																																																																		v-btn(text icon color='grey' v-on='on') {{currentLocale.icon}}
-																																		 v-list
-																																																																																		v-list-item(v-for='locale in locales' @click='changeLanguage(locale.code)' :key="locale.code")
-
+				v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent" class="btn") Отправить
 </template>
 
 <script lang="ts">
     import Vue from "vue";
+    import Vuetify from 'vuetify';
+
+    Vue.use(Vuetify);
     import Component from "vue-class-component";
     import * as store from "../plugins/store";
     import {i18n} from "../plugins/i18n";
@@ -119,75 +58,132 @@
 
         sent: boolean = false;
         loadingbtn: boolean = false;
-        b_status: string = '';
-        b_region: string = '';
-        b_fsin_organization: string = '';
-        b_time_of_offence: string = '';
-        b_physical_impact_from_employees: string = '';
-        b_physical_impact_from_prisoners: string = '';
-        b_psychological_impact_from_employees: string = '';
-        b_psychological_impact_from_prisoners: string = '';
-        b_extortions_from_employees: string = '';
-        b_сorruption_from_employees: string = '';
-        b_extortions_from_prisoners: string = '';
-        b_violations_of_medical_care: string = '';
-        b_violations_of_food: string = '';
-        b_violations_of_clothes: string = '';
-        b_labor_slavery: string = '';
-        b_salary_of_prisoners: string = '';
-        b_visits_with_relatives: string = '';
-        b_communication_with_lawyer: string = '';
-        b_can_prisoners_submit_complaints: string = '';
-        b_additional_information: string = '';
-        b_public_disclosure: string = '';
-        b_provide_name_and_contacts: string = '';
-        b_processing_personal_data: string = '';
-        b_violations_staging: string = '';
-        b_violations_religious_rites_from_employees: string = '';
-        b_violations_religious_rites_from_prisoners: string = '';
-        b_violations_penalties_related_to_placement: string = '';
-        b_help_european_court: string = '';
-        b_communication_with_relatives: string = '';
+        questions: object[] = [];
+        checkboxes: object[] = []; //checkbox values
+        other: object[] = []; //other values
+        form = {};
+        loading = true;
 
+        isOtherChoosed(name) {
+            //only for checkboxes
+            let ans = false;
+            if ( this.form[name] === undefined ) return false;
+            this.form[name].forEach(i => {
+                if ( this.checkboxes[name][i] === "другое" ) ans = true
+            });
+            return ans;
+        }
+
+        setCheckboxes() {
+            this.questions.forEach(value => {
+                if ( (value as any).type !== "textfield" && (value as any).type !== "textarea" ) {
+                    this.checkboxes[(value as any).name] = (value as any).values;
+                    return (value as any).values;
+                }
+            })
+        }
+
+        getQuestions() {
+            axios.get(store.apibase() + "/formQuestions").then((response) => {
+                console.log("questions", response.status);
+                //console.log(response.data);
+                this.questions = response.data;
+                console.log(this.questions);
+                this.setCheckboxes();
+                this.loading = false;
+            })
+                .catch(err => {
+                    console.log(err);
+                    store.setSnackbar({
+                        message: err.message,
+                        color: "error",
+                        active: true
+                    });
+                })
+        }
+
+        mounted(): void {
+            this.getQuestions();
+        }
+
+        checkField(value) {
+            console.log(value);
+            return value != undefined && value.toString() != "";
+        }
+
+        checkRequired() {
+            //console.log((this.form as any)['public_disclosure']);
+            let ans = true;
+            this.questions.forEach(value => {
+                if ( (value as any).required ) {
+                    if ( (value as any).type === 'textfield' || (value as any).type === 'textarea' ) {
+                        //console.log(this.checkField((this.form as any)[(value as any).name]) == false, (value as any).name);
+                        if ( this.checkField((this.form as any)[(value as any).name]) == false ) ans = false;
+                    }
+                    else if ( (value as any).type === 'choose_one' && (this.form as any)[(value as any).name] === 'другое' ){
+                        if ( this.checkField((this.other as any)[(value as any).name]) == false ) ans = false;
+                    }
+                    //checkboxes processing is below
+                }
+            });
+            return ans;
+        }
 
         sendNewBlank() {
-            if (this.b_status != '' && this.b_region != '' && this.b_fsin_organization != '') {
-                this.loadingbtn = true;
-                axios.post(store.apibase() + "/form",
-                    {
-                        status: this.b_status,
-                        region: this.b_region,
-                        fsin_organization: this.b_fsin_organization,
-                        time_of_offence: this.b_time_of_offence,
-                        physical_impact_from_employees: this.b_physical_impact_from_employees,
-                        physical_impact_from_prisoners: this.b_physical_impact_from_prisoners,
-                        psychological_impact_from_employees: this.b_psychological_impact_from_employees,
-                        psychological_impact_from_prisoners: this.b_psychological_impact_from_prisoners,
-                        extortions_from_employees: this.b_extortions_from_employees,
-                        сorruption_from_employees: this.b_сorruption_from_employees,
-                        extortions_from_prisoners: this.b_extortions_from_prisoners,
-                        violations_of_medical_care: this.b_violations_of_medical_care,
-                        violations_of_food: this.b_violations_of_food,
-                        violations_of_clothes: this.b_violations_of_clothes,
-                        labor_slavery: this.b_labor_slavery,
-                        salary_of_prisoners: this.b_salary_of_prisoners,
-                        visits_with_relatives: this.b_visits_with_relatives,
-                        communication_with_lawyer: this.b_communication_with_lawyer,
-                        can_prisoners_submit_complaints: this.b_can_prisoners_submit_complaints,
-                        additional_information: this.b_additional_information,
-                        public_disclosure: this.b_public_disclosure,
-                        provide_name_and_contacts: this.b_provide_name_and_contacts,
-                        processing_personal_data: this.b_processing_personal_data,
-                        violations_staging: this.b_violations_staging,
-                        violations_religious_rites_from_employees: this.b_violations_religious_rites_from_employees,
-                        violations_religious_rites_from_prisoners: this.b_violations_religious_rites_from_prisoners,
-                        violations_penalties_related_to_placement: this.b_violations_penalties_related_to_placement,
-                        help_european_court: this.b_help_european_court,
-                        communication_with_relatives: this.b_communication_with_relatives
+            console.log((this.form as any).status);
+            console.log("checkRequired", this.checkRequired());
+            if ( this.checkRequired() ) {
+                let b = {};
+                // @ts-ignore
+                for (let i = 0; i < this.questions.length; i++) {
+                    // @ts-ignore
+                    b[this.questions[i].name] = (this.form as any)[this.questions[i].name] == undefined ? "" : (this.form as any)[this.questions[i].name];
+                    // @ts-ignore
+                    let ans = b[this.questions[i].name];
+                    console.log(typeof ans);
+                    if ( ans == 'другое' ) {
+                        //convert checkbox answers (0, 1, 2) to Strings (Да, Нет)
+                        // @ts-ignore
+                        if ( ans === 'другое' ) {
+                            //if checkbox select is Other, take its value
+                            // @ts-ignore
+                            b[this.questions[i].name] = this.other[this.questions[i].name];
+                        }
+                        // @ts-ignore
+                        else b[this.questions[i].name] = this.checkboxes[this.questions[i].name];
+
+                    } else if ( typeof ans == 'object' ) {
+                        //same as above, but for arrays
+                        let ans = "";
+                        // @ts-ignore
+                        (this.form as any)[this.questions[i].name].forEach(j => {
+                            // @ts-ignore
+                            if ( this.checkboxes[this.questions[i].name][j] === 'другое' ) {
+                                if ( ans == "" )
+                                // @ts-ignore
+                                    ans = ans.concat(this.other[this.questions[i].name]);
+                                // @ts-ignore
+                                else ans = ans.concat(", " + this.other[this.questions[i].name]);
+                            } else {
+                                if ( ans == "" )
+                                // @ts-ignore
+                                    ans = ans.concat(this.checkboxes[this.questions[i].name][j]);
+                                // @ts-ignore
+                                else ans = ans.concat(", " + this.checkboxes[this.questions[i].name][j]);
+                            }
+                        });
+                        // @ts-ignore
+                        b[this.questions[i].name] = ans;
                     }
+                }
+                //console.log(b);
+                this.loadingbtn = true;
+                console.log(b);
+                axios.post(store.apibase() + "/form",
+                    b
                 ).then(response => {
                     console.log(response);
-                    if (response.data.message == "ok") {
+                    if ( response.data.message == "ok" ) {
                         this.loadingbtn = false;
                         this.sent = true;
                         store.setSnackbar({
@@ -199,7 +195,7 @@
                 })
                     .catch(err => {
                         store.setSnackbar({
-                            message: err.message,
+                            message: "Ошибка отправки. Повторите попытку позже",
                             color: "error",
                             active: true
                         });
@@ -216,42 +212,100 @@
 </script>
 
 <style>
-	.v-input__slot {
-		border: 2px solid!important;
+	.question-textfield > .v-input__control > .v-input__slot {
+		border: 2px solid !important;
 		border-right: 1px;
 	}
 </style>
-<style >
+<style>
+	@import '../assets/styles/main.css';
+
 	.headlinetxt {
-		font-family: 'Akrobat Black'!important;
+		font-family: 'Akrobat' !important;
+		font-weight: 900;
 		font-style: normal;
-		font-size: 7rem!important;
-		line-height: 6rem;
 	}
 
-	.question{
-		font-family: 'Akrobat'!important;
+	@media screen and (min-width: 960px) {
+		.headlinetxt {
+			font-size: 7rem;
+			line-height: 6rem;
+		}
+	}
+
+	@media screen and (min-width: 600px) and (max-width: 960px) {
+		.headlinetxt {
+			font-size: 5rem;
+			line-height: 5rem;
+			margin-left: 30px;
+		}
+	}
+
+	@media screen and (max-width: 600px) {
+		.headlinetxt {
+			font-size: 3rem;
+			line-height: 4rem;
+			margin-left: 30px
+		}
+	}
+
+	.question {
+		font-family: 'Akrobat' !important;
 		color: #000;
 		font-weight: bold;
 		text-transform: uppercase;
 		font-style: normal;
-		font-size: 1.35rem!important;
+		font-size: 1.35rem !important;
 		line-height: 1.2rem;
 		padding-bottom: 100px;
 	}
 
-	.v-input__control>.v-input__slot{
-		background-color: white!important;
+	.question-textfield > .v-input__control > .v-input__slot {
+		background-color: white !important;
 	}
-	.col-9{
-		padding-bottom: 2rem!important;
+
+	.col-9 {
+		padding-bottom: 2rem !important;
 	}
-	.subtitle1{
+
+	.subtitle1 {
 		text-transform: uppercase;
-		font-family: 'Akrobat'!important;
+		font-family: 'Akrobat' !important;
 		color: #000;
 		font-size: 1.2rem;
 		width: 60vw;
 		margin-top: 20px;
 	}
+
+	.question-checkbox {
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: normal;
+		font-size: 17px;
+		line-height: 200%;
+		/* or 32px */
+		user-select: none;
+		display: flex;
+		align-items: center;
+	}
+	.question-checkbox > span:first-letter {
+		text-transform: uppercase;
+	}
+	.v-btn--outlined.btn {
+		border: 2px solid #000000;
+		border-radius: 1px;
+	}
+	.v-btn--outlined.btn > .v-btn__content{
+		font-family: 'Roboto';
+		font-style: normal;
+		font-weight: bold;
+		font-size: 15px;
+		line-height: 17px;
+		display: flex;
+		align-items: center;
+		margin-left: 10px;
+
+		color: #000000;
+	}
+
 </style>

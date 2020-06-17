@@ -39,6 +39,9 @@
 								span(v-show="isOtherChoosed(value.name)")
 									v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled)
 								span(v-if="value.required" class="caption") Обязательное поле
+						div(v-if="value.type === 'html'")
+							span(class="question") {{ value.question }}
+							div(v-html="value.button" style="background: transparent; width: 183px; height: 45px;" class="iframe-holder")
 
 				v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent" class="btn") Отправить
 </template>
@@ -307,5 +310,14 @@
 
 		color: #000000;
 	}
+	/*mega.nz style*/
+	#bodyel{
+		background: transparent!important;
+	}
+	.iframe-holder > iframe{
+		width: 183px!important;
+		height: 45px!important;
+	}
+	/*--------*/
 
 </style>

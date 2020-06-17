@@ -28,7 +28,7 @@
 					</v-btn>
 				</v-card-actions>
 				<v-card-text>
-					<v-layout justify-space-around style="width: 33%; margin-left: 0%;">
+					<v-layout justify-space-around style="margin-left: 0%;" :style="info.coronavirus ? 'width: 24%;' : 'width: 33%'">
 						<v-btn-toggle v-model="activeBtn" tile mandatory color="white" class="info-navigation" small>
 							<v-btn block :outlined="activeBtn !== 0" :dark="activeBtn === 0" :ripple="false" :depressed="false"
 							       style="border-color: black!important">
@@ -41,6 +41,10 @@
 							<v-btn block :outlined="activeBtn !== 2" :dark="activeBtn === 2" :ripple="false" :depressed="false"
 							       style="border-color: black!important">
 								Свидетельства
+							</v-btn>
+							<v-btn block :outlined="activeBtn !== 3" :dark="activeBtn === 3" :ripple="false" :depressed="false"
+							       style="border-color: black!important" v-if="info.coronavirus">
+								COVID-19
 							</v-btn>
 						</v-btn-toggle>
 					</v-layout>
@@ -65,30 +69,6 @@
 						</v-window-item>
 						<v-window-item>
 							<div class="text--primary" style="color:#000!important; width: 100%; padding-top: 30px">
-
-								<div v-if="info.coronavirus" class="mb-12 ml-1">
-									<h1 style="color: #D50000; font-family: Akrobat">Мониторинг ситуации с коронавирусом</h1>
-									<p style="background: #fac4b7; border-radius: 3px" class="mt-2 mb-2 pa-6">Обращаем внимание, что
-										информация, которая содержится в этом разделе, поступает к нам от родственников заключённых, самих
-										осуждённых, сотрудников ФСИН, защитников или членов ОНК.
-										Эта информация нуждается в дополнительной проверке, однако в связи с информационной непрозрачностью
-										ФСИН и нашего обоснованного недоверия к официальным сообщениям этого ведомства, проверка сведений
-										крайне затруднена.</p>
-									<v-card style="width: 95%;" wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
-										<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px; font-family: 'Roboto';">
-											{{cases.name_of_fsin}},
-											{{cases.region}}, {{cases.date}}</h3>
-										<p class="mb-2">{{cases.info}}
-											<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
-										</p>
-										<p>Официальное подтверждение со стороны ФСИН:
-											<span v-if="cases.comment_fsin !== ''">{{cases.comment_fsin}}</span>
-											<span v-else>отсутствует</span>
-											<a v-if="cases.sitefsin" :href="cases.sitefsin" target="_blank">{{cases.sitefsin}}</a>
-										</p>
-										<v-divider></v-divider>
-									</v-card>
-								</div>
 								<v-row cols="12" class="ml-1">
 
 									<v-layout style="width: 90%;" wrap v-for="(value, i) in info" :key="i"
@@ -154,6 +134,31 @@
 								v-for="j in 4"
 								:key="j"
 							></v-skeleton-loader>
+						</v-window-item>
+						<v-window-item>
+							<div class="mb-12 ml-1">
+								<h1 style="color: #D50000; font-family: Akrobat">Мониторинг ситуации с коронавирусом</h1>
+								<p style="background: #fac4b7; border-radius: 3px" class="mt-2 mb-2 pa-6">Обращаем внимание, что
+									информация, которая содержится в этом разделе, поступает к нам от родственников заключённых, самих
+									осуждённых, сотрудников ФСИН, защитников или членов ОНК.
+									Эта информация нуждается в дополнительной проверке, однако в связи с информационной непрозрачностью
+									ФСИН и нашего обоснованного недоверия к официальным сообщениям этого ведомства, проверка сведений
+									крайне затруднена.</p>
+								<v-card style="width: 95%;" wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
+									<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px; font-family: 'Roboto';">
+										{{cases.name_of_fsin}},
+										{{cases.region}}, {{cases.date}}</h3>
+									<p class="mb-2">{{cases.info}}
+										<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
+									</p>
+									<p>Официальное подтверждение со стороны ФСИН:
+										<span v-if="cases.comment_fsin !== ''">{{cases.comment_fsin}}</span>
+										<span v-else>отсутствует</span>
+										<a v-if="cases.sitefsin" :href="cases.sitefsin" target="_blank">{{cases.sitefsin}}</a>
+									</p>
+									<v-divider></v-divider>
+								</v-card>
+							</div>
 						</v-window-item>
 					</v-window>
 				</v-card-text>

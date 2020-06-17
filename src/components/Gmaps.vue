@@ -94,7 +94,6 @@
 				<v-btn-toggle v-model="mapMode" mandatory tile active-class="v-btn--disabled">
 					<v-btn :small="$vuetify.breakpoint.name === 'xs'" fab>
 						<v-icon>adjust</v-icon>
-					{{ $vuetify.breakpoint.mobile }}
 					</v-btn>
 					<v-btn :small="$vuetify.breakpoint.name === 'xs'" fab>
 						<v-icon>blur_on</v-icon>
@@ -534,7 +533,7 @@
 
         }),
         computed: {
-            google: VueGoogleMaps,
+            google: () => VueGoogleMaps,
         },
         components: {
             InfoViewer: InfoViewer

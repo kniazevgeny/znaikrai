@@ -2,6 +2,7 @@ export const messages = {
     ru: {
         title: 'Темлейт фронтенда',
         notFound: 'Страница не найдена',
+        close: "Закрыть",
         infoViewer: {
             address: "Адрес",
             coronavirus: "",

@@ -113,20 +113,19 @@
 					</v-btn>
 				</v-btn-toggle>
 			</div>
-			<google-map :center="{lat: 61.52401, lng: 105.318756}" :zoom="4"
+			<google-map v-if="google" :center="{lat: 61.52401, lng: 105.318756}" id="map" :zoom="4"
 			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;"
 			            :options="mapTheme === 0 ? mapLightStyle : mapDarkStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
 				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
 				</gmap-info-window>
-				<GmapCluster v-if="!mapMode">
-					<gmap-marker v-if="markers1" v-for="(m,i) in markers1" :key="i" :position="m.position" :clickable="true"
+				<GmapCluster v-if="!mapMode && markers1">
+					<gmap-marker v-for="(m,i) in markers1" :key="i" :position="google && m.position" :clickable="true"
 					             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker>
 				</GmapCluster>
-				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="m.position"
+				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="google && m.position"
 				             :clickable="true"
 				             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker>
-				<!-- m.coronavirus ? iconRedCovid : icong-->
 			</google-map>
 		</v-layout>
 		<transition name="slide-fade" mode="in-out" style="z-index: 101">
@@ -150,6 +149,8 @@
     import axios from "axios";
     import * as store from "../plugins/store";
     import * as VueGoogleMaps from "vue2-google-maps";
+    import {gmapApi} from 'vue2-google-maps'
+    import {loaded} from 'vue2-google-maps'
     import {getColoredMarkerUrl} from "../utils/marker-url-generator";
     import tune_r from "./tuneSVG_r";
     import tune_b from "./tuneSVG_b";
@@ -537,7 +538,7 @@
 
         }),
         computed: {
-            google: () => VueGoogleMaps,
+            google: gmapApi,
         },
         components: {
             InfoViewer: InfoViewer
@@ -663,12 +664,15 @@
             }
         },
         mounted() {
-            // load places onload, but load from store on site navigation
-            this.mapTheme = 1;
-            this.changeTheme(); //set theme
-            this.mapTheme = 0;
-            this.getPlaces();
-            // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
+            this.$gmapApiPromiseLazy().then(() => {
+                var bounds = new google.maps.LatLngBounds() /* etc */
+                // load places onload, but load from store on site navigation
+                this.mapTheme = 1;
+                this.changeTheme(); //set theme
+                this.mapTheme = 0;
+                this.getPlaces();
+                // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
+            });
         },
 
     };

@@ -10,7 +10,7 @@
 		<v-row>
 			<v-col id="info-main">
 				<v-card-actions style="align-items: start">
-					<v-container md10 xs10 class="inf-name">
+					<v-container md10 xs2 class="inf-name">
 						{{info.name}}
 						<v-skeleton-loader
 							v-if="loading"
@@ -75,17 +75,17 @@
 									<v-layout style="width: 90%;" wrap v-for="(value, i) in info" :key="i"
 									          v-if="i !== 'name' && i !== 'warning' && i !== 'coronavirus' && $t('infoViewer.' + i).toString() !== ('infoViewer.' + i)">
 										<!-- Special parameters↑                                                if localisation.ts contains this name↑ -->
-										<v-flex xs4 class="info-table-name">{{ $t('infoViewer.' + i).toString() }}</v-flex>
+										<v-flex xs12 sm4 class="info-table-name">{{ $t('infoViewer.' + i).toString() }}</v-flex>
 										<!-- Default: -->
 										<v-flex v-if="i !== 'phones' && i !== 'website'" xs8 class="info-table-value">
 											{{ value }}
 										</v-flex>
 										<!-- Special cases: phones, websites... -->
-										<v-flex xs8 v-else wrap style="width: 100%;">
+										<v-flex xs12 sm8 v-else wrap style="width: 100%;">
 											<v-layout v-if="i === 'phones'" v-for="value2 in info.phones" :key="value2" style="width: 100%;">
 												<v-flex class="info-table-value"><a :href="'tel:' + value2">{{ value2 }}</a></v-flex>
 											</v-layout>
-											<v-flex v-if="i === 'website'" xs8>
+											<v-flex v-if="i === 'website'" xs12 sm8>
 												<a :href="value" target="_blank">{{ value }}</a>
 											</v-flex>
 										</v-flex>
@@ -152,11 +152,11 @@
 									<p class="mb-2">{{cases.info}}
 										<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
 									</p>
-									<p>Официальное подтверждение со стороны ФСИН:
+									<!--p>Официальное подтверждение со стороны ФСИН:
 										<span v-if="cases.comment_fsin !== ''">{{cases.comment_fsin}}</span>
 										<span v-else>отсутствует</span>
 										<a v-if="cases.sitefsin" :href="cases.sitefsin" target="_blank">{{cases.sitefsin}}</a>
-									</p>
+									</p-->
 									<v-divider></v-divider>
 								</v-card>
 							</div>
@@ -380,6 +380,11 @@
 		.v-item-group > .v-btn > span {
 			font-size: 0.8rem !important;
 		}
+		.inf-name {
+			width: 55%!important;
+			font-size: 30px!important;
+			line-height: 38px;
+		}
 
 		#info-main {
 			width: 100vw;
@@ -389,6 +394,15 @@
 		.inform {
 			left: 0;
 			right: 0;
+		}
+	}
+	@media screen and (max-width: 600px) {
+		.v-item-group > .v-btn > span {
+			font-size: 0.75rem !important;
+			letter-spacing: .05rem!important;
+		}
+		.v-item-group > .v-btn {
+			padding: 0 6px!important;
 		}
 	}
 

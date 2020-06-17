@@ -4,7 +4,7 @@
 		:buttonText='"Ок"'
 		:message='"Мы используем куки"')
 		Navbar(style="z-index: 100")
-		v-content
+		v-main
 			v-layout(column)
 				//Home(style="z-index: 1; position: initial")
 				router-view(style="z-index: 99; position: initial" :dark='$store.state.dark')

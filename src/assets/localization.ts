@@ -1,6 +1,6 @@
 export const messages = {
     ru: {
-        title: 'Темлейт фронтенда',
+        title: 'Знай край',
         notFound: 'Страница не найдена',
         close: "Закрыть",
         infoViewer: {

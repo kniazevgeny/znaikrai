@@ -1,15 +1,22 @@
 <template lang="pug">
 	v-card(:dark='$store.state.dark' style=" background: #F3F3F3;" flat)
 		v-layout( wrap style="margin-top: 5rem;")
-			v-row(wrap)
-				v-card-title(class="headlinetxt" id="analytics-headline")
-					span(style="color: #D50000") {{totalCount}}
-					div(id="analytics-headline-letter")
-						span ---///----///----///----///----//
-					span  свидетельств
-					span {{ headlineEnding }}
-					br
-					span  о нарушениях
+			v-col()
+				v-card-title(class="headlinetxt" id="analytics-headline" )
+					div
+						span(style="color: #D50000") {{totalCount}}
+						div(id="analytics-headline-letter")
+							span ---///----///----///----///----//
+						span  свидетельств
+						span {{ headlineEnding }}
+						br
+						span()  о нарушениях
+					div(style="width: 100%; word-wrap: break-word;")
+						span(style="color: #D50000") {{totalCountCovid}}
+						span(style="word-wrap: normal; white-space: nowrap;")  сообщени
+						span {{ headlineCovidEnding }}
+						span(style="word-wrap: normal; white-space: nowrap;")  о COVID-19 в тюрьмах
+
 
 		v-layout()
 			div(id="analytics-subtitle")
@@ -73,8 +80,10 @@
         skill: number = 90;
         totalCount: number = 371;
         totalCountAppeals: number = 0;
+        totalCountCovid: number = 100;
         loading = true;
         headlineEnding: string = "о";
+        headlineCovidEnding: string = "й";
 
         getWidth(val) {
             let max_ = this.totalCountAppeals;
@@ -164,11 +173,15 @@
                 });
 
                 this.totalCount = response.data.total_count_appeals;
+                this.totalCountCovid = response.data.total_count_appeals_corona;
                 console.log(this.analytics);
                 // set headline ending: "о", "а"
                 if ( this.totalCount % 10 === 1 ) this.headlineEnding = "о";
                 else if ( this.totalCount % 10 >= 2 && this.totalCount % 10 <= 4 ) this.headlineEnding = "а";
                 else this.headlineEnding = "";
+                // set headline Covid ending headlineCovidEnding
+                if ( this.totalCountCovid % 10 === 1 ) this.headlineCovidEnding = "е";
+                else if ( this.totalCountCovid % 10 >= 2 && this.totalCountCovid % 10 <= 4 ) this.headlineCovidEnding = "я";
                 // this.headlineEnding;
                 this.totalCountAppeals = response.data.violations_stats.total_count;
                 this.loading = false;
@@ -237,7 +250,7 @@
 
 	@media screen and (min-width: 1100px) {
 		#analytics-headline {
-			width: 40vw;
+			width: 50vw;
 			font-size: 60px !important;
 			line-height: 60px !important;
 			margin-left: 6vw;
@@ -252,9 +265,9 @@
 	@media screen and (max-width: 1100px) {
 		#analytics-headline {
 			width: 90vw;
-			font-size: 40px !important;
+			font-size: 35px !important;
 			line-height: 40px !important;
-			margin-left: 40px;
+			margin-left: 15px;
 		}
 
 		#analytics-subtitle {

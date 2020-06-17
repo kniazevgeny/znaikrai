@@ -28,7 +28,8 @@
 					</v-btn>
 				</v-card-actions>
 				<v-card-text>
-					<v-layout justify-space-around style="margin-left: 0%;" :style="info.coronavirus ? 'width: 24%;' : 'width: 33%'">
+					<v-layout justify-space-around style="margin-left: 0%;"
+					          :style="info.coronavirus ? 'width: 24%;' : 'width: 33%'">
 						<v-btn-toggle v-model="activeBtn" tile mandatory color="white" class="info-navigation" small>
 							<v-btn block :outlined="activeBtn !== 0" :dark="activeBtn === 0" :ripple="false" :depressed="false"
 							       style="border-color: black!important">

@@ -4,7 +4,7 @@
 			<v-layout dark id="search" height="60" raised tile style="z-index: 4;">
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap color="white">
 					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
-						<v-icon light class="pa-2 ma-0 search-icon"  large style="width: 5vw; height: 60px;">search
+						<v-icon light class="pa-2 ma-0 search-icon" large style="width: 5vw; height: 60px;">search
 						</v-icon>
 						<i id="attach0"></i>
 						<v-autocomplete v-if="markers0" v-model="searchName" @change="search" light height="60"
@@ -27,6 +27,9 @@
 											<z-checkbox :checked="attrs.inputValue"></z-checkbox>
 											{{ item }}
 										</span>
+							</template>
+							<template v-slot:no-data>
+								<span class="ml-4">По запросу не найдено учреждений. Попробуйте изменить запрос.</span>
 							</template>
 						</v-autocomplete>
 						<v-icon light meduim class="pa-2 ma-0 search-icon" style="z-index: 101; height: 60px;"
@@ -128,7 +131,8 @@
 		</v-layout>
 		<transition name="slide-fade" mode="in-out" style="z-index: 101">
 			<v-layout v-show="infoWinOpenMine" class="inform" style="position: absolute !important; margin-bottom: 20vh">
-				<InfoViewer v-if="$vuetify.breakpoint.name !== 'xs' && $vuetify.breakpoint.name !== 'sm'" :_info="currentInfo" @closes="closes()"></InfoViewer>
+				<InfoViewer v-if="$vuetify.breakpoint.name !== 'xs' && $vuetify.breakpoint.name !== 'sm'" :_info="currentInfo"
+				            @closes="closes()"></InfoViewer>
 				<v-dialog v-else v-model="infoWinOpenMine" fullscreen>
 					<InfoViewer :_info="currentInfo" @closes="closes()"></InfoViewer>
 				</v-dialog>
@@ -754,7 +758,7 @@
 	}
 
 	#attach1 > .v-menu__content {
-		width: 15vw!important;
+		width: 15vw !important;
 		min-width: 400px !important;
 		margin-top: -1px;
 	}
@@ -779,16 +783,17 @@
 	}
 
 	.v-autocomplete__content {
-		margin-top: -2px!important;
-		left: 5vw!important;
-		min-width: 40vw!important;
-		width: 40vw!important;
+		margin-top: -2px !important;
+		left: 5vw !important;
+		min-width: 40vw !important;
+		width: 40vw !important;
 	}
 
 	.v-autocomplete__content > .v-list > .v-list-item--link:before {
 		сaret-color: #EEEEEE !important;
 		background: #000;
 	}
+
 	.v-autocomplete__content > .v-list > .v-list-item > .v-ripple__container > .v-ripple__animation {
 		сaret-color: #DDDDDD !important;
 		color: #666 !important;
@@ -800,7 +805,7 @@
 
 	.v-autocomplete__content.v-menu__content {
 		margin-left: -5vw;
-		z-index: 103!important;
+		z-index: 103 !important;
 	}
 
 	.v-list-item > .search-select-menu {

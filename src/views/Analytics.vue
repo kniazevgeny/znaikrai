@@ -221,8 +221,8 @@
 		position: absolute;
 		width: 25%;
 		height: 48px;
-		left: -3.5vw;
-		margin-top: -40px;
+		left: -5vw;
+		margin-top: -30px;
 
 		font-family: 'Source Sans Pro';
 		font-style: normal;
@@ -253,7 +253,7 @@
 			width: 50vw;
 			font-size: 60px !important;
 			line-height: 60px !important;
-			margin-left: 6vw;
+			margin-left: 4.5vw;
 		}
 
 		#analytics-subtitle {

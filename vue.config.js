@@ -5,7 +5,7 @@ module.exports = {
     disableHostCheck: true
   },
   assetsDir: 'static/',
-  /*configureWebpack: {
+  configureWebpack: {
     plugins: [
       new PrerenderSPAPlugin({
         staticDir: path.join(__dirname, 'dist'),
@@ -13,5 +13,5 @@ module.exports = {
         routes: [ '/', '/about', '/stories', '/analytics' ],
       })
     ]
-  }*/
+  }
 }

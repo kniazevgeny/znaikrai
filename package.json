@@ -22,6 +22,7 @@
     "express": "^4.17.1",
     "jest": "^25.1.0",
     "jest-vue-preprocessor": "^1.7.1",
+    "prerender-spa-plugin": "^3.4.0",
     "pug": "^2.0.3",
     "pug-plain-loader": "^1.0.0",
     "vee-validate": "latest",

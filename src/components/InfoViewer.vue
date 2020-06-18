@@ -213,6 +213,7 @@
 
         checkCovidViolations() {
             if ( (this.info as any).coronavirus ) {
+                this.activeBtn = 3; //focus on covid window
                 let _v = (this.info as any).corona_violations; //raw data
                 let v = this.covidViolations;
                 if ( _v != undefined ) {

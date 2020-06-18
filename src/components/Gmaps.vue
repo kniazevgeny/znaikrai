@@ -623,13 +623,14 @@
             getColor(value) {
                 //value from 0 to 1
                 //https://stackoverflow.com/questions/7128675/from-green-to-red-color-depend-on-percentage/7128796
-                let hue = (Math.pow(1 - value, 3) * 105).toString(10);
+                let hue = (Math.pow(1 - value, 1.3) * 100).toString(10); //105 - max = red
                 return ["hsl(", hue, ",85%,40%)"].join("");
             },
             getIcon(marker) {
                 const maxviolations = 15;
                 // if there's no violations, gray color is used
                 if (!marker.number_of_violations && !marker.coronavirus) return getColoredMarkerUrl(["hsl(0, 0%, 50%)"], marker.coronavirus);
+                if (marker.coronavirus) return getColoredMarkerUrl(["hsl(0, 85%, 40%)"], marker.coronavirus);
                 // this calls Marker or MarkerCovid.vue with color param
                 return getColoredMarkerUrl(this.getColor(marker.number_of_violations / maxviolations), marker.coronavirus);
             },

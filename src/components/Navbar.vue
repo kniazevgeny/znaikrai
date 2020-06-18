@@ -156,11 +156,16 @@
 		font-family: 'Akrobat';
 		font-size: 1rem;
 		line-height: 1.5rem;
-		width: 25vw;
+		width: 20vw;
 		color: #000;
 	}
 	#navbar-logo-slogan.theme--dark {
 		color: #fff;
+	}
+	@media screen and (min-width: 1500px) {
+		#navbar-logo-slogan {
+			width: 15vw;
+		}
 	}
 </style>
 

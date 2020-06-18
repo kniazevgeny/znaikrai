@@ -130,7 +130,7 @@
 		</v-layout>
 		<transition name="slide-fade" mode="in-out" style="z-index: 101">
 			<v-layout v-show="infoWinOpenMine" class="inform" style="position: absolute !important; margin-bottom: 20vh">
-				<InfoViewer v-if="$vuetify.breakpoint.name !== 'xs' && $vuetify.breakpoint.name !== 'sm'" :_info="currentInfo"
+				<InfoViewer v-if="getWidth() >= 1150" :_info="currentInfo"
 				            @closes="closes()"></InfoViewer>
 				<v-dialog v-else v-model="infoWinOpenMine" fullscreen>
 					<InfoViewer :_info="currentInfo" @closes="closes()"></InfoViewer>
@@ -544,6 +544,9 @@
             InfoViewer: InfoViewer
         },
         methods: {
+            getWidth() {
+                return window.innerWidth
+            },
             processPlaces(raw) {
                 let sorted = raw.sort(function (a, b) {
                     let x = a.name.toLowerCase();
@@ -870,6 +873,7 @@
 		z-index: 10;
 		transform: rotate(90deg);
 	}
+
 	#modePicker > .v-item-group > button {
 		min-width: 45px;
 		width: 45px;
@@ -884,6 +888,7 @@
 		z-index: 10;
 		transform: rotate(90deg);
 	}
+
 	#themePicker > .v-item-group > button {
 		min-width: 45px;
 		width: 45px;

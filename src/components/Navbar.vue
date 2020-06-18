@@ -17,7 +17,8 @@
 				div(id="letter", :style='$store.state.dark ? "color: white" : "color: black"') ///      ///      ///
 		div(:style=`$route.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 0px; left: 0; right: 0; margin: auto; position: absolute')
 			v-img(:src="require('../assets/logo.svg')", width=60, height=60, :style='$store.state.dark ? "filter: none" : "filter: invert()"' id="navbar-logo" style="position: absolute; bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;")
-			p(:style=`$route.path === "/" ? "position: fixed": "position: absolute;"` style="justify-content: center; top: 80px; left: 0; right: 0; margin: auto; position: absolute bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;" id="navbar-logo-slogan") Знайкрай — мониторинг нарушений прав человека в тюрьмах
+			div(:style=`$route.path === "/" ? "position: fixed": "position: absolute;"` id="navbar-logo-slogan" v-if="$vuetify.breakpoint.name !== 'xs' && $vuetify.breakpoint.name !== 'sm'" style="justify-content: center; top: 80px; left: 0; right: 0; margin: auto; position: absolute bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;")
+				p(:style='$store.state.dark ? "filter: invert()" : "filter: none"') Знайкрай — мониторинг нарушений прав человека в тюрьмах
 
 
 </template>
@@ -155,8 +156,11 @@
 		font-family: 'Akrobat';
 		font-size: 1rem;
 		line-height: 1.5rem;
-		width: 20vw;
+		width: 25vw;
 		color: #000;
+	}
+	#navbar-logo-slogan.theme--dark {
+		color: #fff;
 	}
 </style>
 

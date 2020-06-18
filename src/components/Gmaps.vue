@@ -870,6 +870,11 @@
 		z-index: 10;
 		transform: rotate(90deg);
 	}
+	#modePicker > .v-item-group > button {
+		min-width: 45px;
+		width: 45px;
+		height: 45px;
+	}
 
 	#themePicker {
 		position: absolute;
@@ -878,6 +883,11 @@
 		clear: right;
 		z-index: 10;
 		transform: rotate(90deg);
+	}
+	#themePicker > .v-item-group > button {
+		min-width: 45px;
+		width: 45px;
+		height: 45px;
 	}
 
 	#search {

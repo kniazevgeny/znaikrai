@@ -66,13 +66,9 @@
 							          :items="searchCovids"
 							          label="По наличию COVID-19" menu-props="top, offsetY, light"
 							          placeholder="Все" attach="#attach2"
-							          multiple dense style="z-index: 100; width: 15vw">
+							          dense style="z-index: 100; width: 15vw">
 								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-									<span
-										v-if="(searchCovid.indexOf('Да') !== -1 && searchCovid.indexOf('Нет') !== -1) || searchCovid.length === 0">
-										<span v-if="index === 0 || searchCovid.length === 0">Все</span>
-									</span>
-									<span v-else>{{ item }}</span>
+									<span>{{ item }}</span>
 								</template>
 								<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
 										<span class="search-select-menu">
@@ -527,8 +523,8 @@
             },
             searchTypes: [],
             searchType: [],
-            searchCovids: ['Да', 'Нет'],
-            searchCovid: ['Да', 'Нет'],
+            searchCovids: ['Только с COVID-19', 'Все'],
+            searchCovid: 'Только с COVID-19',
             searchName: "",
             searchNames: [],
             options: false,
@@ -580,7 +576,7 @@
                     //console.log(store.apibase());
                     axios.get(store.apibase() + '/places/').then(response => {
                         this.processPlaces(response.data.places);
-
+                        this.search();
                     });
                     //this.$router.replace("cabinet");
                 } catch (err) {
@@ -653,10 +649,8 @@
                 );
                 this.markers1 = this.markers1.filter(
                     tmp => {
-                        if (this.searchCovid.length === 1)
-                            if (this.searchCovid[0] === "Да") return tmp.coronavirus === true;
-                            else return tmp.coronavirus === false;
-                        return true
+                        if (this.searchCovid === this.searchCovids[0]) return tmp.coronavirus === true;
+                        else return tmp.coronavirus === false;
                     }
                 );
                 this.searchNames = [];

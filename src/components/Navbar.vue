@@ -157,6 +157,7 @@
 		font-size: 1rem;
 		line-height: 1.5rem;
 		width: 20vw;
+		font-weight: 800;
 		color: #000;
 	}
 	#navbar-logo-slogan.theme--dark {

@@ -115,7 +115,7 @@
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
 				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
 				</gmap-info-window>
-				<GmapCluster v-if="!mapMode && markers1" :animation="1" zoomOnClick>
+				<GmapCluster v-if="!mapMode && markers1" :animation="4" zoomOnClick imagePath="static/cluster" imageExtension="svg" :imageSizes="[30, 30, 30, 30, 30]">
 					<gmap-marker v-for="(m,i) in markers1" :key="i" :position="google && m.position" :clickable="true"
 					             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker>
 				</GmapCluster>
@@ -647,12 +647,13 @@
                 this.markers1 = this.markers1.filter(
                     tmp => this.searchType.includes(tmp.type)
                 );
-                this.markers1 = this.markers1.filter(
-                    tmp => {
-                        if (this.searchCovid === this.searchCovids[0]) return tmp.coronavirus === true;
-                        else return tmp.coronavirus === false;
-                    }
-                );
+                if (this.searchCovid !== 'Все')
+	                this.markers1 = this.markers1.filter(
+	                    tmp => {
+	                        if (this.searchCovid === this.searchCovids[0]) return tmp.coronavirus === true;
+	                        else return tmp.coronavirus === false;
+	                    }
+	                );
                 this.searchNames = [];
                 this.markers1.forEach(val => this.searchNames.push(val.name));
                 if (this.searchName !== "")

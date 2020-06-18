@@ -1,7 +1,6 @@
 const express = require('express');
-var https = require('https');
 const bodyParser = require('body-parser');
-var compression = require('compression');
+//var compression = require('compression');
 const path = require('path');
 
 const PORT = process.env.PORT || 5000;
@@ -11,8 +10,7 @@ const INDEX = path.resolve(STATIC, 'index.html');
 
 
 const app = express();
-app.use(bodyParser.json());
-app.use(compression());
+//app.use(compression());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Static content

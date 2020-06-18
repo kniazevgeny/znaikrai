@@ -115,7 +115,8 @@
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
 				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
 				</gmap-info-window>
-				<GmapCluster v-if="!mapMode && markers1" :animation="4" zoomOnClick imagePath="static/cluster" imageExtension="svg" :imageSizes="[30, 30, 30, 30, 30]">
+				<GmapCluster v-if="!mapMode && markers1" imagePath="static/cluster" imageExtension="svg" :imageSizes="[30, 30, 30, 30, 30]"
+				             averageCenter :animation="4" zoomOnClick>
 					<gmap-marker v-for="(m,i) in markers1" :key="i" :position="google && m.position" :clickable="true"
 					             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker>
 				</GmapCluster>

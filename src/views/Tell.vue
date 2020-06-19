@@ -13,13 +13,13 @@
 						v-skeleton-loader(type="card-heading")
 						v-skeleton-loader(type="sentences")
 					v-col(cols='9' v-for="(value, i) in questions" :key="i")
-						div(v-if="value.type === 'textfield'")
+						div(v-if="value.type === 'textfield' && (value.requires === '' || form[value.requires] === 'Да')")
 							span(class="question") {{ value.question }}
 							v-text-field(class="question-textfield" label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
-						div(v-if="value.type === 'textarea'")
+						div(v-if="value.type === 'textarea' && (value.requires === '' || form[value.requires] === 'Да')")
 							span(class="question") {{ value.question }}
 							v-textarea(class="question-textfield" auto-grow label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
-						div(v-if="value.type === 'choose_one'")
+						div(v-if="value.type === 'choose_one' && (value.requires === '' || form[value.requires] === 'Да')")
 							span(class="question") {{ value.question }}
 							v-select(v-model="form[value.name]" :mandatory="value.required" :items="checkboxes[value.name]" outlined class="select" menu-props="rounded='0'")
 								template(v-slot:item="{ item, attrs }")
@@ -28,7 +28,7 @@
 							span(v-if="form[value.name] === 'другое'")
 								v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled, :required="value.required")
 							span(v-if="value.required" class="caption") Обязательное поле
-						div(v-if="value.type === 'choose_multiply'")
+						div(v-if="value.type === 'choose_multiply' && (value.requires === '' || form[value.requires] === 'Да')")
 							span(class="question") {{ value.question }}
 							v-item-group(v-model="form[value.name]" :mandatory="value.required" :multiple="value.type === 'choose_multiply'")
 								div(v-for="(n, j) in checkboxes[value.name]" :key="j")
@@ -70,7 +70,7 @@
         isOtherChoosed(name) {
             //only for checkboxes
             let ans = false;
-            if ( this.form[name] === undefined ) return false;
+            if ( this.form[name] === undefined || this.form[name].toString() ===  "") return false;
             this.form[name].forEach(i => {
                 if ( this.checkboxes[name][i] === "другое" ) ans = true
             });
@@ -122,8 +122,7 @@
                     if ( (value as any).type === 'textfield' || (value as any).type === 'textarea' ) {
                         //console.log(this.checkField((this.form as any)[(value as any).name]) == false, (value as any).name);
                         if ( this.checkField((this.form as any)[(value as any).name]) == false ) ans = false;
-                    }
-                    else if ( (value as any).type === 'choose_one' && (this.form as any)[(value as any).name] === 'другое' ){
+                    } else if ( (value as any).type === 'choose_one' && (this.form as any)[(value as any).name] === 'другое' ) {
                         if ( this.checkField((this.other as any)[(value as any).name]) == false ) ans = false;
                     }
                     //checkboxes processing is below
@@ -141,8 +140,24 @@
                 for (let i = 0; i < this.questions.length; i++) {
                     // @ts-ignore
                     b[this.questions[i].name] = (this.form as any)[this.questions[i].name] == undefined ? "" : (this.form as any)[this.questions[i].name];
+                    // check requires parameter
+                    // @ts-ignore
+                    if ( this.questions[i].name.slice(-5, this.questions[i].name.length) === "_sure" ) {
+                        // @ts-ignore
+                        if ( b[this.questions[i].name] !== "Да" ) {
+                            // @ts-ignore
+		                        console.log(this.questions[i].name);
+                            // @ts-ignore
+                            (this.form as any)[this.questions[i].name.slice(0, -5)] = "";
+                            // @ts-ignore
+                            b[this.questions[i].name.slice(0, -5)] = "";
+                        }
+                        // @ts-ignore
+                        delete b[this.questions[i].name];
+                    }
                     // @ts-ignore
                     let ans = b[this.questions[i].name];
+                    console.log(ans);
                     console.log(typeof ans);
                     if ( ans == 'другое' ) {
                         //convert checkbox answers (0, 1, 2) to Strings (Да, Нет)
@@ -182,6 +197,7 @@
                 //console.log(b);
                 this.loadingbtn = true;
                 console.log(b);
+                console.log(this.other);
                 axios.post(store.apibase() + "/form",
                     b
                 ).then(response => {
@@ -291,14 +307,17 @@
 		display: flex;
 		align-items: center;
 	}
+
 	.question-checkbox > span:first-letter {
 		text-transform: uppercase;
 	}
+
 	.v-btn--outlined.btn {
 		border: 2px solid #000000;
 		border-radius: 1px;
 	}
-	.v-btn--outlined.btn > .v-btn__content{
+
+	.v-btn--outlined.btn > .v-btn__content {
 		font-family: 'Roboto';
 		font-style: normal;
 		font-weight: bold;
@@ -310,14 +329,17 @@
 
 		color: #000000;
 	}
+
 	/*mega.nz style*/
-	#bodyel{
-		background: transparent!important;
+	#bodyel {
+		background: transparent !important;
 	}
-	.iframe-holder > iframe{
-		width: 183px!important;
-		height: 45px!important;
+
+	.iframe-holder > iframe {
+		width: 183px !important;
+		height: 45px !important;
 	}
+
 	/*--------*/
 
 </style>

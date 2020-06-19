@@ -114,7 +114,7 @@
 										{{cases.name_of_fsin}},
 										{{cases.region}}, {{cases.date}}</h3>
 									<p class="mb-2">«{{cases.info}}»
-										<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
+										<a v-if="cases.site" :href="cases.site" rel="noreferrer" target="_blank">{{cases.site}}</a>
 									</p>
 									<!--p>Официальное подтверждение со стороны ФСИН:
 										<span v-if="cases.comment_fsin !== ''">{{cases.comment_fsin}}</span>
@@ -160,7 +160,7 @@
 												<v-flex class="info-table-value"><a :href="'tel:' + value2">{{ value2 }}</a></v-flex>
 											</v-layout>
 											<v-flex v-if="i === 'website'" xs12 sm8>
-												<a :href="value" target="_blank">{{ value }}</a>
+												<a :href="value" target="_blank" rel="noreferrer">{{ value }}</a>
 											</v-flex>
 										</v-flex>
 

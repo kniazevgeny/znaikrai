@@ -19,7 +19,7 @@
 				br
 			v-container(style="margin-top: 100px")
 				v-layout(wrap)
-					a(href="https://zekovnet.ru/help-us/" target="_blank" style="width: 100%; text-decoration: none")
+					a(href="https://zekovnet.ru/help-us/" target="_blank" rel="noreferrer" style="width: 100%; text-decoration: none")
 						v-btn(block tile text class="navbar-text" outlined large ) Поддержать проект
 					//div(style="width: 25vw")
 							v-select(:items="ways" outlined v-model="current" label="" background-color="grey_e5" color="black" style="" class="about-select")
@@ -36,9 +36,9 @@
 				v-card-text.pt-0
 					span Данный проект имеет открытый исходный код:
 					br
-					a(href="https://github.com/kniazevgeny/znaikrai/" target="_blank" style="color: #3fcff6") Фронтенд
+					a(href="https://github.com/kniazevgeny/znaikrai/" target="_blank" rel="noreferrer" style="color: #3fcff6") Фронтенд
 					br
-					a(href="https://github.com/semyon-dev/znai-krai" target="_blank" style="color: #3fcff6") Бэкенд
+					a(href="https://github.com/semyon-dev/znai-krai" target="_blank" rel="noreferrer" style="color: #3fcff6") Бэкенд
 
 </template>
 

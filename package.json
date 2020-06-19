@@ -21,6 +21,7 @@
     "compression": "^1.7.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "http2": "^3.3.7",
     "jest": "^25.1.0",
     "jest-vue-preprocessor": "^1.7.1",
     "prerender-spa-plugin": "^3.4.0",

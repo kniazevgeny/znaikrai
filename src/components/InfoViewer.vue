@@ -28,8 +28,8 @@
 					</v-btn>
 				</v-card-actions>
 				<v-card-text>
-					<v-layout justify-space-around style="margin-left: 0%;"
-					          :style="info.coronavirus ? 'width: 24%;' : 'width: 33%'">
+					<v-layout justify-space-around class="ml-0 pl-0"
+					          :style="info.coronavirus ? 'width: 25%;' : 'width: 33%'">
 						<v-btn-toggle v-model="activeBtn" tile mandatory color="white" class="info-navigation" small>
 							<v-btn block :outlined="activeBtn !== 0" :dark="activeBtn === 0" :ripple="false" :depressed="false"
 							       style="border-color: black!important">
@@ -53,8 +53,46 @@
 					<v-layout v-if="info.warning" style="padding-right: 4%;">
 						<v-btn large disabled block outlined color="orange">{{ info.warning }}</v-btn>
 					</v-layout>
-					<v-window v-model="activeBtn">
+					<v-layout v-if="info.coronavirus" class="mt-0">
+						<v-dialog
+							v-model="covidDialog"
+							width="500"
+						>
+							<template v-slot:activator="{ on }">
+								<v-btn tile light large outlined block color="black" class="btn-thin" v-on="on">узнать о коронавирусе в тюрьмах</v-btn>
+							</template>
+							<v-card>
+								<v-card-title
+									class="headline"
+									primary-title
+								>
+									Коронавирус в тюрьмах
+								</v-card-title>
+								<v-card-text>
+									Заключенные в России — одна из самых незащищенных групп граждан. Колонии становятся одними из самых крупных очагов распространения коронавируса.
+									Эти вспышки тяжело остановить. Большая часть заключенных имеет сниженный иммунитет и массу сопутствующих заболеваний, в том числе ВИЧ.
+									Еще одним важным фактором является скученность осужденных в бараках. В среднем, в одном бараке содержится около 150-200 человек.
+									Распространение вируса в таких условиях — моментальное. Как изолировать заболевших и тех, кто с ними контактировал, в условиях колонии не ясно.
+									Качество медицинской помощи в МЛС тоже оставляет желать лучшего.
+									Повальная нехватка медикаментов, отсутствие квалифицированных врачей и просто отсутствие необходимого количества коек в санчасти - все это приведет к огромному количеству смертей.
+									<br>
+									<br>
+									Именно поэтому очень важно, чтобы происходящее внутри исправительных учреждений не оставалось за закрытыми стенами, а как можно больше освещалось в СМИ и среди правозащитных организаций.
+									<br>
+									<br>
+									“Русь сидящая” ведет собственный регулярный мониторинг ситуации в млс со 02.04.2020.
+									Собираем и систематизируем данные о ситуациях в различных учреждениях ФСИН с помощью сообщений, которые получаем от родственников осужденных в обращениях к фонду и комментариев в социальных сетях “Руси сидящей”.
+									По каждому сообщению проводим внутреннюю проверку. По грубейшим нарушениям юристы фонда готовят и отправляют жалобы в Генеральную прокуратуру.
+									Данные, полученные в ходе мониторинга, мы наносим на карту. Мы призываем журналистов, правозащитников, осужденных и их родственников принять участие в нашем мониторинге и сообщать о любых имеющихся данных о ситуации с коронавирусом в колониях.
+								</v-card-text>
+							</v-card>
+						</v-dialog>
+					</v-layout>
+					<v-window v-model="activeBtn" class="mt-5">
 						<v-window-item>
+							<p style="background: #f3f3f3; border-radius: 3px" class="mb-2 pa-6">
+							{{$t('infoViewer.violationDescription')}}
+						</p>
 							<violationChart
 								v-if="violations.size && $t('violation_types.' + violation[0]).toString() !== ('violation_types.' + violation[0])"
 								v-for="(violation, i) in violations" :key="i"
@@ -116,13 +154,16 @@
 						</v-window-item>
 
 						<v-window-item>
+							<p style="background: #f3f3f3; border-radius: 3px" class="mt-2 mb-2 pa-6">
+								{{$t('infoViewer.responsibilityWarning')}}
+							</p>
 							<v-layout v-for="(proof, u) in proofs" :key="u" wrap style="margin-top: 10px">
 								<!--h4>{{proof.title}}</h4-->
 								<v-layout>
 									<div><p style="align-items: center; margin-left: 5px;">
 										<b>{{proof.time}}:</b>
 										<br>
-										{{proof.text}}</p>
+										«{{proof.text}}»</p>
 										<v-divider style="width: 100%;"></v-divider>
 									</div>
 								</v-layout>
@@ -139,17 +180,14 @@
 						<v-window-item>
 							<div class="mb-12 ml-1">
 								<h1 style="color: #D50000; font-family: Akrobat">Мониторинг ситуации с коронавирусом</h1>
-								<p style="background: #fac4b7; border-radius: 3px" class="mt-2 mb-2 pa-6">Обращаем внимание, что
-									информация, которая содержится в этом разделе, поступает к нам от родственников заключённых, самих
-									осуждённых, сотрудников ФСИН, защитников или членов ОНК.
-									Эта информация нуждается в дополнительной проверке, однако в связи с информационной непрозрачностью
-									ФСИН и нашего обоснованного недоверия к официальным сообщениям этого ведомства, проверка сведений
-									крайне затруднена.</p>
+								<p style="background: #f3f3f3; border-radius: 3px" class="mt-2 mb-2 pa-6">
+									{{$t('infoViewer.responsibilityWarning')}}
+								</p>
 								<v-card style="width: 95%;" wrap tile flat v-for="(cases, i) in covidViolations" :key="i">
 									<h3 style="width: 100%; margin-top: 10px; margin-bottom: 0px; font-family: 'Roboto';">
 										{{cases.name_of_fsin}},
 										{{cases.region}}, {{cases.date}}</h3>
-									<p class="mb-2">{{cases.info}}
+									<p class="mb-2">«{{cases.info}}»
 										<a v-if="cases.site" :href="cases.site" target="_blank">{{cases.site}}</a>
 									</p>
 									<!--p>Официальное подтверждение со стороны ФСИН:
@@ -172,9 +210,9 @@
 <script lang="ts">
     import Vue from 'vue';
     import * as store from "../plugins/store";
-    import ViolationChart from "@/components/ViolationChart.vue"
     import axios from "axios";
     import {Component, Prop, Watch} from "vue-property-decorator";
+    import ViolationChart from "@/components/ViolationChart.vue"
 
     Vue.component('violationChart', ViolationChart);
 
@@ -188,6 +226,7 @@
         proofs: Array<object> = [];
         violations = new Map();
         covidViolations: Array<object> = [];
+        covidDialog = false;
         loading = true;
 
         //getWord()
@@ -217,6 +256,7 @@
                 let _v = (this.info as any).corona_violations; //raw data
                 let v = this.covidViolations;
                 if ( _v != undefined ) {
+                    // get links from strings
                     _v.forEach((val) => {
                         if ( val.info != "" ) {
                             let i = val.info.indexOf("http");
@@ -310,6 +350,7 @@
 </script>
 
 <style>
+	@import url('../assets/styles/main.css');
 	/*.off {
 			!*display: none;
 

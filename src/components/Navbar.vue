@@ -16,7 +16,8 @@
 			v-btn(tile, outlined, style="margin-right: 4%; padding: 0 16px!important", class="navbar-text", :to="'/tell'",  :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'", id="tellus") СООБЩИТЬ О НАРУШЕНИИ
 				div(id="letter", :style='$store.state.dark ? "color: white" : "color: black"') ///      ///      ///
 		div(:style=`$route.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 0px; left: 0; right: 0; margin: auto; position: absolute')
-			v-img(:src="require('../assets/logo.svg')", width=60, height=60, :style='$store.state.dark ? "filter: none" : "filter: invert()"' id="navbar-logo" style="position: absolute; bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;")
+			v-btn(icon :to="'/'" :style='$store.state.dark ? "filter: none" : "filter: invert()"' style="position: absolute; bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;" id="navbar-logo")
+				v-img(:src="require('../assets/logo.svg')", width=60, height=60,)
 			div(:style=`$route.path === "/" ? "position: fixed": "position: absolute;"` id="navbar-logo-slogan" v-if="$vuetify.breakpoint.name !== 'xs' && $vuetify.breakpoint.name !== 'sm'" style="justify-content: center; top: 80px; left: 0; right: 0; margin: auto; position: absolute bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;")
 				p(:style='$store.state.dark ? "filter: invert()" : "filter: none"') Знайкрай — мониторинг нарушений прав человека в тюрьмах
 

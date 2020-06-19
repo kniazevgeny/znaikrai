@@ -50,3 +50,21 @@
 .question-select:first-letter {
     text-transform: uppercase!important;
 }
+/* BUTTON */
+.v-btn--outlined.btn {
+    border: 2px solid #000000;
+    border-radius: 1px;
+}
+.v-btn--outlined.btn-thin {
+    border: 1px solid #000000;
+    border-radius: 1px;
+}
+.btn-thin > span {
+    letter-spacing: .05rem!important;
+    font-family: 'Akrobat';
+    font-weight: 800;
+    font-size: .9rem;
+}
+.v-item-group > .btn-thin {
+    padding: 0 6px!important;
+}

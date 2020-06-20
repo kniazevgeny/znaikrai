@@ -35,13 +35,28 @@
 						<v-icon light meduim class="pa-2 ma-0 search-icon" style="z-index: 101; height: 60px;"
 						        @click="searchName = ''; search()">mdi-window-close
 						</v-icon>
+						<span id="attach2"></span>
+						<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchCovid"
+						          :items="searchCovids"
+						          label="По наличию COVID-19" menu-props="top, offsetY, light"
+						          placeholder="Все" attach="#attach2"
+						          dense style="z-index: 100; width: 15vw">
+							<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
+								<span>{{ item }}</span>
+							</template>
+							<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
+										<span class="search-select-menu">
+											<z-checkbox :checked="attrs.inputValue"></z-checkbox>
+											{{ item }}
+										</span>
+							</template>
+						</v-select>
 					</v-layout>
 				</v-card>
 				<v-card dark height="60" raised tile style="z-index: 4;" wrap>
 					<transition name="fade1" mode="out-in">
-						<v-layout v-if="options" wrap style="max-width: 50vw">
+						<v-layout v-if="options" wrap style="max-width: 20vw">
 							<span id="attach1"></span>
-							<span id="attach2"></span>
 							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchType"
 							          :items="searchTypes" attach="#attach1"
 							          label="По типу учреждения" multiple menu-props="light, top, offsetY"
@@ -61,20 +76,8 @@
 											{{ item }}
 										</span>
 								</template>
-							</v-select>
-							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchCovid"
-							          :items="searchCovids"
-							          label="По наличию COVID-19" menu-props="top, offsetY, light"
-							          placeholder="Все" attach="#attach2"
-							          dense style="z-index: 100; width: 15vw">
-								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-									<span>{{ item }}</span>
-								</template>
-								<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
-										<span class="search-select-menu">
-											<z-checkbox :checked="attrs.inputValue"></z-checkbox>
-											{{ item }}
-										</span>
+								<template v-slot:no-data>
+									<span class="ml-4">По запросу не найдено учреждений. Попробуйте изменить запрос.</span>
 								</template>
 							</v-select>
 						</v-layout>
@@ -769,7 +772,7 @@
 
 	#attach2 > .v-menu__content {
 		margin-top: -1px;
-		margin-left: 33vw;
+		margin-left: 39vw;
 	}
 
 	span > .v-menu__content > .v-list > .v-list-item {

@@ -206,7 +206,7 @@
                         this.loadingbtn = false;
                         this.sent = true;
                         store.setSnackbar({
-                            message: "Успех! Ваша заявка теперь находится в обработке.",
+                            message: "Спасибо. Ваша заявка теперь находится в обработке.",
                             color: "success",
                             active: true
                         });

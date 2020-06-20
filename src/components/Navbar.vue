@@ -157,7 +157,7 @@
 		font-family: 'Akrobat';
 		font-size: 1rem;
 		line-height: 1.5rem;
-		width: 20vw;
+		width: 18vw;
 		font-weight: 800;
 		color: #000;
 	}

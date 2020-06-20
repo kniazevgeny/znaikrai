@@ -721,6 +721,10 @@
 
 	@import url('../assets/styles/main.css');
 
+	#map {
+		padding: 0!important;
+	}
+
 	.search-select > .v-input__control > .v-input__slot {
 		background-color: #000;
 	}
@@ -940,7 +944,7 @@
 
 	#search {
 		position: absolute;
-		top: 80vh;
+		top: 90vh;
 		left: 20px;
 		z-index: 10;
 	}

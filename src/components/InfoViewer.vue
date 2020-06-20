@@ -313,8 +313,8 @@
                     });
                 })
             }
-            console.log(v);
-            console.log(this.proofs);
+            //console.log(v);
+            //console.log(this.proofs);
         }
 
         checkPlace() {
@@ -345,12 +345,12 @@
                         this.checkCovidViolations();
                         this.loading = false;
                     });
-            console.log(this.$t('infoViewer.type').toString() !== ('infoViewer.ty'));
+            //console.log(this.$t('infoViewer.type').toString() !== ('infoViewer.ty'));
         }
 
         @Watch('_info')
         onInfoChange(value: object) {
-            console.log(value);
+            //console.log(value);
             // erase previous information
             this.info = [];
             this.violations = new Map();
@@ -393,8 +393,8 @@
 		z-index: 91;
 		left: 1vh;
 		width: 40vw;
-		bottom: 1vh !important;
-		height: 75vh;
+		bottom: -4vh !important;
+		height: 85vh;
 		border-radius: 2px;
 	}
 

@@ -646,7 +646,7 @@
             checkUrlMarker() {
                 let markerToShow = this.$route.query.id;
                 if (markerToShow !== undefined) {
-                    this.markers1.forEach(el => {
+                    this.markers0.forEach(el => {
                         if (el._id === markerToShow)
                             this.toggleInfoWindow(el, 0)
                     })

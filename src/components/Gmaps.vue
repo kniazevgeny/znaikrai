@@ -35,13 +35,13 @@
 						<v-icon light meduim class="pa-2 ma-0 search-icon" style="z-index: 101; height: 60px;"
 						        @click="searchName = ''; search()">mdi-window-close
 						</v-icon>
-						<span id="attach2"></span>
-						<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchCovid"
+						<v-select @input="search" dark height="60" class="pa-0 ma-0 mb-0 search-select" v-model="searchCovid"
 						          :items="searchCovids"
-						          label="По наличию COVID-19" menu-props="top, offsetY, light"
+						          label="По наличию COVID-19" menu-props="top, offsetY, light, close-on-click"
 						          placeholder="Все" attach="#attach2"
 						          dense style="z-index: 100; width: 15vw">
 							<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
+								<span id="attach2"></span>
 								<span>{{ item }}</span>
 							</template>
 							<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
@@ -118,7 +118,8 @@
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
 				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
 				</gmap-info-window>
-				<GmapCluster v-if="!mapMode && markers1" imagePath="static/cluster" imageExtension="svg" :imageSizes="[30, 30, 30, 30, 30]"
+				<GmapCluster v-if="!mapMode && markers1" imagePath="static/cluster" imageExtension="svg"
+				             :imageSizes="[30, 30, 30, 30, 30]" :calculator="calculator"
 				             averageCenter :animation="4" zoomOnClick>
 					<gmap-marker v-for="(m,i) in markers1" :key="i" :position="google && m.position" :clickable="true"
 					             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker>
@@ -534,6 +535,7 @@
             options: false,
             markers0: [],
             markers1: [],
+            markersForClusters: new Map,
             searchObj: 0
 
         }),
@@ -553,6 +555,7 @@
                     let y = b.name.toLowerCase();
                     return x < y ? -1 : x > y ? 1 : 0;
                 });
+                let _markersForClusters = new Map;
                 let set_types = new Set();
                 sorted.forEach(val => {
                     // removes xyz«INFO»xyz
@@ -563,12 +566,15 @@
                     set_types.add(val.type);
                     this.markers0.push(val);
                     this.markers1.push(val);
+                    _markersForClusters.set(val.position.lat, val);
                 });
                 set_types.forEach(val => this.searchTypes.push(val));
                 set_types.clear();
                 this.searchType = this.searchTypes;
                 this.markers1.forEach(val => this.searchNames.push(val.name));
                 console.log(this.markers1);
+                this.markersForClusters = new Map([..._markersForClusters.entries()].sort());
+                console.log(this.markersForClusters);
                 store.setPlaces(this.markers0);
                 this.checkUrlMarker();
             },
@@ -652,18 +658,47 @@
                     tmp => this.searchType.includes(tmp.type)
                 );
                 if (this.searchCovid !== 'Все')
-	                this.markers1 = this.markers1.filter(
-	                    tmp => {
-	                        if (this.searchCovid === this.searchCovids[0]) return tmp.coronavirus === true;
-	                        else return tmp.coronavirus === false;
-	                    }
-	                );
+                    this.markers1 = this.markers1.filter(
+                        tmp => {
+                            if (this.searchCovid === this.searchCovids[0]) return tmp.coronavirus === true;
+                            else return tmp.coronavirus === false;
+                        }
+                    );
                 this.searchNames = [];
                 this.markers1.forEach(val => this.searchNames.push(val.name));
                 if (this.searchName !== "")
                     this.markers1 = this.markers1.filter(
                         tmp => this.searchName.includes(tmp.name)
                     );
+            },
+            binarySearch(ar, el) {
+                let m = 0;
+                let n = ar.length - 1;
+                while (m <= n) {
+                    let k = (n + m) >> 1;
+                    let cmp = el - ar[k];
+                    if (cmp > 0) {
+                        m = k + 1;
+                    } else if (cmp < 0) {
+                        n = k - 1;
+                    } else {
+                        return k;
+                    }
+                }
+                return -m - 1;
+            },
+            calculator(markers, numStyles) {
+                let violationCounter = 0;
+                let covid =markers.some(gmarker => {
+                    let marker = this.markersForClusters.get(gmarker.position.lat());
+                    violationCounter += marker.number_of_violations;
+                    return marker.coronavirus;
+                });
+                if (covid) return {text: markers.length, index: 5};
+                if (violationCounter === 0) return {text: markers.length, index: 0};
+                if (violationCounter / 18 <= 0.25) return {text: markers.length, index: 3};
+                if (violationCounter / 18 <= 1) return {text: markers.length, index: 4};
+                return {text: markers.length, index: 5};
             }
         },
         mounted() {
@@ -683,6 +718,9 @@
 
 
 <style>
+
+	@import url('../assets/styles/main.css');
+
 	.search-select > .v-input__control > .v-input__slot {
 		background-color: #000;
 	}
@@ -771,9 +809,15 @@
 	}
 
 	#attach2 > .v-menu__content {
-		margin-top: -1px;
-		margin-left: 39vw;
+		margin-top: -13px;
 	}
+	.v-input.search-select.mb-0 > .v-input__control > .v-input__slot {
+		background-color: #D50000!important;
+	}
+	.v-input.search-select.mb-0 > .v-input__control > .v-input__slot > .v-select__slot > label {
+		color: #fff;
+	}
+
 
 	span > .v-menu__content > .v-list > .v-list-item {
 		min-height: 40px !important;
@@ -927,8 +971,4 @@
 		transition: opacity .96s;
 	}
 
-	/* svg icon color*/
-	.st0 {
-		fill: #DFFF00 !important
-	}
 </style>

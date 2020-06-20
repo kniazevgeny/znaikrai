@@ -29,7 +29,7 @@
 				</v-card-actions>
 				<v-card-text>
 					<v-layout justify-space-around class="ml-0 pl-0"
-					          style="width: 25%">
+					          style="width: 24%">
 						<v-btn-toggle v-model="activeBtn" tile mandatory color="white" class="info-navigation" small>
 							<v-btn block :outlined="activeBtn !== 0" :dark="activeBtn === 0" :ripple="false" :depressed="false"
 							       style="border-color: black!important" color="#D50000">
@@ -66,9 +66,8 @@
 							</template>
 							<v-card>
 								<v-card-title
-									class="headline"
-									primary-title
-								>
+									style="color: #D50000; font-family: 'Akrobat'!important; font-size: 2rem!important; font-weight: bold;"
+									primary-title>
 									Коронавирус в тюрьмах
 								</v-card-title>
 								<v-card-text>

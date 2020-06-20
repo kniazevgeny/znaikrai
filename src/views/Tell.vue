@@ -288,7 +288,6 @@
 	}
 
 	.subtitle1 {
-		text-transform: uppercase;
 		font-family: 'Akrobat' !important;
 		color: #000;
 		font-size: 1.2rem;

@@ -335,7 +335,7 @@
 	}
 
 	.iframe-holder > iframe {
-		width: 183px !important;
+		width: 186px !important;
 		height: 45px !important;
 	}
 

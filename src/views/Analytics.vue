@@ -70,18 +70,12 @@
     import axios from "axios";
     import Component from "vue-class-component";
     import * as store from "@/plugins/store";
+    import {category, resp, subcategory} from "@/models/analytics";
+    import * as api from "@/utils/api";
 
     @Component
     export default class Analytics extends Vue {
-        analyse: object[] = [
-            {name: "physical_impact"},
-            {name: "psychological_impact"},
-            {name: "corruption"},
-            {name: "medical_care"},
-            {name: "job"},
-        ];
-        analytics: object = {};
-        skill: number = 90;
+        analytics: Map<string, category> = new Map();
         totalCount: number = 3000;
         totalCountAppeals: number = 371;
         totalCountCovid: number = 100;
@@ -108,99 +102,85 @@
             return Object.keys(object).find(key => JSON.stringify(object[key]) === JSON.stringify(value));
         }
 
-        getAnalytics() {
-            axios.get(store.apibase() + '/analytics').then(response => {
-                //console.log(response.data.violations_stats);
-                this.analytics = response.data.violations_stats;
+        async getAnalytics() {
+            let response = await api.getAnalytics() as resp;
+            this.analytics = response.violations_stats as Map<string, category>;
 
-                // preprocessing: removes elements <=10 and rare ones
-                // then object → array
-                // @ts-ignore
-                Object.keys(this.analytics).forEach(category => {
-                    // @ts-ignore
-                    Object.values(this.analytics[category].subcategories).forEach(subcategory => {
-                        let values = [];
-                        let valuesToDelete = [];
-                        let sorted = [];
-                        let sortedKeys = [];
-                        // @ts-ignore
-                        Object.keys(subcategory.values).forEach(name => {
-                            // delete rare values
+            // preprocessing: removes elements <=10 and rare ones
+            // then object → array
+            Object.keys(this.analytics).forEach(category => {
+                Object.values(this.analytics[category].subcategories as subcategory[]).forEach(subcategory => {
+                    let values = [];
+                    let valuesToDelete = [];
+                    let sorted = [];
+                    let sortedKeys = [];
+                    Object.keys(subcategory.values).forEach(name => {
+                        // delete rare values
+                        if ( subcategory.values[name] != undefined ) {
+                            if ( subcategory.values[name] <= 10 ) delete subcategory.values[name];
                             // @ts-ignore
-                            if ( subcategory.values[name] != undefined ) {
-                                // @ts-ignore
-                                if ( subcategory.values[name] <= 10 ) delete subcategory.values[name];
-                                // @ts-ignore
-                                else values.push(subcategory.values[name]);
-                            }
-                        });
-                        let isMobile = window.innerWidth < 600;
-                        // if mobile, shows only 4 elements. unless 6 elements
-                        if ( values.length != 0 ) {
-                            // delete values if there's more than 6 on desktop or more then 4 on mobiles
-                            if ( values.length > (isMobile ? 4 : 6) ) {
-                                values.sort((a, b) => {
-                                    return a - b;
-                                });
-                                let i = 0;
-                                for (i; i < values.length; i++) {
-                                    if ( i < values.length - (isMobile ? 4 : 6) )
-                                        valuesToDelete.push(values[i]);
-                                }
-                            }
-                            // @ts-ignore
-                            Object.keys(subcategory.values).forEach(_name => {
-                                // @ts-ignore
-                                if ( valuesToDelete.includes(subcategory.values[_name]) ) delete subcategory.values[_name];
-                            });
+                            else values.push(subcategory.values[name]);
                         }
-                        // sort object "max → min" and transform into array
-                        // @ts-ignore
-                        sortedKeys = Object.keys(subcategory.values).sort(function (a, b) {
-                            // @ts-ignore
-                            return subcategory.values[b] - subcategory.values[a]
-                        });
-                        sortedKeys.forEach(sKey => {
-                            // @ts-ignore
-                            sorted.push({name: sKey, value: subcategory.values[sKey]});
-                        });
-                        this.analytics[category].subcategories[this.getKeyByValue(this.analytics[category].subcategories, subcategory)].values = sorted;
                     });
-                    // preprocess data for bar chart
-                    // @ts-ignore
-                    if ( this.analytics[category].count_by_years ) {
-                        let years = [];
-                        let values = [];
-                        // @ts-ignore
-                        Object.keys(this.analytics[category].count_by_years).forEach(year => {
+                    let isMobile = window.innerWidth < 600;
+                    // if mobile, shows only 4 elements. unless 6 elements
+                    if ( values.length != 0 ) {
+                        // delete values if there's more than 6 on desktop or more then 4 on mobiles
+                        if ( values.length > (isMobile ? 4 : 6) ) {
+                            values.sort((a, b) => {
+                                return a - b;
+                            });
+                            let i = 0;
+                            for (i; i < values.length; i++) {
+                                if ( i < values.length - (isMobile ? 4 : 6) )
+                                    valuesToDelete.push(values[i]);
+                            }
+                        }
+                        Object.keys(subcategory.values).forEach(_name => {
                             // @ts-ignore
-                            years.push(year);
-                            // @ts-ignore
-                            values.push(this.analytics[category].count_by_years[year]);
+                            if ( valuesToDelete.includes(subcategory.values[_name]) ) delete subcategory.values[_name];
                         });
-                        // @ts-ignore
-                        delete this.analytics[category].count_by_years;
-                        this.analytics[category].count_by_years = {years: [], values: []};
-                        // @ts-ignore
-                        this.analytics[category].count_by_years.years = years;
-                        // @ts-ignore
-                        this.analytics[category].count_by_years.values = values;
                     }
+                    // sort object "max → min" and transform into array
+                    // @ts-ignore
+                    sortedKeys = Object.keys(subcategory.values).sort(function (a, b) {
+                        return subcategory.values[b] - subcategory.values[a]
+                    });
+                    sortedKeys.forEach(key => {
+                        // @ts-ignore
+                        sorted.push({name: key, value: subcategory.values[key]});
+                    });
+                    this.analytics[category].subcategories[this.getKeyByValue(this.analytics[category].subcategories, subcategory)].values = sorted;
                 });
+                // preprocess data for bar chart
+                if ( this.analytics[category].count_by_years ) {
+                    let years = [];
+                    let values = [];
+                    Object.keys(this.analytics[category].count_by_years).forEach(year => {
+                        // @ts-ignore
+                        years.push(year);
+                        // @ts-ignore
+                        values.push(this.analytics[category].count_by_years[year]);
+                    });
+                    delete this.analytics[category].count_by_years;
+                    this.analytics[category].count_by_years = {years: [], values: []};
+                    this.analytics[category].count_by_years.years = years;
+                    this.analytics[category].count_by_years.values = values;
+                }
+            });
 
-                this.totalCount = response.data.total_count;
-                this.totalCountAppeals = response.data.total_count_appeals;
-                this.totalCountCovid = response.data.total_count_appeals_corona;
-                console.log(this.analytics);
-                // set headline ending: "о", "а"
-                if ( this.totalCountAppeals % 10 === 1 ) this.headlineEnding = "о";
-                else if ( this.totalCountAppeals % 10 >= 2 && this.totalCountAppeals % 10 <= 4 ) this.headlineEnding = "а";
-                else this.headlineEnding = "";
-                // set headline Covid ending headlineCovidEnding
-                if ( this.totalCountCovid % 10 === 1 ) this.headlineCovidEnding = "е";
-                else if ( this.totalCountCovid % 10 >= 2 && this.totalCountCovid % 10 <= 4 ) this.headlineCovidEnding = "я";
-                this.loading = false;
-            })
+            this.totalCount = response.total_count;
+            this.totalCountAppeals = response.total_count_appeals;
+            this.totalCountCovid = response.total_count_appeals_corona;
+            console.log(this.analytics);
+            // set headline ending: "о", "а"
+            if ( this.totalCountAppeals % 10 === 1 ) this.headlineEnding = "о";
+            else if ( this.totalCountAppeals % 10 >= 2 && this.totalCountAppeals % 10 <= 4 ) this.headlineEnding = "а";
+            else this.headlineEnding = "";
+            // set headline Covid ending headlineCovidEnding
+            if ( this.totalCountCovid % 10 === 1 ) this.headlineCovidEnding = "е";
+            else if ( this.totalCountCovid % 10 >= 2 && this.totalCountCovid % 10 <= 4 ) this.headlineCovidEnding = "я";
+            this.loading = false;
         };
 
         mounted(): void {
@@ -213,6 +193,7 @@
 	text {
 		color: black
 	}
+
 	#analytics-letter {
 		position: relative;
 		width: 95%;

@@ -1,11 +1,15 @@
 // Dependencies
 import axios from 'axios'
+import {category, resp} from "@/models/analytics"
 import {resolve} from "q";
 
-const base = 'https://gentle-thicket-20134.herokuapp.coms'
+const base = 'https://api-znaikrai.herokuapp.com';
+
+export async function getAnalytics() {
+    return (await axios.get(`${base}/analytics`)).data as resp
+}
 
 /*
-
 export async function loginFacebook(accessToken: string) {
   return (await axios.post(`${base}/login/facebook`, {
     accessToken,

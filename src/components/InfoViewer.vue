@@ -318,6 +318,7 @@
 
         checkPlace() {
             let id = (this._info as any)._id;
+            console.log(id);
             // console.log(id);
             // console.log(store.isPlace((this._info as any)._id));
             if ( (this._info as any) !== undefined && (this._info as any)._id !== undefined )

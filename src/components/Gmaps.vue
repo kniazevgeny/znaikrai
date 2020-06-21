@@ -646,9 +646,11 @@
             checkUrlMarker() {
                 let markerToShow = this.$route.query.id;
                 if (markerToShow !== undefined) {
+                    console.log(markerToShow);
                     this.markers0.forEach(el => {
-                        if (el._id === markerToShow)
-                            this.toggleInfoWindow(el, 0)
+                        if (el._id === markerToShow){
+                            this.toggleInfoWindow(el, 0);
+                        }
                     })
                 }
             },

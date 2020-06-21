@@ -120,6 +120,7 @@
 									</p-->
 									<v-divider></v-divider>
 								</v-card>
+								<span v-if="!info.coronavirus">Нет информации по covid-19</span>
 							</div>
 						</v-window-item>
 						<v-window-item>

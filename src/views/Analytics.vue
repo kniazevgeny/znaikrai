@@ -4,7 +4,7 @@
 			v-col()
 				v-card-title(class="headlinetxt" id="analytics-headline" )
 					div
-						span(style="color: #D50000") {{totalCount}}
+						span(style="color: #D50000") {{totalCountAppeals}}
 						div(id="analytics-headline-letter")
 							span ---///----///----///----///----//
 						span  свидетельств
@@ -32,16 +32,20 @@
 			v-skeleton-loader(type="sentences")
 			v-skeleton-loader(type="card-heading")
 			v-skeleton-loader(type="sentences" class="mb-12")
-		v-layout(v-for="(value, name, j) in analytics" :key='j' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
+		v-layout(v-for="(category, name, j) in analytics" :key='j' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
 			p(class="analyse-headline mt-8") {{$t("analytics." + name + ".title")}}
 			span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
-			div(v-for="(value1, name1, v) in value")
-				v-layout(v-if="typeof value1 === 'object'" column, class="mt-4")
+			h4(class="ml-0 mt-6 mb-6") Динамика изменения количества нарушений по годам
+			v-container(fluid, style="max-width: 1000px")
+				v-sparkline(:value="category.count_by_years.values" :type="j % 2 === 0 ? 'bar' : 'trend'" smooth="4" stroke-linecap="round" :gradient="['red', 'orange', 'yellow']" gradientDirection="top" auto-draw auto-draw-easing="ease-in-out" show-labels label-size="5"
+				:labels="category.count_by_years.years")
+			div(v-for="(subcategory, name1, v) in category.subcategories")
+				v-layout(column, class="mt-4")
 					h4(class="ml-0") {{ $t("violation_types."  + name1) }}
-					v-layout(v-if="typeof value1 === 'object'" row, class="ml-0", :style="'width:' + getWidth(getTotalCount(value1)) + '%'")
-						div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(getTotalCount(value1))")
-							p(style="align-items: center") {{ getTotalCount(value1) }}
-						v-layout( v-for="(value2, u) in value1", :key="u" column v-if="value2.name !== 'total_count' && value2.name !== 'total_count_appeals'" :style="'width:' + value2.value / (getTotalCount(value1)) * 100 + '%'")
+					v-layout(row, class="ml-0", :style="'width:' + getWidth(subcategory.total_count) + '%'")
+						div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(subcategory.total_count)")
+							p(style="align-items: center") {{ subcategory.total_count }}
+						v-layout( v-for="(value2, u) in subcategory.values", :key="u" column v-if="value2.name !== 'total_count' && value2.name !== 'total_count_appeals'" :style="'width:' + value2.value / (subcategory.total_count) * 100 + '%'")
 							v-progress-linear(
 							value="99"
 							buffer-value="99"
@@ -78,22 +82,22 @@
         ];
         analytics: object = {};
         skill: number = 90;
-        totalCount: number = 371;
-        totalCountAppeals: number = 0;
+        totalCount: number = 3000;
+        totalCountAppeals: number = 371;
         totalCountCovid: number = 100;
         loading = true;
         headlineEnding: string = "о";
         headlineCovidEnding: string = "й";
 
         getWidth(val) {
-            let max_ = this.totalCountAppeals;
+            let max_ = this.totalCount;
             if ( val < max_ / 20 ) return 57;
             if ( val < max_ / 14 ) return 87;
             return 100;
         }
 
         getColor(val) {
-            let max_ = this.totalCountAppeals;
+            let max_ = this.totalCount;
             if ( val < max_ / 20 ) return "#e9e706";
             if ( val < max_ / 14 ) return "#ff9e00";
             else return "#D50000";
@@ -104,34 +108,30 @@
             return Object.keys(object).find(key => JSON.stringify(object[key]) === JSON.stringify(value));
         }
 
-        getTotalCount(object) {
-            if (object[0].name === "total_count") return object[0].value;
-            if (object[1].name === "total_count") return object[1].value;
-        }
-
         getAnalytics() {
             axios.get(store.apibase() + '/analytics').then(response => {
                 //console.log(response.data.violations_stats);
                 this.analytics = response.data.violations_stats;
+
                 // preprocessing: removes elements <=10 and rare ones
-		            // then object → array
+                // then object → array
                 // @ts-ignore
-                Object.keys(this.analytics).forEach(key => {
+                Object.keys(this.analytics).forEach(category => {
                     // @ts-ignore
-                    Object.values(this.analytics[key]).forEach(val => {
+                    Object.values(this.analytics[category].subcategories).forEach(subcategory => {
                         let values = [];
                         let valuesToDelete = [];
                         let sorted = [];
                         let sortedKeys = [];
                         // @ts-ignore
-                        if ( typeof val == 'object' ) Object.keys(val).forEach(_name => {
+                        Object.keys(subcategory.values).forEach(name => {
                             // delete rare values
                             // @ts-ignore
-                            if ( _name != 'total_count' && _name != 'total_count_appeals' && val[_name] != undefined ) {
+                            if ( subcategory.values[name] != undefined ) {
                                 // @ts-ignore
-                                if ( val[_name] <= 10 ) delete val[_name];
+                                if ( subcategory.values[name] <= 10 ) delete subcategory.values[name];
                                 // @ts-ignore
-                                else values.push(val[_name]);
+                                else values.push(subcategory.values[name]);
                             }
                         });
                         let isMobile = window.innerWidth < 600;
@@ -149,41 +149,56 @@
                                 }
                             }
                             // @ts-ignore
-                            Object.keys(val).forEach(_name => {
+                            Object.keys(subcategory.values).forEach(_name => {
                                 // @ts-ignore
-                                if ( valuesToDelete.includes(val[_name]) ) delete val[_name];
+                                if ( valuesToDelete.includes(subcategory.values[_name]) ) delete subcategory.values[_name];
                             });
                         }
+                        // sort object "max → min" and transform into array
                         // @ts-ignore
-                        if ( typeof val == 'object') {
-                            // sort object "max → min" and transform into array
+                        sortedKeys = Object.keys(subcategory.values).sort(function (a, b) {
                             // @ts-ignore
-                            sortedKeys = Object.keys(val).sort(function (a, b) {
-                                // @ts-ignore
-                                return val[b] - val[a]
-                            });
-                            sortedKeys.forEach(sKey => {
-                                // @ts-ignore
-                                sorted.push({name: sKey, value: val[sKey]});
-                            });
-                        }
-                        if (typeof this.analytics[key][this.getKeyByValue(this.analytics[key], val)] == "object")
-                          this.analytics[key][this.getKeyByValue(this.analytics[key], val)] = sorted;
-                    })
+                            return subcategory.values[b] - subcategory.values[a]
+                        });
+                        sortedKeys.forEach(sKey => {
+                            // @ts-ignore
+                            sorted.push({name: sKey, value: subcategory.values[sKey]});
+                        });
+                        this.analytics[category].subcategories[this.getKeyByValue(this.analytics[category].subcategories, subcategory)].values = sorted;
+                    });
+                    // preprocess data for bar chart
+                    // @ts-ignore
+                    if ( this.analytics[category].count_by_years ) {
+                        let years = [];
+                        let values = [];
+                        // @ts-ignore
+                        Object.keys(this.analytics[category].count_by_years).forEach(year => {
+                            // @ts-ignore
+                            years.push(year);
+                            // @ts-ignore
+                            values.push(this.analytics[category].count_by_years[year]);
+                        });
+                        // @ts-ignore
+                        delete this.analytics[category].count_by_years;
+                        this.analytics[category].count_by_years = {years: [], values: []};
+                        // @ts-ignore
+                        this.analytics[category].count_by_years.years = years;
+                        // @ts-ignore
+                        this.analytics[category].count_by_years.values = values;
+                    }
                 });
 
-                this.totalCount = response.data.total_count_appeals;
+                this.totalCount = response.data.total_count;
+                this.totalCountAppeals = response.data.total_count_appeals;
                 this.totalCountCovid = response.data.total_count_appeals_corona;
                 console.log(this.analytics);
                 // set headline ending: "о", "а"
-                if ( this.totalCount % 10 === 1 ) this.headlineEnding = "о";
-                else if ( this.totalCount % 10 >= 2 && this.totalCount % 10 <= 4 ) this.headlineEnding = "а";
+                if ( this.totalCountAppeals % 10 === 1 ) this.headlineEnding = "о";
+                else if ( this.totalCountAppeals % 10 >= 2 && this.totalCountAppeals % 10 <= 4 ) this.headlineEnding = "а";
                 else this.headlineEnding = "";
                 // set headline Covid ending headlineCovidEnding
                 if ( this.totalCountCovid % 10 === 1 ) this.headlineCovidEnding = "е";
                 else if ( this.totalCountCovid % 10 >= 2 && this.totalCountCovid % 10 <= 4 ) this.headlineCovidEnding = "я";
-                // this.headlineEnding;
-                this.totalCountAppeals = response.data.violations_stats.total_count;
                 this.loading = false;
             })
         };
@@ -195,6 +210,9 @@
 </script>
 
 <style>
+	text {
+		color: black
+	}
 	#analytics-letter {
 		position: relative;
 		width: 95%;

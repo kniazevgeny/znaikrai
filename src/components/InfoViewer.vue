@@ -213,7 +213,7 @@
 						</v-window-item>
 					</v-window>
 				</v-card-text>
-
+				<EmailSubscription></EmailSubscription>
 			</v-col>
 		</v-row>
 	</v-card>
@@ -225,8 +225,10 @@
     import axios from "axios";
     import {Component, Prop, Watch} from "vue-property-decorator";
     import ViolationChart from "@/components/ViolationChart.vue"
+    import EmailSubscription from "@/components/EmailSubscription.vue"
 
     Vue.component('violationChart', ViolationChart);
+    Vue.component('EmailSubscription', EmailSubscription);
 
     @Component
     export default class InfoViewer extends Vue {

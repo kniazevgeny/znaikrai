@@ -49,14 +49,7 @@
 								div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(subcategory.total_count)")
 									p(style="align-items: center") {{ subcategory.total_count }}
 								v-layout( v-for="(value2, u) in subcategory.values", :key="u" column v-if="value2.name !== 'total_count' && value2.name !== 'total_count_appeals'" :style="'width:' + value2.value / (subcategory.total_count) * 100 + '%'")
-									v-progress-linear(
-									value="99"
-									buffer-value="99"
-									color="#4F5250"
-									height="25"
-									class="progress-bar")
-										template
-											span(style="color: white") {{ value2.value }}
+									ProgressLinearAnimated(:number="value2.value")
 									span(class="analyse-explainer") {{ value2.name }}
 		v-container(fluid style="min-height: 200px")
 		v-footer(height="162", color="white", padless, class="mt-12")
@@ -76,6 +69,9 @@
     import * as store from "@/plugins/store";
     import {category, resp, subcategory} from "@/models/analytics";
     import * as api from "@/utils/api";
+    import ProgressLinearAnimated from "@/components/ProgressLinearAnimated.vue";
+
+    Vue.component('ProgressLinearAnimated', ProgressLinearAnimated);
 
     @Component
     export default class Analytics extends Vue {

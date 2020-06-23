@@ -49,7 +49,7 @@
 								div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(subcategory.total_count)")
 									p(style="align-items: center") {{ subcategory.total_count }}
 								v-layout( v-for="(value2, u) in subcategory.values", :key="u" column v-if="value2.name !== 'total_count' && value2.name !== 'total_count_appeals'" :style="'width:' + value2.value / (subcategory.total_count) * 100 + '%'")
-									ProgressLinearAnimated(:number="value2.value")
+									ProgressLinearAnimated(:value="value2.value" height="25" color="#4F5250" offset="-1")
 									span(class="analyse-explainer") {{ value2.name }}
 		v-container(fluid style="min-height: 200px")
 		v-footer(height="162", color="white", padless, class="mt-12")
@@ -184,7 +184,6 @@
             this.totalCountAppeals = response.total_count_appeals;
             this.totalCountCovid = response.total_count_appeals_corona;
             console.log(this.analytics);
-            console.log(this.isActive);
             // set headline ending: "о", "а"
             if ( this.totalCountAppeals % 10 === 1 ) this.headlineEnding = "о";
             else if ( this.totalCountAppeals % 10 >= 2 && this.totalCountAppeals % 10 <= 4 ) this.headlineEnding = "а";

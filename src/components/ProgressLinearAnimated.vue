@@ -1,9 +1,9 @@
 <template lang="pug">
 	v-progress-linear(
-	:value="((displayNumber / number) * 100) - 1"
-	:buffer-value="((displayNumber / number) * 100) - 1"
-	color="#4F5250"
-	height="25"
+	:value="calcValue()"
+	:buffer-value="calcValue()"
+	:color="color"
+	:height="height"
 	class="progress-bar"
 	style="transition-duration: 2s!important; transition-timing-function: ease-in-out;")
 		template
@@ -12,24 +12,37 @@
 
 <script lang="ts">
     import Vue from 'vue';
-    import {Component, Prop, Watch} from "vue-property-decorator";
+    import {Component, Prop} from "vue-property-decorator";
 
     @Component
     export default class ProgressLinearAnimated extends Vue {
         @Prop({required: true})
-        public number!: number;
+        public value!: number;
+
+        @Prop({required: true})
+        public height!: number;
+
+        @Prop({required: true})
+        public color!: string;
+
+        @Prop({default: 0, required: false})
+        public offset!: string;
 
         displayNumber: number = 0;
         interval = 0;
 
+        calcValue() {
+            return ((this.displayNumber / this.value) * 100) + parseInt(this.offset)
+        }
+
         onChange() {
             clearInterval(this.interval);
-            if ( this.number == this.displayNumber ) {
+            if ( this.value == this.displayNumber ) {
                 return;
             }
             this.interval = window.setInterval(function () {
-                if ( this.displayNumber != this.number ) {
-                    let change = (this.number - this.displayNumber) / 1;
+                if ( this.displayNumber != this.value ) {
+                    let change = (this.value - this.displayNumber) / 1;
                     change = change >= 0 ? Math.ceil(change) : Math.floor(change);
                     this.displayNumber = this.displayNumber + change;
                 }

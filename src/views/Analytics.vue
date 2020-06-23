@@ -7,15 +7,15 @@
 						span(style="color: #D50000") {{totalCountAppeals}}
 						div(id="analytics-headline-letter")
 							span ---///----///----///----///----//
-						span  свидетельств
-						span {{ headlineEnding }}
+						span(style="word-wrap: normal; white-space: pre;")  свидетельств
+							span {{ headlineEnding }}
 						br
 						span()  о нарушениях
 					div(style="width: 100%; word-wrap: break-word;")
 						span(style="color: #D50000") {{totalCountCovid}}
-						span(style="word-wrap: normal; white-space: nowrap;")  сообщени
+						span(style="word-wrap: normal; white-space: pre;")  сообщени
 						span {{ headlineCovidEnding }}
-						span(style="word-wrap: normal; white-space: nowrap;")  о COVID-19 в тюрьмах
+						span(style="word-wrap: normal; white-space: pre;")  о COVID-19 в тюрьмах
 
 
 		v-layout()
@@ -33,7 +33,7 @@
 			v-skeleton-loader(type="card-heading")
 			v-skeleton-loader(type="sentences" class="mb-12")
 		v-layout(v-for="(category, name, j) in analytics" :key='j' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
-			v-lazy(v-model="isActive[j]" :options="{threshold: 0.5, rootMargin: '-300px'}"	transition="fade-transition")
+			v-lazy(v-model="isActive[j]" :options="j ? lazyOptions : {threshold: 0.5}"	transition="fade-transition")
 				div
 					p(class="analyse-headline mt-8") {{$t("analytics." + name + ".title")}}
 					span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
@@ -60,10 +60,10 @@
 									span(class="analyse-explainer") {{ value2.name }}
 		v-footer(height="162", color="white", padless, class="mt-12")
 			v-layout(style="width: 90%; margin-left: 5%; margin-right: 5%" justify-space-around)
-				v-btn(x-large, text, class="footerBtn", :to="'/'")
+				v-btn(:x-large="!isMobile()", :small="isMobile()" text, class="footerBtn", :to="'/'")
 					span <-/   КАРТА
 				v-spacer
-				v-btn(x-large, text, class="footerBtn", :to="'stories'")
+				v-btn(:x-large="!isMobile()", :small="isMobile()" text, class="footerBtn", :to="'stories'")
 					span ИСТОРИИ
 					span(style="transform: rotate(-180deg);")  <-/   
 </template>
@@ -86,6 +86,11 @@
         headlineEnding: string = "о";
         headlineCovidEnding: string = "й";
         isActive: boolean[] = [];
+        lazyOptions = {threshold: 0.5, rootMargin: '-300px'};
+
+        isMobile() {
+            return window.innerWidth < 600
+        }
 
         getWidth(val) {
             let max_ = this.totalCount;
@@ -191,6 +196,7 @@
 
         mounted(): void {
             this.getAnalytics();
+            if (window.innerHeight < 800) this.lazyOptions.rootMargin = "-100px"
         }
     }
 </script>
@@ -261,14 +267,14 @@
 
 	@media screen and (min-width: 1100px) {
 		#analytics-headline {
-			width: 50vw;
+			width: 67vw;
 			font-size: 60px !important;
 			line-height: 60px !important;
 			margin-left: 4.5vw;
 		}
 
 		#analytics-subtitle {
-			width: 45vw;
+			width: 65vw;
 			margin-left: 6vw;
 		}
 	}
@@ -338,6 +344,11 @@
 		text-transform: uppercase;
 
 		color: #000000;
+	}
+	@media screen and (max-width: 600px){
+		.footerBtn {
+			font-size: 18px!important;
+		}
 	}
 
 	.stats-digit {

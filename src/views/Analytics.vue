@@ -33,28 +33,31 @@
 			v-skeleton-loader(type="card-heading")
 			v-skeleton-loader(type="sentences" class="mb-12")
 		v-layout(v-for="(category, name, j) in analytics" :key='j' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
-			p(class="analyse-headline mt-8") {{$t("analytics." + name + ".title")}}
-			span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
-			h4(class="ml-0 mt-6 mb-6") Динамика изменения количества нарушений по годам
-			v-container(fluid, style="max-width: 1000px")
-				v-sparkline(:value="category.count_by_years.values" :type="j % 2 === 0 ? 'bar' : 'trend'" smooth="4" stroke-linecap="round" :gradient="['red', 'orange', 'yellow']" gradientDirection="top" auto-draw auto-draw-easing="ease-in-out" show-labels label-size="5"
-				:labels="category.count_by_years.years")
-			div(v-for="(subcategory, name1, v) in category.subcategories")
-				v-layout(column, class="mt-4")
-					h4(class="ml-0") {{ $t("violation_types."  + name1) }}
-					v-layout(row, class="ml-0", :style="'width:' + getWidth(subcategory.total_count) + '%'")
-						div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(subcategory.total_count)")
-							p(style="align-items: center") {{ subcategory.total_count }}
-						v-layout( v-for="(value2, u) in subcategory.values", :key="u" column v-if="value2.name !== 'total_count' && value2.name !== 'total_count_appeals'" :style="'width:' + value2.value / (subcategory.total_count) * 100 + '%'")
-							v-progress-linear(
-							value="99"
-							buffer-value="99"
-							color="#4F5250"
-							height="25"
-							class="progress-bar")
-								template
-									span(style="color: white") {{ value2.value }}
-							span(class="analyse-explainer") {{ value2.name }}
+			v-lazy(v-model="isActive[j]" :options="{threshold: 0.5, rootMargin: '-300px'}"	transition="fade-transition")
+				div
+					p(class="analyse-headline mt-8") {{$t("analytics." + name + ".title")}}
+					span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
+					h4(class="ml-0 mt-6 mb-6") Динамика изменения количества нарушений по годам
+					v-container(fluid, style="max-width: 1000px")
+						v-sparkline(:value="category.count_by_years.values" :type="j % 2 === 0 ? 'bar' : 'trend'" smooth="4" stroke-linecap="round" :gradient="['red', 'orange', 'yellow']" gradientDirection="top" auto-draw auto-draw-easing="ease-in-out" show-labels label-size="5"
+						:labels="category.count_by_years.years")
+							template(v-slot:label="item") {{item.value % 2 - 1 ? item.value : ''}}
+					div(v-for="(subcategory, name1, v) in category.subcategories" :key="v")
+						v-layout(column, class="mt-4")
+							h4(class="ml-0") {{ $t("violation_types."  + name1) }}
+							v-layout(row, class="ml-0", :style="'width:' + getWidth(subcategory.total_count) + '%'")
+								div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(subcategory.total_count)")
+									p(style="align-items: center") {{ subcategory.total_count }}
+								v-layout( v-for="(value2, u) in subcategory.values", :key="u" column v-if="value2.name !== 'total_count' && value2.name !== 'total_count_appeals'" :style="'width:' + value2.value / (subcategory.total_count) * 100 + '%'")
+									v-progress-linear(
+									value="99"
+									buffer-value="99"
+									color="#4F5250"
+									height="25"
+									class="progress-bar")
+										template
+											span(style="color: white") {{ value2.value }}
+									span(class="analyse-explainer") {{ value2.name }}
 		v-footer(height="162", color="white", padless, class="mt-12")
 			v-layout(style="width: 90%; margin-left: 5%; margin-right: 5%" justify-space-around)
 				v-btn(x-large, text, class="footerBtn", :to="'/'")
@@ -82,6 +85,7 @@
         loading = true;
         headlineEnding: string = "о";
         headlineCovidEnding: string = "й";
+        isActive: boolean[] = [];
 
         getWidth(val) {
             let max_ = this.totalCount;
@@ -110,6 +114,7 @@
             // then object → array
             Object.keys(this.analytics).forEach(category => {
                 Object.values(this.analytics[category].subcategories as subcategory[]).forEach(subcategory => {
+                    this.isActive.push(false);
                     let values = [];
                     let valuesToDelete = [];
                     let sorted = [];
@@ -173,6 +178,7 @@
             this.totalCountAppeals = response.total_count_appeals;
             this.totalCountCovid = response.total_count_appeals_corona;
             console.log(this.analytics);
+            console.log(this.isActive);
             // set headline ending: "о", "а"
             if ( this.totalCountAppeals % 10 === 1 ) this.headlineEnding = "о";
             else if ( this.totalCountAppeals % 10 >= 2 && this.totalCountAppeals % 10 <= 4 ) this.headlineEnding = "а";
@@ -191,7 +197,13 @@
 
 <style>
 	text {
-		color: black
+		color: black;
+		font-size: .5rem;
+	}
+	@media screen and (min-width: 960px){
+		text {
+			font-size: .3rem;
+		}
 	}
 
 	#analytics-letter {

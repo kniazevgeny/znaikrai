@@ -32,17 +32,17 @@
 			v-skeleton-loader(type="sentences")
 			v-skeleton-loader(type="card-heading")
 			v-skeleton-loader(type="sentences" class="mb-12")
-		v-layout(v-for="(category, name, j) in analytics" :key='j' column style="width: 88%; margin-left: 6vw" class="mt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
-			v-lazy(v-model="isActive[j]" :options="j ? lazyOptions : {threshold: 0.5}"	transition="fade-transition")
-				div
-					p(class="analyse-headline mt-8") {{$t("analytics." + name + ".title")}}
+		v-layout(v-for="(category, name, j) in analytics" :key='j' column style="width: 88%; margin-left: 6vw" class="mt-12 mb-12 pb-12 pt-12" v-if='$t("analytics." + name + ".title").toString() !== ("analytics." + name + ".title")')
+			v-lazy(v-model="isActive[j]" :options="j ? {threshold: 0.5, rootMargin: getRootMargin(j)} : {threshold: 0.5}"  transition="fade-transition")
+				div(:id="'analyse' + j")
+					p(class="analyse-headline mt-12") {{$t("analytics." + name + ".title")}}
 					span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
 					h4(class="ml-0 mt-6 mb-6") Динамика изменения количества нарушений по годам
 					v-container(fluid, style="max-width: 1000px")
 						v-sparkline(:value="category.count_by_years.values" :type="j % 2 === 0 ? 'bar' : 'trend'" smooth="4" stroke-linecap="round" :gradient="['red', 'orange', 'yellow']" gradientDirection="top" auto-draw auto-draw-easing="ease-in-out" show-labels label-size="5"
 						:labels="category.count_by_years.years")
 							template(v-slot:label="item") {{item.value % 2 - 1 ? item.value : ''}}
-					div(v-for="(subcategory, name1, v) in category.subcategories" :key="v")
+					div(v-for="(subcategory, name1, v) in category.subcategories" :key="v" class="mb-6")
 						v-layout(column, class="mt-4")
 							h4(class="ml-0") {{ $t("violation_types."  + name1) }}
 							v-layout(row, class="ml-0", :style="'width:' + getWidth(subcategory.total_count) + '%'")
@@ -58,6 +58,7 @@
 										template
 											span(style="color: white") {{ value2.value }}
 									span(class="analyse-explainer") {{ value2.name }}
+		v-container(fluid style="min-height: 200px")
 		v-footer(height="162", color="white", padless, class="mt-12")
 			v-layout(style="width: 90%; margin-left: 5%; margin-right: 5%" justify-space-around)
 				v-btn(:x-large="!isMobile()", :small="isMobile()" text, class="footerBtn", :to="'/'")
@@ -86,10 +87,14 @@
         headlineEnding: string = "о";
         headlineCovidEnding: string = "й";
         isActive: boolean[] = [];
-        lazyOptions = {threshold: 0.5, rootMargin: '-300px'};
 
         isMobile() {
             return window.innerWidth < 600
+        }
+
+        getRootMargin(i: number) {
+            if ( i == 1 ) return "-100px";
+            else return window.innerWidth < 600 ? "-150px" : "-370px";
         }
 
         getWidth(val) {
@@ -196,7 +201,6 @@
 
         mounted(): void {
             this.getAnalytics();
-            if (window.innerHeight < 800) this.lazyOptions.rootMargin = "-100px"
         }
     }
 </script>
@@ -206,7 +210,8 @@
 		color: black;
 		font-size: .5rem;
 	}
-	@media screen and (min-width: 960px){
+
+	@media screen and (min-width: 960px) {
 		text {
 			font-size: .3rem;
 		}
@@ -345,9 +350,10 @@
 
 		color: #000000;
 	}
-	@media screen and (max-width: 600px){
+
+	@media screen and (max-width: 600px) {
 		.footerBtn {
-			font-size: 18px!important;
+			font-size: 18px !important;
 		}
 	}
 

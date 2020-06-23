@@ -5,7 +5,7 @@
                 span(class="headlinetxt", id="about-headline") ЗНАЙ КРАЙ
         v-card-text
             v-container
-                div(style="width: 45vw")
+                div(class="about-us")
                     span(class="subtitle1") «Знайкрай» — это проект благотворительного фонда «Русь сидящая». С 2018 года в рамках гранта Европейской комиссии фонд проводил мониторинг условий содержания в местах лишения свободы России. Сообщения о нарушениях присылали как сами осужденные, так и их близкие, адвокаты или журналисты.<br><br>С помощью этих данных была создана карта, на которой можно посмотреть, какие нарушения совершаются в любом исправительном учреждении, и рейтинг самых опасных мест лишения свободы России. Также в проекте собраны истории заключенных, столкнувшихся с нарушением своих прав.
                     br
                     br
@@ -65,18 +65,18 @@
         current: string = 'Банковская карта';
         amount = '100 ₽';
 
-        mounted(): void {
-            let el = document.getElementsByClassName("grey_e5")[0] as HTMLElement;
-            el.classList.add("select");
-            el.classList.remove("v-input__slot");
-            el.classList.remove("grey_e5");
-            (el.firstChild as any).remove();
-            console.log(el);
-        }
     }
 </script>
 
 <style scoped>
+	.about-us{
+		width: 45vw
+	}
+	@media screen and (max-width: 960px){
+		.about-us {
+			width: 75vw!important;
+		}
+	}
     @media screen and (min-width: 600px) {
         .headlinetxt#about-headline::before {
             content: url("../assets/about.svg");

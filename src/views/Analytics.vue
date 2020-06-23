@@ -39,8 +39,8 @@
 					span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
 					h4(class="ml-0 mt-6 mb-6") Динамика изменения количества нарушений по годам
 					v-container(fluid, style="max-width: 1000px")
-						v-sparkline(:value="category.count_by_years.values" :type="j % 2 === 0 ? 'bar' : 'trend'" smooth="4" stroke-linecap="round" :gradient="['red', 'orange', 'yellow']" gradientDirection="top" auto-draw auto-draw-easing="ease-in-out" show-labels label-size="5"
-						:labels="category.count_by_years.years")
+						v-sparkline(:value="category.count_by_years.values" type="trend" smooth="4" stroke-linecap="round" :gradient="['red', 'orange', 'yellow']" gradientDirection="top" auto-draw auto-draw-easing="ease-in-out"
+						show-labels label-size="5" :labels="category.count_by_years.years" )
 							template(v-slot:label="item") {{item.value % 2 - 1 ? item.value : ''}}
 					div(v-for="(subcategory, name1, v) in category.subcategories" :key="v" class="mb-6")
 						v-layout(column, class="mt-4")

@@ -29,7 +29,7 @@
 				</v-card-actions>
 				<v-card-text>
 					<v-layout justify-space-around class="ml-0 pl-0"
-					          style="width: 24%">
+					          style="width: calc(100% / 4)">
 						<v-btn-toggle v-model="activeBtn" tile mandatory color="white" class="info-navigation" small>
 							<v-btn block :outlined="activeBtn !== 0" :dark="activeBtn === 0" :ripple="false" :depressed="false"
 							       style="border-color: black!important" color="#D50000">
@@ -55,54 +55,59 @@
 						<v-btn large disabled block outlined color="orange">{{ info.warning }}</v-btn>
 					</v-layout>
 					<v-layout v-if="info.coronavirus" class="mt-0">
-						<v-dialog
-							v-model="covidDialog"
-							width="700"
-						>
-							<template v-slot:activator="{ on }">
-								<v-btn tile light large outlined block color="black" class="btn-thin" v-on="on">узнать о коронавирусе в
-									тюрьмах
-								</v-btn>
-							</template>
-							<v-card>
-								<v-card-title
-									style="color: #D50000; font-family: 'Akrobat'!important; font-size: 2rem!important; font-weight: bold;"
-									primary-title>
-									Коронавирус в тюрьмах
-								</v-card-title>
-								<v-card-text>
-									Заключенные в России — одна из самых незащищенных групп граждан. Колонии становятся крупными очагов распространения коронавируса.
-									Эти вспышки тяжело остановить. У большей части заключенных сниженный иммунитет и масса
-									сопутствующих заболеваний, в том числе ВИЧ.
-									Еще один фактор — скученность осужденных в бараках. В одном бараке
-									содержится 150-200 человек.
-									Распространение вируса в таких условиях — моментальное. Как изолировать заболевших и тех, кто с ними
-									контактировал, в условиях колонии не ясно.
-									Качество медицинской помощи в МЛС тоже оставляет желать лучшего.
-									Нехватка медикаментов, отсутствие квалифицированных врачей и отсутствие необходимого количества коек в санчасти - это приведет к огромному количеству смертей.
-									<br>
-									<br>
-									Поэтому важно, чтобы происходящее внутри исправительных учреждений не оставалось за
-									закрытыми стенами, а как можно больше освещалось в СМИ и среди правозащитных организаций.
-									<br>
-									<br>
-									“Русь сидящая” ведет собственный регулярный мониторинг ситуации в млс со 02.04.2020.
-									Собираем и систематизируем данные о ситуациях в различных учреждениях ФСИН с помощью сообщений,
-									которые получаем от родственников осужденных в обращениях к фонду и комментариев в социальных сетях
-									“Руси сидящей”.
-									Проводим внутреннюю проверку по каждому сообщению. По грубейшим нарушениям юристы фонда готовят и
-									отправляют жалобы в Генеральную прокуратуру.
-									Данные, полученные в ходе мониторинга, наносим на карту. Призываем журналистов, правозащитников,
-									осужденных и их родственников участвовать в нашем мониторинге и сообщать
-									о ситуации с коронавирусом в колониях.
-								</v-card-text>
-							</v-card>
-						</v-dialog>
 					</v-layout>
 					<v-window v-model="activeBtn" class="mt-5">
 						<v-window-item>
 							<div class="mb-12 ml-1">
-								<h1 style="color: #D50000; font-family: Akrobat">Мониторинг ситуации с коронавирусом</h1>
+								<h1 style="color: #D50000; font-family: Akrobat" class="mb-4">Мониторинг ситуации с коронавирусом</h1>
+								<v-dialog
+									v-model="covidDialog"
+									width="700"
+								>
+									<template v-slot:activator="{ on }">
+										<v-btn tile light large outlined block color="black" class="btn-thin" v-on="on">Узнать о
+											коронавирусе в
+											тюрьмах
+										</v-btn>
+									</template>
+									<v-card>
+										<v-card-title
+											style="color: #D50000; font-family: 'Akrobat'!important; font-size: 2rem!important; font-weight: bold;"
+											primary-title>
+											Коронавирус в тюрьмах
+										</v-card-title>
+										<v-card-text>
+											Заключенные в России — одна из самых незащищенных групп граждан. Колонии становятся крупными
+											очагов распространения коронавируса.
+											Эти вспышки тяжело остановить. У большей части заключенных сниженный иммунитет и масса
+											сопутствующих заболеваний, в том числе ВИЧ.
+											Еще один фактор — скученность осужденных в бараках. В одном бараке
+											содержится 150-200 человек.
+											Распространение вируса в таких условиях — моментальное. Как изолировать заболевших и тех, кто с
+											ними
+											контактировал, в условиях колонии не ясно.
+											Качество медицинской помощи в МЛС тоже оставляет желать лучшего.
+											Нехватка медикаментов, отсутствие квалифицированных врачей и отсутствие необходимого количества
+											коек в санчасти - это приведет к огромному количеству смертей.
+											<br>
+											<br>
+											Поэтому важно, чтобы происходящее внутри исправительных учреждений не оставалось за
+											закрытыми стенами, а как можно больше освещалось в СМИ и среди правозащитных организаций.
+											<br>
+											<br>
+											“Русь сидящая” ведет собственный регулярный мониторинг ситуации в млс со 02.04.2020.
+											Собираем и систематизируем данные о ситуациях в различных учреждениях ФСИН с помощью сообщений,
+											которые получаем от родственников осужденных в обращениях к фонду и комментариев в социальных
+											сетях
+											“Руси сидящей”.
+											Проводим внутреннюю проверку по каждому сообщению. По грубейшим нарушениям юристы фонда готовят и
+											отправляют жалобы в Генеральную прокуратуру.
+											Данные, полученные в ходе мониторинга, наносим на карту. Призываем журналистов, правозащитников,
+											осужденных и их родственников участвовать в нашем мониторинге и сообщать
+											о ситуации с коронавирусом в колониях.
+										</v-card-text>
+									</v-card>
+								</v-dialog>
 								<p style="background: #f3f3f3; border-radius: 3px" class="mt-2 mb-2 pa-6">
 									{{$t('infoViewer.responsibilityWarning')}}
 								</p>
@@ -181,7 +186,6 @@
 											></v-skeleton-loader>
 										</v-flex>
 										<br>
-
 									</v-layout>
 								</v-row>
 							</div>
@@ -212,8 +216,13 @@
 							></v-skeleton-loader>
 						</v-window-item>
 					</v-window>
+					<v-btn class="btn" @click="showEmailSub()" v-if="!emailClick" tile text background-color="transparent"
+					       style="float: right;">
+						<v-icon>mail_outline</v-icon>
+						<span>Подписаться на рассылку</span>
+					</v-btn>
+					<EmailSubscription v-if="emailClick"></EmailSubscription>
 				</v-card-text>
-				<EmailSubscription></EmailSubscription>
 			</v-col>
 		</v-row>
 	</v-card>
@@ -221,6 +230,8 @@
 
 <script lang="ts">
     import Vue from 'vue';
+    import Vuetify from 'vuetify';
+    Vue.use(Vuetify);
     import * as store from "../plugins/store";
     import axios from "axios";
     import {Component, Prop, Watch} from "vue-property-decorator";
@@ -243,7 +254,12 @@
         covidDialog = false;
         loading = true;
 
+        emailClick = false;
         //getWord()
+		    showEmailSub() {
+		        this.emailClick = true;
+            this.$vuetify.goTo(0, {duration: 500, offset: 0, easing: 'easeInOutCubic',})
+		    }
         share() {
             // warning: this works only over https
             // on localhost it has no effect
@@ -359,7 +375,12 @@
             this.loading = true;
             this.covidViolations = [];
             this.proofs = [];
+            this.emailClick = false;
             this.checkPlace();
+        }
+        @Watch('activeBtn')
+		    onActiveBtnChange() {
+		        this.emailClick = false;
         }
     }
 </script>
@@ -432,6 +453,7 @@
 	#info-main {
 		width: 94%;
 		margin-left: 3%;
+		margin-right: 3%;
 	}
 
 	@media screen and (max-width: 960px) {

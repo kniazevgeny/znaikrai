@@ -68,3 +68,6 @@
 .v-item-group > .btn-thin {
     padding: 0 6px!important;
 }
+.v-btn {
+    text-transform: initial!important;
+}

@@ -231,6 +231,7 @@
 <script lang="ts">
     import Vue from 'vue';
     import Vuetify from 'vuetify';
+
     Vue.use(Vuetify);
     import * as store from "../plugins/store";
     import axios from "axios";
@@ -255,11 +256,13 @@
         loading = true;
 
         emailClick = false;
+
         //getWord()
-		    showEmailSub() {
-		        this.emailClick = true;
+        showEmailSub() {
+            this.emailClick = true;
             this.$vuetify.goTo(0, {duration: 500, offset: 0, easing: 'easeInOutCubic',})
-		    }
+        }
+
         share() {
             // warning: this works only over https
             // on localhost it has no effect
@@ -378,9 +381,10 @@
             this.emailClick = false;
             this.checkPlace();
         }
+
         @Watch('activeBtn')
-		    onActiveBtnChange() {
-		        this.emailClick = false;
+        onActiveBtnChange() {
+            this.emailClick = false;
         }
     }
 </script>

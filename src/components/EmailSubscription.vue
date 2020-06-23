@@ -12,6 +12,7 @@
 <script lang="ts">
     import Vue from 'vue';
     import Vuetify from 'vuetify';
+
     Vue.use(Vuetify);
     import axios from 'axios';
     import * as store from "../plugins/store";

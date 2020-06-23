@@ -10,7 +10,7 @@
 				v-btn(tile text class="navbar-text", :to="'about'"  :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'") О ПРОЕКТЕ
 			// Dark mode
 			// v-btn(text icon color='grey' @click='toggleMode')
-				v-icon(small) brightness_2
+					v-icon(small) brightness_2
 			// Language picker//v-row(justify='center')
 			v-spacer
 			v-btn(tile, outlined, style="margin-right: 4%; padding: 0 16px!important", class="navbar-text", :to="'/tell'",  :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'", id="tellus") СООБЩИТЬ О НАРУШЕНИИ
@@ -34,7 +34,7 @@
     import * as api from "../utils/api";
     import router from "@/plugins/router";
 
-	 @Component
+    @Component
     export default class Navbar extends Vue {
 
         get locales() {
@@ -43,17 +43,22 @@
 
         get buttonSize() {
             switch (this.$vuetify.breakpoint.name) {
-                case 'xs': return 'medium';
-                case 'sm': return 'large';
-                case 'md': return 'large';
-                case 'lg': return 'x-large';
-                case 'xl': return 'x-large'
+                case 'xs':
+                    return 'medium';
+                case 'sm':
+                    return 'large';
+                case 'md':
+                    return 'large';
+                case 'lg':
+                    return 'x-large';
+                case 'xl':
+                    return 'x-large'
             }
         }
 
         get currentLocale() {
             for (const locale of this.locales) {
-                if (locale.code === i18n.locale) {
+                if ( locale.code === i18n.locale ) {
                     return locale;
                 }
             }
@@ -69,11 +74,12 @@
             store.setLanguage(locale);
             document.title = i18n.t("Знай край") as string;
         }
+
         mounted(): void {
             store.setLanguage('ru');
         }
 
-   }
+    }
 </script>
 
 <style>
@@ -88,55 +94,76 @@
 
 	header {
 		background-color: transparent;
-		transition: none!important;
-	}
-	.navbar-text{
-		font-family: 'Akrobat'!important;
-		font-weight: 700!important;
-		font-size: 1.1rem!important;
-	}
-	@media screen and (min-width: 1100px) {
-		.navbar-text{ font-size: 1.1rem!important; }
-	}
-	@media screen and (max-width: 1100px) {
-		.navbar-text{ font-size: 0.9rem!important; }
-	}
-	@media screen and (max-width: 620px) {
-		#navbar-logo {top: 310px}
-	}
-	@media screen and (min-width: 620px) {
-		#navbar-logo {top: 100px}
-	}
-	.navbar-text.v-btn--active:not(#tellus):not(.map-underline) > .v-btn__content {
-	  color: #D50000!important;
+		transition: none !important;
 	}
 
-	.navbar-text.v-btn:before{
-		background-color: transparent!important;
+	.navbar-text {
+		font-family: 'Akrobat' !important;
+		font-weight: 700 !important;
+		font-size: 1.1rem !important;
 	}
+
+	@media screen and (min-width: 1100px) {
+		.navbar-text {
+			font-size: 1.1rem !important;
+		}
+	}
+
+	@media screen and (max-width: 1100px) {
+		.navbar-text {
+			font-size: 0.9rem !important;
+		}
+	}
+
+	@media screen and (max-width: 620px) {
+		#navbar-logo {
+			top: 310px
+		}
+	}
+
+	@media screen and (min-width: 620px) {
+		#navbar-logo {
+			top: 100px
+		}
+	}
+
+	.navbar-text.v-btn--active:not(#tellus):not(.map-underline) > .v-btn__content {
+		color: #D50000 !important;
+	}
+
+	.navbar-text.v-btn:before {
+		background-color: transparent !important;
+	}
+
 	.navbar-text.v-btn:not(.v-btn--round).v-size--default {
-		padding: 0 8px!important;
+		padding: 0 8px !important;
 	}
+
 	.navbar-text.v-btn--outlined {
-		border: 1.5px solid!important;
+		border: 1.5px solid !important;
 	}
 
 	.v-toolbar--prominent .v-toolbar__content {
-		align-items: center!important;
+		align-items: center !important;
 	}
 
 	@media screen and (max-width: 1100px) {
-		#letter {top: -10px}
+		#letter {
+			top: -10px
+		}
 	}
+
 	@media screen and (min-width: 1100px) {
-		#letter {top: 0px}
+		#letter {
+			top: 0px
+		}
 	}
-	#letter
-	{
-		position:absolute;
+
+	#letter {
+		position: absolute;
 		right: -8px;
 		font-size: 20px;
-		background-color:transparent;
+		background-color: transparent;
 		padding-top: 24px;
 		letter-spacing: 0px;
 
@@ -150,9 +177,10 @@
 	}
 
 	.map-underline > span {
-		color: #fff!important;
+		color: #fff !important;
 		text-decoration: underline;
 	}
+
 	#navbar-logo-slogan {
 		text-align: center;
 		font-family: 'Akrobat';
@@ -162,9 +190,11 @@
 		font-weight: 800;
 		color: #000;
 	}
+
 	#navbar-logo-slogan.theme--dark {
 		color: #fff;
 	}
+
 	@media screen and (min-width: 1500px) {
 		#navbar-logo-slogan {
 			width: 15vw;

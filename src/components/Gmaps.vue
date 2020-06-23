@@ -648,7 +648,7 @@
                 if (markerToShow !== undefined) {
                     console.log(markerToShow);
                     this.markers0.forEach(el => {
-                        if (el._id === markerToShow){
+                        if (el._id === markerToShow) {
                             this.toggleInfoWindow(el, 0);
                         }
                     })
@@ -691,7 +691,7 @@
             },
             calculator(markers, numStyles) {
                 let violationCounter = 0;
-                let covid =markers.some(gmarker => {
+                let covid = markers.some(gmarker => {
                     let marker = this.markersForClusters.get(gmarker.position.lat());
                     violationCounter += marker.number_of_violations;
                     return marker.coronavirus;
@@ -724,7 +724,7 @@
 	@import url('../assets/styles/main.css');
 
 	#map {
-		padding: 0!important;
+		padding: 0 !important;
 	}
 
 	.search-select > .v-input__control > .v-input__slot {
@@ -817,9 +817,11 @@
 	#attach2 > .v-menu__content {
 		margin-top: -13px;
 	}
+
 	.v-input.search-select.mb-0 > .v-input__control > .v-input__slot {
-		background-color: #D50000!important;
+		background-color: #D50000 !important;
 	}
+
 	.v-input.search-select.mb-0 > .v-input__control > .v-input__slot > .v-select__slot > label {
 		color: #fff;
 	}

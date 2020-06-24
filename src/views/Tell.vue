@@ -12,36 +12,37 @@
 					v-col(v-if="loading" cols='9', style="width: 88%; margin-left: 6vw" class="analyse-loader" v-for="j in 6" :key="j")
 						v-skeleton-loader(type="card-heading")
 						v-skeleton-loader(type="sentences")
-					v-col(cols='9' v-for="(value, i) in questions" :key="i")
-						div(v-if="value.type === 'textfield' && (value.requires === '' || form[value.requires] === 'Да')")
-							span(class="question") {{ value.question }}
-							v-text-field(class="question-textfield" label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
-						div(v-if="value.type === 'textarea' && (value.requires === '' || form[value.requires] === 'Да')")
-							span(class="question") {{ value.question }}
-							v-textarea(class="question-textfield" auto-grow label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
-						div(v-if="value.type === 'choose_one' && (value.requires === '' || form[value.requires] === 'Да')")
-							span(class="question") {{ value.question }}
-							v-select(v-model="form[value.name]" :mandatory="value.required" :items="checkboxes[value.name]" outlined class="select" menu-props="rounded='0'")
-								template(v-slot:item="{ item, attrs }")
-									span(class="question-select")
-										span(class="ml-6") {{item}}
-							span(v-if="form[value.name] === 'другое'")
-								v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled, :required="value.required")
-							span(v-if="value.required" class="caption") Обязательное поле
-						div(v-if="value.type === 'choose_multiply' && (value.requires === '' || form[value.requires] === 'Да')")
-							span(class="question") {{ value.question }}
-							v-item-group(v-model="form[value.name]" :mandatory="value.required" :multiple="value.type === 'choose_multiply'")
-								div(v-for="(n, j) in checkboxes[value.name]" :key="j")
-									v-item(v-slot:default="{ active, toggle }")
-										span(class="question-checkbox" @click="toggle")
-											z-checkbox(:checked="active" style="transform: scale(1.5);" class="ml-1") {{ n }}
-											span(class="ml-6") {{n}}
-								span(v-show="isOtherChoosed(value.name)")
-									v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled)
+					v-form(ref="form" small v-model="valid" lazy-validation @submit.prevent="sendNewBlank")
+						v-col(cols='9' v-for="(value, i) in questions" :key="i")
+							div(v-if="value.type === 'textfield' && (value.requires === '' || form[value.requires] === 'Да')")
+								span(class="question") {{ value.question }}
+								v-text-field(class="question-textfield" label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :rules="value.required ? requiredRules : undefined", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
+							div(v-if="value.type === 'textarea' && (value.requires === '' || form[value.requires] === 'Да')")
+								span(class="question") {{ value.question }}
+								v-textarea(class="question-textfield" auto-grow label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :rules="value.required ? requiredRules : undefined", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
+							div(v-if="value.type === 'choose_one' && (value.requires === '' || form[value.requires] === 'Да')")
+								span(class="question") {{ value.question }}
+								v-select(v-model="form[value.name]" :mandatory="value.required" :items="checkboxes[value.name]", :required="value.required", :rules="value.required ? requiredRules : undefined" outlined class="select" menu-props="rounded='0'")
+									template(v-slot:item="{ item, attrs }")
+										span(class="question-select")
+											span(class="ml-6") {{item}}
+								span(v-if="form[value.name] === 'другое'")
+									v-text-field(class="question-textfield" label='', v-model='other[value.name]', :rules="value.required ? requiredRules : undefined", filled, :required="value.required")
 								span(v-if="value.required" class="caption") Обязательное поле
-						div(v-if="value.type === 'html'")
-							span(class="question") {{ value.question }}
-							div(v-html="value.button" style="background: transparent; width: 183px; height: 45px;" class="iframe-holder")
+							div(v-if="value.type === 'choose_multiply' && (value.requires === '' || form[value.requires] === 'Да')")
+								span(class="question") {{ value.question }}
+								v-item-group(v-model="form[value.name]" :mandatory="value.required" :multiple="value.type === 'choose_multiply'")
+									div(v-for="(n, j) in checkboxes[value.name]" :key="j")
+										v-item(v-slot:default="{ active, toggle }")
+											span(class="question-checkbox" @click="toggle")
+												z-checkbox(:checked="active" style="transform: scale(1.5);" class="ml-1") {{ n }}
+												span(class="ml-6") {{n}}
+									span(v-show="isOtherChoosed(value.name)")
+										v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled)
+									span(v-if="value.required" class="caption") Обязательное поле
+							div(v-if="value.type === 'html'")
+								span(class="question") {{ value.question }}
+								div(v-html="value.button" style="background: transparent; width: 183px; height: 45px;" class="iframe-holder")
 
 				v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent" class="btn") Отправить
 </template>
@@ -65,7 +66,11 @@
         checkboxes: object[] = []; //checkbox values
         other: object[] = []; //other values
         form = {};
+        valid = true;
         loading = true;
+        requiredRules = [
+            v => !!v || 'Это поле нужно заполнить'
+        ];
 
         isOtherChoosed(name) {
             //only for checkboxes
@@ -109,32 +114,11 @@
             this.getQuestions();
         }
 
-        checkField(value) {
-            console.log(value);
-            return value != undefined && value.toString() != "";
-        }
-
-        checkRequired() {
-            //console.log((this.form as any)['public_disclosure']);
-            let ans = true;
-            this.questions.forEach(value => {
-                if ( (value as any).required ) {
-                    if ( (value as any).type === 'textfield' || (value as any).type === 'textarea' ) {
-                        //console.log(this.checkField((this.form as any)[(value as any).name]) == false, (value as any).name);
-                        if ( this.checkField((this.form as any)[(value as any).name]) == false ) ans = false;
-                    } else if ( (value as any).type === 'choose_one' && (this.form as any)[(value as any).name] === 'другое' ) {
-                        if ( this.checkField((this.other as any)[(value as any).name]) == false ) ans = false;
-                    }
-                    //checkboxes processing is below
-                }
-            });
-            return ans;
-        }
-
         sendNewBlank() {
             console.log((this.form as any).status);
-            console.log("checkRequired", this.checkRequired());
-            if ( this.checkRequired() ) {
+            console.log("this.valid", this.valid);
+            // @ts-ignore
+            if ( this.$refs.form.validate() ) {
                 let b = {};
                 // @ts-ignore
                 for (let i = 0; i < this.questions.length; i++) {
@@ -146,7 +130,7 @@
                         // @ts-ignore
                         if ( b[this.questions[i].name] !== "Да" ) {
                             // @ts-ignore
-		                        console.log(this.questions[i].name);
+		                        //console.log(this.questions[i].name);
                             // @ts-ignore
                             (this.form as any)[this.questions[i].name.slice(0, -5)] = "";
                             // @ts-ignore
@@ -157,8 +141,8 @@
                     }
                     // @ts-ignore
                     let ans = b[this.questions[i].name];
-                    console.log(ans);
-                    console.log(typeof ans);
+                    //console.log(ans);
+                    //console.log(typeof ans);
                     if ( ans == 'другое' ) {
                         //convert checkbox answers (0, 1, 2) to Strings (Да, Нет)
                         // @ts-ignore
@@ -214,7 +198,7 @@
                 })
                     .catch(err => {
                         store.setSnackbar({
-                            message: "Ошибка отправки. Повторите попытку позже",
+                            message: "Ошибка отправки. Повторите попытку",
                             color: "error",
                             active: true
                         });
@@ -330,13 +314,9 @@
 	}
 
 	/*mega.nz style*/
-	#bodyel {
-		background: transparent !important;
-	}
-
 	.iframe-holder > iframe {
-		width: 186px !important;
-		height: 45px !important;
+		/*width: 190px !important;
+		height: 45px !important;*/
 	}
 
 	/*--------*/

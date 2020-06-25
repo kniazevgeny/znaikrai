@@ -1,8 +1,14 @@
+.error--text.v-input > .v-input__control > .v-input__slot  {
+    color: #D50000!important;
+}
 /* SELECTS */
 .select > .v-input__control > .v-input__slot > fieldset{
     border: 2px solid #000000;
     box-sizing: border-box;
     border-radius: 1px;
+}
+.select.error--text > .v-input__control > .v-input__slot > fieldset {
+    border: 2px solid #D50000;
 }
 .select > .v-input__control > .v-input__slot > .v-select__slot{
     font-family: 'Roboto';

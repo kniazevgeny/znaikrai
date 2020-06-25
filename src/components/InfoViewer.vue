@@ -125,6 +125,9 @@
 									</p-->
 									<v-divider></v-divider>
 								</v-card>
+								<v-btn v-if="!tellCovid" tile light large outlined block color="black" class="btn-thin" @click="tellCovid = true">Сообщить о COVID-19</v-btn>
+								<Form v-if="tellCovid && !sentTellCovid" originType="0" questionsOrigin="0" to="/form_corona" :place_id="info._id" @sent="sentTellCovid = true"></Form>
+								<v-btn v-if="sentTellCovid" tile light large outlined block color="black" class="btn-thin" :to="'tell?place_id=' + info._id">Cообщить о других нарушениях</v-btn>
 								<span v-if="!info.coronavirus">Нет информации по covid-19</span>
 							</div>
 						</v-window-item>
@@ -238,6 +241,8 @@
     import {Component, Prop, Watch} from "vue-property-decorator";
     import ViolationChart from "@/components/ViolationChart.vue"
     import EmailSubscription from "@/components/EmailSubscription.vue"
+    import Form from "@/components/Form.vue";
+    Vue.component('Form', Form);
 
     Vue.component('violationChart', ViolationChart);
     Vue.component('EmailSubscription', EmailSubscription);
@@ -256,6 +261,8 @@
         loading = true;
 
         emailClick = false;
+        tellCovid = false;
+        sentTellCovid = false;
 
         //getWord()
         showEmailSub() {
@@ -379,6 +386,8 @@
             this.covidViolations = [];
             this.proofs = [];
             this.emailClick = false;
+            this.tellCovid = false;
+            this.sentTellCovid = false;
             this.checkPlace();
         }
 

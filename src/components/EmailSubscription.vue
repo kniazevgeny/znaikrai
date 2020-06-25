@@ -20,7 +20,6 @@
 
     @Component
     export default class EmailSubscription extends Vue {
-        hasClicked = false;
         name = "";
         email = "";
         valid = true;

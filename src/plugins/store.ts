@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export interface State {
     places: object[];
-    isPlace : boolean[];
+    isPlace: boolean[];
     snackbar: SnackbarState
     language?: String
     dark: Boolean,
@@ -64,7 +64,7 @@ const storeOptions = {
             state.places = places;
             let tmp = [];
             state.isPlace = [];
-            for (let i  = 0; i < places.length; i++) {
+            for (let i = 0; i < places.length; i++) {
                 // @ts-ignore
                 tmp.push(false);
             }
@@ -100,16 +100,73 @@ export const dark = () => getters.dark as boolean
 export const apibase = () => getters.apibase as string | undefined
 export const infowindow = () => getters.infowindow as boolean
 export const places = () => getters.places as object
+export const forms = () => [
+    // covid form
+    [
+        {
+            name: "status",
+            question: "Какой ваш статус?",
+            required: true,
+            requires: "",
+            type: "choose_one",
+            values: [
+                "Бывший заключенный",
+                "Родственник заключенного",
+                "Заключенный в настоящее время",
+                "Адвокат",
+                "другое"
+            ],
+            hint: "",
+            button: ""
+        },
+        {
+            name: "info",
+            question: "Расскажите о ситуации с коронавирусом",
+            required: true,
+            requires: "",
+            type: "textarea",
+            values: null,
+            hint: "",
+            button: ""
+        },
+        {
+            name: "contacts_sure",
+            question: "Готовы ли вы сообщить свое имя и контакты?",
+            required: false,
+            requires: "",
+            type: "choose_one",
+            values: [
+                "Да",
+                "Нет"
+            ],
+            hint: "",
+            button: ""
+        },
+        {
+            name: "contacts",
+            question: "Ваши контакты:",
+            required: false,
+            requires: "contacts_sure",
+            type: "textfield",
+            values: null,
+            hint: "Мамонтов Власий Демьянович, 89001112233",
+            button: ""
+        },]
+] as object
+
 export function place(id: string) {
     return getters.place(id) as object
 }
+
 export function isPlace(id: string) {
     return getters.isPlace(id) as boolean
 }
+
 export function findIndex_(id: string) {
     // @ts-ignore
     return getters.places.findIndex(s => s._id === id);
 }
+
 // Mutations
 /*
 export const setUser = (user: User) => {

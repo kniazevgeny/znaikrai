@@ -1,18 +1,42 @@
 <template lang="pug">
-	v-card(:dark='$store.state.dark' style=" background: #E9E9E9;")
-		v-container(style="margin-top: 5rem;")
-			v-row
-				span(class="headlinetxt") РАССКАЖИТЕ
-		v-card-text
-			v-container
-				div(style="width: 50vw")
-					span(class="subtitle1") Ваше свидетельство поможет пролить свет на происходящее в российских тюрьмах. Мы помогаем людям, чьи права были нарушены. Спасибо, что делаете это вместе с нами.
-				br
-				v-row(style="margin-top: 35px")
-					v-col(v-if="loading" cols='9', style="width: 88%; margin-left: 6vw" class="analyse-loader" v-for="j in 6" :key="j")
-						v-skeleton-loader(type="card-heading")
-						v-skeleton-loader(type="sentences")
-					Form(originType="1" questionsOrigin="/formQuestions" to="/form" :place_id="place_id")
+	div
+		v-row(style="margin-top: 35px; z-index: 100")
+			v-col(v-if="loading" cols='9', style="width: 88%; margin-left: 6vw" class="analyse-loader" v-for="j in 6" :key="j")
+				v-skeleton-loader(type="card-heading")
+				v-skeleton-loader(type="sentences")
+			v-form(ref="form" small v-model="valid" lazy-validation @submit.prevent="sendNewBlank" class="mb-0 pb-0")
+				v-col(cols='9' v-for="(value, i) in questions" :key="i")
+					div(v-if="value.type === 'textfield' && (value.requires === '' || form[value.requires] === 'Да')")
+						span(class="question") {{ value.question }}
+						v-text-field(class="question-textfield" label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :rules="value.required ? requiredRules : undefined", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
+					div(v-if="value.type === 'textarea' && (value.requires === '' || form[value.requires] === 'Да')")
+						span(class="question") {{ value.question }}
+						v-textarea(class="question-textfield" auto-grow label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :rules="value.required ? requiredRules : undefined", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
+					div(v-if="value.type === 'choose_one' && (value.requires === '' || form[value.requires] === 'Да')")
+						span(class="question") {{ value.question }}
+						v-select(v-model="form[value.name]" style="z-index: 100;" :mandatory="value.required" :items="checkboxes[value.name]", :required="value.required", :rules="value.required ? requiredRules : undefined" outlined class="select" menu-props="rounded='0'")
+							template(v-slot:item="{ item, attrs }")
+								span(class="question-select")
+									span(class="ml-6") {{item}}
+						span(v-if="form[value.name] === 'другое'")
+							v-text-field(class="question-textfield" label='', v-model='other[value.name]', :rules="value.required ? requiredRules : undefined", filled, :required="value.required")
+						span(v-if="value.required" class="caption") Обязательное поле
+					div(v-if="value.type === 'choose_multiply' && (value.requires === '' || form[value.requires] === 'Да')")
+						span(class="question") {{ value.question }}
+						v-item-group(v-model="form[value.name]" :mandatory="value.required" :multiple="value.type === 'choose_multiply'")
+							div(v-for="(n, j) in checkboxes[value.name]" :key="j")
+								v-item(v-slot:default="{ active, toggle }")
+									span(class="question-checkbox" @click="toggle")
+										z-checkbox(:checked="active" style="transform: scale(1.5);" class="ml-1") {{ n }}
+										span(class="ml-6") {{n}}
+							span(v-show="isOtherChoosed(value.name)")
+								v-text-field(class="question-textfield" label='', v-model='other[value.name]', filled)
+							span(v-if="value.required" class="caption") Обязательное поле
+					div(v-if="value.type === 'html'")
+						span(class="question") {{ value.question }}
+						div(v-html="value.button" style="background: transparent; width: 183px; height: 45px;" class="iframe-holder")
+
+			v-btn(color='black', @click='sendNewBlank()', tile, light large outlined block :loading="loadingbtn" :disabled="sent" class="btn mt-0 pt-0") Отправить
 </template>
 
 <script lang="ts">
@@ -20,16 +44,29 @@
     import Vuetify from 'vuetify';
 
     Vue.use(Vuetify);
-    import Component from "vue-class-component";
+    import {Component, Prop} from "vue-property-decorator";
     import * as store from "../plugins/store";
     import {i18n} from "../plugins/i18n";
     import axios from "axios";
 
     @Component
-    export default class Tell extends Vue {
+    export default class Form extends Vue {
+
+        @Prop({required: true})
+        questionsOrigin!: string;
+
+        // 0 means store, 1 means server
+        @Prop({required: true})
+        originType!: string;
+
+        // e.g. /form
+        @Prop({required: true})
+        to!: string;
+
+        @Prop({default: ""})
+        place_id!: string;
 
         sent: boolean = false;
-        place_id = "";
         loadingbtn: boolean = false;
         questions: object[] = [];
         checkboxes: object[] = []; //checkbox values
@@ -44,7 +81,7 @@
         isOtherChoosed(name) {
             //only for checkboxes
             let ans = false;
-            if ( this.form[name] === undefined || this.form[name].toString() ===  "") return false;
+            if ( this.form[name] === undefined || this.form[name].toString() === "" ) return false;
             this.form[name].forEach(i => {
                 if ( this.checkboxes[name][i] === "другое" ) ans = true
             });
@@ -60,32 +97,49 @@
             })
         }
 
-        getQuestions() {
-            axios.get(store.apibase() + "/formQuestions").then((response) => {
-                console.log("questions", response.status);
-                //console.log(response.data);
-                this.questions = response.data;
+        checkPlaceId() {
+            if (this.place_id != "") {
+                this.form["place_id"] = this.place_id;
+                this.questions.push({name: "place_id"});
+                this.questions.forEach(q => {
+                    // @ts-ignore
+                    if ( q.name == "fsin_organization" ) q.type = "skip"
+                });
                 console.log(this.questions);
-                this.setCheckboxes();
-                this.loading = false;
-            })
-                .catch(err => {
-                    console.log(err);
-                    store.setSnackbar({
-                        message: err.message,
-                        color: "error",
-                        active: true
-                    });
+            }
+        }
+
+        getQuestions() {
+            if ( parseInt(this.originType) ) {
+                axios.get(store.apibase() + this.questionsOrigin).then((response) => {
+                    console.log("questions", response.status);
+                    //console.log(response.data);
+                    this.questions = response.data;
+                    console.log(this.questions);
+                    this.setCheckboxes();
+                    this.checkPlaceId();
+                    this.loading = false;
                 })
+                    .catch(err => {
+                        console.log(err);
+                        store.setSnackbar({
+                            message: err.message,
+                            color: "error",
+                            active: true
+                        });
+                    })
+            } else {
+                console.log(this.questionsOrigin);
+                console.log(store.forms());
+								this.questions = store.forms()[parseInt(this.questionsOrigin)];
+                this.setCheckboxes();
+                this.checkPlaceId();
+                this.loading = false;
+            }
         }
 
         mounted(): void {
             this.getQuestions();
-            let place_id = this.$route.query.place_id;
-            if (place_id !== undefined) {
-                this.place_id = place_id;
-                console.log(this.place_id)
-            }
         }
 
         sendNewBlank() {
@@ -104,7 +158,7 @@
                         // @ts-ignore
                         if ( b[this.questions[i].name] !== "Да" ) {
                             // @ts-ignore
-		                        //console.log(this.questions[i].name);
+                            //console.log(this.questions[i].name);
                             // @ts-ignore
                             (this.form as any)[this.questions[i].name.slice(0, -5)] = "";
                             // @ts-ignore
@@ -156,13 +210,14 @@
                 this.loadingbtn = true;
                 console.log(b);
                 console.log(this.other);
-                axios.post(store.apibase() + "/form",
+                axios.post(store.apibase() + this.to,
                     b
                 ).then(response => {
                     console.log(response);
                     if ( response.data.message == "ok" ) {
                         this.loadingbtn = false;
                         this.sent = true;
+                        this.$emit('sent', true);
                         store.setSnackbar({
                             message: "Спасибо. Ваша заявка теперь находится в обработке.",
                             color: "success",

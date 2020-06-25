@@ -81,9 +81,8 @@
 
         mounted(): void {
             this.getQuestions();
-            let place_id = this.$route.query.place_id;
-            if (place_id !== undefined) {
-                this.place_id = place_id;
+            if (this.$route.query.place_id !== undefined) {
+                this.place_id = this.$route.query.place_id as string;
                 console.log(this.place_id)
             }
         }

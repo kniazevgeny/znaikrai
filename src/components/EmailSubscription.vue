@@ -1,6 +1,6 @@
 <template lang="pug">
 	v-container(fluid class="pa-0")
-		h4(class="mb-3" style="color: #D50000; font-family: 'Akrobat'!important; font-size: 1.8rem!important; font-weight: bold;") Подписаться на рассылку
+		h4(class="mb-10" style="color: #D50000; font-family: 'Akrobat'!important; font-size: 1.8rem!important; font-weight: bold;") Подписаться на рассылку
 		v-form(ref="form" small v-model="valid" lazy-validation @submit.prevent="sendMailing")
 			span(class="question") Имя
 			v-text-field(class="mt-0 mb-0" label='', v-model="name" required, persistent-hint, filled :rules="nameRules" style="max-width: 350px")

@@ -651,6 +651,7 @@
                     this.markers0.forEach(el => {
                         if (el._id === markerToShow) {
                             this.toggleInfoWindow(el, 0);
+                            store.setInfowindow(true);
                         }
                     })
                 }
@@ -658,10 +659,10 @@
             setUrlParams() {
                 if (this.searchCovid === 'Все') {
                     if (this.$route.query.showAll !== "1")
-                        this.$router.replace({name: "home", query: {showAll: "1"}});
+                        this.$router.replace({name: "home", query: {showAll: "1", id: this.$route.query.id !== undefined ? this.$route.query.id : ""}});
                 }
                   else if (this.$route.query.showAll !== "0")
-                        this.$router.replace({name: "home", query: {showAll: "0"}})
+                        this.$router.replace({name: "home", query: {showAll: "0", id: this.$route.query.id !== undefined ? this.$route.query.id : ""}})
             },
             search() {
                 this.setUrlParams();

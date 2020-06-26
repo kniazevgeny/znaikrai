@@ -77,3 +77,8 @@
 .v-btn {
     text-transform: initial!important;
 }
+
+/* TOOLTIP */
+.v-tooltip__content {
+    border-radius: 1px!important;
+}

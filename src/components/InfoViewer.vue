@@ -19,13 +19,26 @@
 						></v-skeleton-loader>
 					</v-container>
 					<v-spacer></v-spacer>
-					<v-btn @click="share" md1 xs1 text depressed text x-large style="margin-top: 20px">
-						<v-icon>mdi-share</v-icon>
-					</v-btn>
-					<v-btn md1 xs1 text depressed text x-large style="margin-top: 20px"
-					       @click="$emit('closes')">
-						<v-icon>mdi-window-close</v-icon>
-					</v-btn>
+					<div style="margin-top: 20px">
+						<MistakeReport :id="info._id"></MistakeReport>
+					</div>
+					<v-tooltip bottom>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn @click="share" v-on="on" md1 xs1 text depressed text large style="margin-top: 20px">
+								<v-icon>mdi-share</v-icon>
+							</v-btn>
+						</template>
+						<span>{{$t('share')}}</span>
+					</v-tooltip>
+					<v-tooltip bottom>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn md1 xs1 text depressed text large style="margin-top: 20px"
+							       @click="$emit('closes')" v-on="on">
+								<v-icon>mdi-window-close</v-icon>
+							</v-btn>
+						</template>
+						<span>{{$t('close')}}</span>
+					</v-tooltip>
 				</v-card-actions>
 				<v-card-text>
 					<v-layout justify-space-around class="ml-0 pl-0"
@@ -126,9 +139,14 @@
 									<v-divider></v-divider>
 								</v-card>
 								<span v-if="!info.coronavirus">Нет информации по covid-19</span>
-								<v-btn v-if="!tellCovid" tile light large outlined block color="black" class="btn-thin" @click="tellCovid = true">Сообщить о COVID-19 в этом учреждении</v-btn>
-								<Form v-if="tellCovid && !sentTellCovid" originType="0" questionsOrigin="0" to="/form_corona" :place_id="info._id" @sent="sentTellCovid = true"></Form>
-								<v-btn v-if="sentTellCovid" tile light large outlined block color="black" class="btn-thin" :to="'tell?place_id=' + info._id">Cообщить о других нарушениях в этом учреждении</v-btn>
+								<v-btn v-if="!tellCovid" tile light large outlined block color="black" class="btn-thin"
+								       @click="tellCovid = true">Сообщить о COVID-19 в этом учреждении
+								</v-btn>
+								<Form v-if="tellCovid && !sentTellCovid" originType="0" questionsOrigin="0" to="/form_corona"
+								      :place_id="info._id" @sent="sentTellCovid = true"></Form>
+								<v-btn v-if="sentTellCovid" tile light large outlined block color="black" class="btn-thin"
+								       :to="'tell?place_id=' + info._id">Cообщить о других нарушениях в этом учреждении
+								</v-btn>
 							</div>
 						</v-window-item>
 						<v-window-item>
@@ -147,7 +165,10 @@
 								v-for="j in 2"
 								:key="j"
 							></v-skeleton-loader>
-							<v-btn v-if="!tellViolation" tile light large outlined block color="black" class="btn-thin" @click="tellViolation = true" :to="'tell?place_id=' + info._id">Сообщить о нарушении в этом учреждении</v-btn>
+							<v-btn v-if="!tellViolation" tile light large outlined block color="black" class="btn-thin"
+							       @click="tellViolation = true" :to="'tell?place_id=' + info._id">Сообщить о нарушении в этом
+								учреждении
+							</v-btn>
 						</v-window-item>
 						<v-window-item>
 							<div class="text--primary" style="color:#000!important; width: 100%; padding-top: 30px">
@@ -218,9 +239,14 @@
 								v-for="j in 4"
 								:key="j"
 							></v-skeleton-loader>
-							<v-btn v-if="!tellViolation" tile light large outlined block color="black" class="btn-thin" @click="tellViolation = true">Добавить свидетельство</v-btn>
-							<Form v-if="tellViolation && !sentTellViolation" originType="0" questionsOrigin="0" to="/form" :place_id="info._id" @sent="sentTellViolation = true"></Form>
-							<v-btn v-if="sentTellViolation" tile light large outlined block color="black" class="btn-thin" :to="'tell?place_id=' + info._id">Cообщить о других нарушениях в этом учреждении</v-btn>
+							<v-btn v-if="!tellViolation" tile light large outlined block color="black" class="btn-thin"
+							       @click="tellViolation = true">Добавить свидетельство
+							</v-btn>
+							<Form v-if="tellViolation && !sentTellViolation" originType="0" questionsOrigin="0" to="/form"
+							      :place_id="info._id" @sent="sentTellViolation = true"></Form>
+							<v-btn v-if="sentTellViolation" tile light large outlined block color="black" class="btn-thin"
+							       :to="'tell?place_id=' + info._id">Cообщить о других нарушениях в этом учреждении
+							</v-btn>
 						</v-window-item>
 					</v-window>
 				</v-card-text>
@@ -240,10 +266,13 @@
     import ViolationChart from "@/components/ViolationChart.vue"
     import EmailSubscription from "@/components/EmailSubscription.vue"
     import Form from "@/components/Form.vue";
+    import MistakeReport from "@/components/MistakeReport.vue";
+
     Vue.component('Form', Form);
 
     Vue.component('violationChart', ViolationChart);
     Vue.component('EmailSubscription', EmailSubscription);
+    Vue.component('MistakeReport', MistakeReport);
 
     @Component
     export default class InfoViewer extends Vue {

@@ -37,7 +37,8 @@
 				div(:id="'analyse' + j")
 					p(class="analyse-headline mt-12") {{$t("analytics." + name + ".title")}}
 					span(class="analyse-subtitle mt-2 mb-2") {{$t("analytics." + name + ".subtitle")}}
-					h4(class="ml-0 mt-6 mb-6") Динамика изменения количества нарушений по годам
+					h4(class="ml-0 mt-6 mb-3") Динамика изменения количества нарушений по годам
+					span(class="analyse-subtitle mt-2 mb-6") Когда к нам обращаются, мы просим указать, когда происходили нарушения. На основе этих данных вы видите график
 					v-container(fluid, style="max-width: 1000px")
 						v-sparkline(:value="category.count_by_years.values" type="trend" smooth="4" stroke-linecap="round" :gradient="['red', 'orange', 'yellow']" gradientDirection="top" auto-draw auto-draw-easing="ease-in-out"
 						show-labels label-size="5" :labels="category.count_by_years.years" )
@@ -46,8 +47,11 @@
 						v-layout(column, class="mt-4")
 							h4(class="ml-0") {{ $t("violation_types."  + name1) }}
 							v-layout(row, class="ml-0", :style="'width:' + getWidth(subcategory.total_count) + '%'")
-								div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(subcategory.total_count)")
-									p(style="align-items: center") {{ subcategory.total_count }}
+								v-tooltip(bottom)
+									template(v-slot:activator="{ on, attrs }")
+										div(class="stats-digit" style="margin-left: -45px" :style="'background-color:' + getColor(subcategory.total_count)")
+											p(style="align-items: center" v-bind="attrs" v-on="on") {{ subcategory.total_count }}
+									span Общее количество нарушений в подкатегории
 								v-layout( v-for="(value2, u) in subcategory.values", :key="u" column v-if="value2.name !== 'total_count' && value2.name !== 'total_count_appeals'" :style="'width:' + value2.value / (subcategory.total_count) * 100 + '%'")
 									ProgressLinearAnimated(:value="value2.value" height="25" color="#4F5250" offset="-1")
 									span(class="analyse-explainer") {{ value2.name }}

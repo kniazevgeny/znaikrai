@@ -3,6 +3,17 @@ export const messages = {
         title: 'Знай край',
         notFound: 'Страница не найдена',
         close: "Закрыть",
+        reportMistake: "Сообщить об ошибке",
+        share: "Поделиться",
+        navbar: {
+            subscribe: "Подписаться на рассылку"
+        },
+        map: {
+            group: "Сгруппировать точки",
+            ungroup: "Не группировать точки",
+            lightTheme: "Светлая тема",
+            darkTheme: "Тёмная тема",
+        },
         infoViewer: {
             address: "Адрес",
             coronavirus: "",

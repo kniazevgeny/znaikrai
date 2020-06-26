@@ -17,11 +17,14 @@
 				v-btn(tile, outlined, style="padding: 0 16px!important", class="navbar-text", :to="'/tell'",  :x-large="buttonSize === 'x-large'" :large="buttonSize === 'large'" :medium="buttonSize === 'medium'", id="tellus") СООБЩИТЬ О НАРУШЕНИИ
 					div(id="letter", :style='$store.state.dark ? "color: white" : "color: black"') ///      ///      ///
 				v-menu( v-model="menu" :close-on-content-click="false" :nudge-width="375" offset-y style="z-index: 100")
-					template(v-slot:activator="{ on, attrs }")
-						v-btn(icon x-lagre color="black" class="ml-12 mr-0" v-on="on")
-							v-icon(meduim style="justify-content: normal;") mail_outlined
+					template(v-slot:activator="{ on: menu }")
+						v-tooltip(bottom, style="z-index: 100")
+							template(v-slot:activator="{ on: tooltip, attrs }")
+								v-btn(icon x-lagre class="ml-12 mr-0" v-on="{...tooltip, ...menu}" :dark='$store.state.dark')
+									v-icon(meduim style="justify-content: normal;") mail_outlined
+							span {{$t('navbar.subscribe')}}
 					v-layout(style="z-index: 100" class="pa-6")
-						EmailSubscription
+						EmailSubscription {{$t('navbar.subscribe')}}
 		div(:style=`$route.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 0px; left: 0; right: 0; margin: auto; z-index: 10')
 			v-btn(:style='$store.state.dark ? "filter: none" : "filter: invert()"' style="position: absolute; bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;" id="navbar-logo" icon)
 				a(href="https://zekovnet.ru" target="_blank" rel="noreferrer")

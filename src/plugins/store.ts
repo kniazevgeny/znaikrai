@@ -101,7 +101,7 @@ export const apibase = () => getters.apibase as string | undefined
 export const infowindow = () => getters.infowindow as boolean
 export const places = () => getters.places as object
 export const forms = () => [
-    // covid form
+    // 0 covid form
     [
         {
             name: "status",
@@ -174,7 +174,7 @@ export const forms = () => [
             hint: "",
             button: ""
         },],
-    // additional information form
+    // 1 additional information form
     [
         {
             name: "status",
@@ -234,6 +234,38 @@ export const forms = () => [
             values: [
                 "Да"
             ],
+            hint: "",
+            button: ""
+        },],
+    // 1 additional information form
+    [
+        {
+            name: "fsin_organization",
+            question: "О каком учреждении ФСИН вы рассказываете?",
+            required: true,
+            requires: "",
+            type: "textfield",
+            values: null,
+            hint: "СИЗО 1",
+            button: ""
+        },
+        {
+            name: "email",
+            question: "Адрес электронной почты",
+            required: true,
+            requires: "",
+            type: "textfield",
+            values: null,
+            hint: "",
+            button: ""
+        },
+        {
+            name: "bug ",
+            question: "Опишите ошибку",
+            required: true,
+            requires: "",
+            type: "textarea",
+            values: null,
             hint: "",
             button: ""
         },]

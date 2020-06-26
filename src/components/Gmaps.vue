@@ -1,148 +1,84 @@
-<template lang="html">
-	<v-layout wrap>
-		<v-layout style="width: 100vw;">
-			<v-layout dark id="search" height="60" raised tile style="z-index: 4;">
-				<v-card dark height="60" raised tile style="z-index: 4;" wrap color="white">
-					<v-layout style="vertical-align: center; align-content: center" height="60" class="pa-0 ma-0">
-						<v-icon light class="pa-2 ma-0 search-icon" large style="width: 5vw; height: 60px;">search
-						</v-icon>
-						<i id="attach0"></i>
-						<v-autocomplete v-if="markers0" v-model="searchName" @change="search" light height="60"
-						                class="pa-0 ma-0 search-autocomplete" style="width: 32vw; z-index: 100; "
-						                label="Поиск по учреждениям ФСИН"
-						                :items="searchNames" item-text="name" item-value="searchObj"
-						                multiple flat attach="#attach0"
-						                menu-props="light, top, offsetY, tile, flat, close-on-click">
-							<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-								<span v-if="index === 0">
-										<span>{{ item }}</span>
-									</span>
-								<span
-									v-if="index === 1"
-									class="grey--text caption"
-								>(+{{ searchName.length - 1 }})</span>
-							</template>
-							<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
-										<span class="search-select-menu">
-											<z-checkbox :checked="attrs.inputValue"></z-checkbox>
-											{{ item }}
-										</span>
-							</template>
-							<template v-slot:no-data>
-								<span class="ml-4">По запросу не найдено учреждений. Попробуйте изменить запрос.</span>
-							</template>
-						</v-autocomplete>
-						<v-icon light meduim class="pa-2 ma-0 search-icon" style="z-index: 101; height: 60px;"
-						        @click="searchName = ''; search()">mdi-window-close
-						</v-icon>
-						<v-select @input="search()" dark height="60" class="pa-0 ma-0 mb-0 search-select" v-model="searchCovid"
-						          :items="searchCovids"
-						          label="По наличию COVID-19" menu-props="top, offsetY, light, close-on-click"
-						          placeholder="Все" attach="#attach2"
-						          dense style="z-index: 100; width: 15vw">
-							<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-								<span id="attach2"></span>
-								<span>{{ item }}</span>
-							</template>
-							<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
-										<span class="search-select-menu">
-											<z-checkbox :checked="attrs.inputValue"></z-checkbox>
-											{{ item }}
-										</span>
-							</template>
-						</v-select>
-					</v-layout>
-				</v-card>
-				<v-card dark height="60" raised tile style="z-index: 4;" wrap>
-					<transition name="fade1" mode="out-in">
-						<v-layout v-if="options" wrap style="max-width: 20vw">
-							<span id="attach1"></span>
-							<v-select @input="search" dark height="60" class="pa-0 ma-0 search-select" v-model="searchType"
-							          :items="searchTypes" attach="#attach1"
-							          label="По типу учреждения" multiple menu-props="light, top, offsetY"
-							          style="z-index: 100; width: 33vw">
-								<template v-slot:selection="{ item, index }" style="overflow-y: hidden">
-									<span v-if="index === 0">
-										<span>{{ item }}</span>
-									</span>
-									<span
-										v-if="index === 1"
-										class="grey--text caption"
-									>(+{{ searchType.length - 1 }})</span>
-								</template>
-								<template v-slot:item="{ item, attrs }" style="overflow-y: hidden">
-										<span class="search-select-menu">
-											<z-checkbox :checked="attrs.inputValue"></z-checkbox>
-											{{ item }}
-										</span>
-								</template>
-								<template v-slot:no-data>
-									<span class="ml-4">По запросу не найдено учреждений. Попробуйте изменить запрос.</span>
-								</template>
-							</v-select>
-						</v-layout>
-					</transition>
-				</v-card>
-				<v-btn height="60" @click="options = !options" tile fab meduim
-				       :color="options ? 'white' : 'black'">
-					<transition name="fade" mode="out-in">
-						<tune-r v-if="options"/>
-						<tune-b v-else/>
-					</transition>
-				</v-btn>
-			</v-layout>
-
-			<div id="modePicker" :style="$vuetify.breakpoint.name === 'xs' ? 'margin-right: -15px' : ''">
-				<v-btn-toggle v-model="mapMode" mandatory tile active-class="v-btn--disabled">
-					<v-btn :small="$vuetify.breakpoint.name === 'xs'" fab>
-						<v-icon>adjust</v-icon>
-					</v-btn>
-					<v-btn :small="$vuetify.breakpoint.name === 'xs'" fab>
-						<v-icon>blur_on</v-icon>
-					</v-btn>
-				</v-btn-toggle>
-			</div>
-			<div id="themePicker" :style="$vuetify.breakpoint.name === 'xs' ? 'margin-right: -15px' : ''">
-				<v-btn-toggle v-model="mapTheme" mandatory tile active-class="v-btn--disabled">
-					<v-btn @click="changeTheme()" :small="$vuetify.breakpoint.name === 'xs'" fab>
-						<v-icon>wb_sunny</v-icon>
-					</v-btn>
-					<v-btn @click="changeTheme()" :small="$vuetify.breakpoint.name === 'xs'" fab>
-						<v-icon style="transform: rotate(-90deg)">brightness_3</v-icon>
-					</v-btn>
-				</v-btn-toggle>
-			</div>
-			<google-map v-if="google" :center="mapCenter" id="map" :zoom="mapZoom" ref="mapRef"
-			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;"
-			            :options="mapTheme === 0 ? mapLightStyle : mapDarkStyle">
-				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
-				                  @closeclick="infoWinOpen=false" :options="infoOptions"><!--:-->
-				</gmap-info-window>
-				<GmapCluster v-if="!mapMode && markers1" imagePath="static/cluster" imageExtension="svg"
-				             :imageSizes="[30, 30, 30, 30, 30]" :calculator="calculator"
-				             averageCenter :animation="4" zoomOnClick>
-					<gmap-marker v-for="(m,i) in markers1" :key="i" :position="google && m.position" :clickable="true"
-					             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker>
-				</GmapCluster>
-				<gmap-marker v-if="mapMode && markers1" v-for="(m,i) in markers1" :key="i" :position="google && m.position"
-				             :clickable="true"
-				             @click="toggleInfoWindow(m,i)" :icon="getIcon(m)"></gmap-marker>
-			</google-map>
-		</v-layout>
-		<transition name="slide-fade" mode="in-out" style="z-index: 101">
-			<v-layout v-show="infoWinOpenMine" class="inform" style="position: absolute !important; margin-bottom: 20vh">
-				<InfoViewer v-if="getWidth() >= 1150" :_info="currentInfo"
-				            @closes="closes()"></InfoViewer>
-				<v-dialog v-else v-model="infoWinOpenMine" fullscreen>
-					<InfoViewer :_info="currentInfo" @closes="closes()"></InfoViewer>
-				</v-dialog>
-			</v-layout>
-		</transition>
-
-		<!--v-btn @click="getPlaces">get</v-btn-->
-
-		<!--a v-if="markers1" v-text="markers1"></a-->
-	</v-layout>
+<template lang="pug">
+	v-layout(wrap='')
+		v-layout(style='width: 100vw;')
+			v-layout#search(dark='', height='60', raised='', tile='', style='z-index: 4;')
+				v-card(dark='', height='60', raised='', tile='', style='z-index: 4;', wrap='', color='white')
+					v-layout.pa-0.ma-0(style='vertical-align: center; align-content: center', height='60')
+						v-icon.pa-2.ma-0.search-icon(light='', large='', style='width: 5vw; height: 60px;') search
+						i#attach0
+						v-autocomplete.pa-0.ma-0.search-autocomplete(v-if='markers0', v-model='searchName', @change='search', light='', height='60', style='width: 32vw; z-index: 100; ', label='Поиск по учреждениям ФСИН', :items='searchNames', item-text='name', item-value='searchObj', multiple='', flat='', attach='#attach0', menu-props='light, top, offsetY, tile, flat, close-on-click')
+							template(v-slot:selection='{ item, index }', style='overflow-y: hidden')
+								span(v-if='index === 0')
+									span {{ item }}
+								span.grey--text.caption(v-if='index === 1') (+{{ searchName.length - 1 }})
+							template(v-slot:item='{ item, attrs }', style='overflow-y: hidden')
+								span.search-select-menu
+									z-checkbox(:checked='attrs.inputValue')
+									span  {{item}}
+							template(v-slot:no-data='')
+								span.ml-4 По запросу не найдено учреждений. Попробуйте изменить запрос.
+						v-icon.pa-2.ma-0.search-icon(light='', meduim='', style='z-index: 101; height: 60px;', @click="searchName = '', search()") mdi-window-close
+						v-select.pa-0.ma-0.mb-0.search-select(@input='search()', dark='', height='60', v-model='searchCovid', :items='searchCovids', label='По наличию COVID-19', menu-props='top, offsetY, light, close-on-click', placeholder='Все', attach='#attach2', dense='', style='z-index: 100; width: 15vw')
+							template(v-slot:selection='{ item, index }', style='overflow-y: hidden')
+								span#attach2
+								span {{ item }}
+							template(v-slot:item='{ item, attrs }', style='overflow-y: hidden')
+								span.search-select-menu
+									z-checkbox(:checked='attrs.inputValue')
+									span  {{item}}
+				v-card(dark='', height='60', raised='', tile='', style='z-index: 4;', wrap='')
+					transition(name='fade1', mode='out-in')
+						v-layout(v-if='options', wrap='', style='max-width: 20vw')
+							span#attach1
+							v-select.pa-0.ma-0.search-select(@input='search', dark='', height='60', v-model='searchType', :items='searchTypes', attach='#attach1', label='По типу учреждения', multiple='', menu-props='light, top, offsetY', style='z-index: 100; width: 33vw')
+								template(v-slot:selection='{ item, index }', style='overflow-y: hidden')
+									span(v-if='index === 0')
+										span {{ item }}
+									span.grey--text.caption(v-if='index === 1') (+{{ searchType.length - 1 }})
+								template(v-slot:item='{ item, attrs }', style='overflow-y: hidden')
+									span.search-select-menu
+										z-checkbox(:checked='attrs.inputValue')
+										span  {{item}}
+								template(v-slot:no-data='')
+									span.ml-4 По запросу не найдено учреждений. Попробуйте изменить запрос.
+				v-btn(height='60', @click='options = !options', tile='', fab='', meduim='', :color="options ? 'white' : 'black'")
+					transition(name='fade', mode='out-in')
+						tune-r(v-if='options')
+						tune-b(v-else='')
+			#modePicker(:style="$vuetify.breakpoint.name === 'xs' ? 'margin-right: -15px' : ''")
+				v-btn-toggle(v-model='mapMode', mandatory='', tile='', active-class='v-btn--disabled')
+					v-tooltip(left style="z-index: 100")
+						template(v-slot:activator="{ on, attrs }")
+							v-btn(:small="$vuetify.breakpoint.name === 'xs'", fab='', v-on="on")
+								v-icon adjust
+						span {{$t('map.group')}}
+					v-tooltip(left style="z-index: 100")
+						template(v-slot:activator="{ on, attrs }")
+							v-btn(:small="$vuetify.breakpoint.name === 'xs'", fab='', v-on="on")
+								v-icon blur_on
+						span {{$t('map.ungroup')}}
+			#themePicker(:style="$vuetify.breakpoint.name === 'xs' ? 'margin-right: -15px' : ''")
+				v-btn-toggle(v-model='mapTheme', mandatory='', tile='', active-class='v-btn--disabled')
+					v-tooltip(left style="z-index: 100")
+						template(v-slot:activator="{ on, attrs }")
+							v-btn(@click='changeTheme()', :small="$vuetify.breakpoint.name === 'xs'", fab='', v-on="on")
+								v-icon wb_sunny
+						span {{$t('map.lightTheme')}}
+					v-tooltip(left style="z-index: 100")
+						template(v-slot:activator="{ on, attrs }")
+							v-btn(@click='changeTheme()', :small="$vuetify.breakpoint.name === 'xs'", fab='', v-on="on")
+								v-icon(style='transform: rotate(-90deg)') brightness_3
+						span {{$t('map.darkTheme')}}
+			google-map#map(v-if='google', :center='mapCenter', :zoom='mapZoom', ref='mapRef', style='height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;', :options='mapTheme === 0 ? mapLightStyle : mapDarkStyle')
+				gmap-info-window(:position='infoWindowPos', :opened='infoWinOpen', @closeclick='infoWinOpen=false', :options='infoOptions')
+				GmapCluster(v-if='!mapMode && markers1', imagePath='static/cluster', imageExtension='svg', :imageSizes='[30, 30, 30, 30, 30]', :calculator="calculator", averageCenter='', :animation='4', zoomOnClick)
+					gmap-marker(v-for='(m,i) in markers1', :key='i', :position='google && m.position', :clickable='true', @click='toggleInfoWindow(m,i)', :icon='getIcon(m)')
+				gmap-marker(v-if='mapMode && markers1', v-for='(m,i) in markers1', :key='i', :position='google && m.position', :clickable='true', @click='toggleInfoWindow(m,i)', :icon='getIcon(m)')
+		transition(name='slide-fade', mode='in-out', style='z-index: 101')
+			v-layout.inform(v-show='infoWinOpenMine', style='position: absolute !important; margin-bottom: 20vh')
+				InfoViewer(v-if='getWidth() >= 1150', :_info='currentInfo', @closes='closes()')
+				v-dialog(v-else='', v-model='infoWinOpenMine', fullscreen='')
+					InfoViewer(:_info='currentInfo', @closes='closes()')
 </template>
 
 <script lang="js">

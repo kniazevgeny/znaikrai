@@ -44,7 +44,7 @@
     import Vuetify from 'vuetify';
 
     Vue.use(Vuetify);
-    import {Component, Prop} from "vue-property-decorator";
+    import {Component, Prop, Watch} from "vue-property-decorator";
     import * as store from "../plugins/store";
     import {i18n} from "../plugins/i18n";
     import axios from "axios";
@@ -214,8 +214,8 @@
                 axios.post(store.apibase() + this.to,
                     b
                 ).then(response => {
-                    console.log(response);
-                    if ( response.data.message == "ok" ) {
+                    console.log("sucess ", response.status == 200);
+                    if ( response.status == 200 ) {
                         this.loadingbtn = false;
                         this.sent = true;
                         this.$emit('sent', true);
@@ -240,7 +240,15 @@
                     active: true
                 });
             }
-        }
+        };
+		    @Watch('place_id')
+		    onChange() {
+            this.form = {};
+            this.sent = false;
+            this.checkboxes = [];
+            this.other = [];
+            this.getQuestions();
+		    }
     }
 </script>
 

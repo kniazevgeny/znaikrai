@@ -9,7 +9,7 @@
 		v-card()
 			v-card-title(style="color: #D50000; font-family: 'Akrobat'!important; font-size: 2rem!important; font-weight: bold;") Сообщить об ошибке
 			v-card-text(width="700" style="width: 100%")
-				Form(originType="0" questionsOrigin="2" to="/report" :place_id="id" )
+				Form(originType="0" questionsOrigin="2" to="/report" :place_id="place_id" )
 </template>
 
 <script lang="ts">
@@ -24,7 +24,7 @@
     @Component
     export default class MistakeReport extends Vue {
         @Prop({required: false, default: ""})
-        id!: string;
+        place_id!: string;
 
         dialog = false
     }

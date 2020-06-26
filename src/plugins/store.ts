@@ -260,7 +260,7 @@ export const forms = () => [
             button: ""
         },
         {
-            name: "bug ",
+            name: "bug",
             question: "Опишите ошибку",
             required: true,
             requires: "",

@@ -20,7 +20,7 @@
 					</v-container>
 					<v-spacer></v-spacer>
 					<div style="margin-top: 20px">
-						<MistakeReport :id="info._id"></MistakeReport>
+						<MistakeReport :place_id="info._id"></MistakeReport>
 					</div>
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on, attrs }">

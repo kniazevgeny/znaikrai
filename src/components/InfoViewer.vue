@@ -125,10 +125,10 @@
 									</p-->
 									<v-divider></v-divider>
 								</v-card>
+								<span v-if="!info.coronavirus">Нет информации по covid-19</span>
 								<v-btn v-if="!tellCovid" tile light large outlined block color="black" class="btn-thin" @click="tellCovid = true">Сообщить о COVID-19 в этом учреждении</v-btn>
 								<Form v-if="tellCovid && !sentTellCovid" originType="0" questionsOrigin="0" to="/form_corona" :place_id="info._id" @sent="sentTellCovid = true"></Form>
 								<v-btn v-if="sentTellCovid" tile light large outlined block color="black" class="btn-thin" :to="'tell?place_id=' + info._id">Cообщить о других нарушениях в этом учреждении</v-btn>
-								<span v-if="!info.coronavirus">Нет информации по covid-19</span>
 							</div>
 						</v-window-item>
 						<v-window-item>
@@ -223,12 +223,6 @@
 							<v-btn v-if="sentTellViolation" tile light large outlined block color="black" class="btn-thin" :to="'tell?place_id=' + info._id">Cообщить о других нарушениях в этом учреждении</v-btn>
 						</v-window-item>
 					</v-window>
-					<v-btn class="btn" @click="showEmailSub()" v-if="!emailClick" tile text background-color="transparent"
-					       style="float: right;">
-						<v-icon>mail_outline</v-icon>
-						<span>Подписаться на рассылку</span>
-					</v-btn>
-					<EmailSubscription v-if="emailClick"></EmailSubscription>
 				</v-card-text>
 			</v-col>
 		</v-row>

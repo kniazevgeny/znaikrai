@@ -6,7 +6,7 @@
 			v-text-field(class="mt-0 mb-0" label='', v-model="name" required, persistent-hint, filled :rules="nameRules" style="max-width: 350px")
 			span(class="question") Email
 			v-text-field(class=" mt-0 mb-0" label='', v-model="email" required, persistent-hint, filled :rules="emailRules" style="max-width: 350px" @keyup.enter="sendMailing()")
-			v-btn(class="btn" @click="sendMailing()" tile text background-color="transparent" block) Подписаться
+			v-btn(class="btn" @click="sendMailing()" tile text background-color="transparent" block :disabled="sent") Подписаться
 </template>
 
 <script lang="ts">
@@ -23,11 +23,12 @@
         name = "";
         email = "";
         valid = true;
+        sent = false;
         nameRules = [
             v => !!v || 'Это поле обязательно к заполнению',
             v => v.length > 2 || 'Минимум 3 символа латиницей',
             v => v.length < 30 || 'Максимум 30 символов',
-            v => /^[a-zA-Zа-яА-Я_]+$/.test(v) || 'Имя не должно включать в себя спецсимволы'];
+            v => /^[a-zA-Zа-яА-Я_ ]+$/.test(v) || 'Имя не должно включать в себя спецсимволы'];
         emailRules = [
             v => !!v || 'Это поле обязательно к заполнению', // /^\w*@\w+$/.test(v)
             v => v.length < 50 || 'Максимум 50 символов',
@@ -41,6 +42,7 @@
                     name: this.name,
                     email: this.email
                 }).then(response => {
+                    this.sent = true;
                     store.setSnackbar({
                         message: "Спасибо. Теперь вы будете получать еженедельную рассылку",
                         color: "success",

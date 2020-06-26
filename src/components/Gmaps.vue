@@ -720,6 +720,7 @@
                 this.mapTheme = 1;
                 this.changeTheme(); //set theme
                 this.mapTheme = 0;
+                if (this.$route.query.showAll === "1") this.searchCovid = 'Все';
                 this.getPlaces();
                 // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
             });

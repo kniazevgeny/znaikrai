@@ -240,7 +240,7 @@ export const forms = () => [
     // 1 additional information form
     [
         {
-            name: "fsin_organization",
+            name: "name_of_fsin",
             question: "О каком учреждении ФСИН вы рассказываете?",
             required: true,
             requires: "",

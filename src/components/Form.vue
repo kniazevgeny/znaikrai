@@ -243,10 +243,9 @@
         };
 		    @Watch('place_id')
 		    onChange() {
-            this.form = {};
+		        // @ts-ignore
+            this.$refs.form.reset();
             this.sent = false;
-            this.checkboxes = [];
-            this.other = [];
             this.getQuestions();
 		    }
     }

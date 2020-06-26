@@ -112,7 +112,7 @@
 					</v-btn>
 				</v-btn-toggle>
 			</div>
-			<google-map v-if="google" :center="mapCenter" id="map" :zoom="mapZoom"
+			<google-map v-if="google" :center="mapCenter" id="map" :zoom="mapZoom" ref="mapRef"
 			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;"
 			            :options="mapTheme === 0 ? mapLightStyle : mapDarkStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
@@ -738,7 +738,8 @@
                     return value.indexOf(obj) === -1;
                 });
                 if (s.length === 1) {
-                    this.mapCenter = s[0].position;
+                    this.$refs.mapRef.$mapPromise.then((map) => {
+                        map.panTo(s[0].position); })
                 }
             }
         }

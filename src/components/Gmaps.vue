@@ -112,7 +112,7 @@
 					</v-btn>
 				</v-btn-toggle>
 			</div>
-			<google-map v-if="google" :center="{lat: 61.52401, lng: 105.318756}" id="map" :zoom="4"
+			<google-map v-if="google" :center="mapCenter" id="map" :zoom="mapZoom"
 			            style="height: 100vh; width: 100vw; clear: left; z-index: 1; bottom: 0;"
 			            :options="mapTheme === 0 ? mapLightStyle : mapDarkStyle">
 				<gmap-info-window :position="infoWindowPos" :opened="infoWinOpen"
@@ -194,6 +194,8 @@
         data: () => ({
             mapMode: 0,
             mapTheme: 0,
+            mapCenter: {lat: 61.52401, lng: 105.318756},
+            mapZoom: 4,
             place: '',
             infoWindowPos: null,
             infoWinOpenMine: false,
@@ -657,10 +659,15 @@
             setUrlParams() {
                 if (this.searchCovid === 'Все') {
                     if (this.$route.query.showAll !== "1")
-                        this.$router.replace({name: "home", query: {showAll: "1", id: this.$route.query.id !== undefined ? this.$route.query.id : ""}});
-                }
-                  else if (this.$route.query.showAll !== "0")
-                        this.$router.replace({name: "home", query: {showAll: "0", id: this.$route.query.id !== undefined ? this.$route.query.id : ""}})
+                        this.$router.replace({
+                            name: "home",
+                            query: {showAll: "1", id: this.$route.query.id !== undefined ? this.$route.query.id : ""}
+                        });
+                } else if (this.$route.query.showAll !== "0")
+                    this.$router.replace({
+                        name: "home",
+                        query: {showAll: "0", id: this.$route.query.id !== undefined ? this.$route.query.id : ""}
+                    })
             },
             search() {
                 this.setUrlParams();
@@ -710,7 +717,7 @@
                 if (violationCounter / 18 <= 0.25) return {text: markers.length, index: 3};
                 if (violationCounter / 18 <= 1) return {text: markers.length, index: 4};
                 return {text: markers.length, index: 5};
-            }
+            },
         },
         mounted() {
             this.$gmapApiPromiseLazy().then(() => {
@@ -724,6 +731,17 @@
                 // console.log(window.location.host + "/?id=5ed2c5fd0c4a85b90ef09615");
             });
         },
+        watch: {
+            markers1(old, value) {
+                // find new element from search
+                let s = old.filter(function (obj) {
+                    return value.indexOf(obj) === -1;
+                });
+                if (s.length === 1) {
+                    this.mapCenter = s[0].position;
+                }
+            }
+        }
 
     };
 </script>

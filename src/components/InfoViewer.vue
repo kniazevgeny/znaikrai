@@ -273,7 +273,7 @@
         share() {
             // warning: this works only over https
             // on localhost it has no effect
-            navigator.clipboard.writeText(window.location.host + '/?id=' + (this.info as any)._id);
+            navigator.clipboard.writeText(window.location.protocol + "//" + window.location.host + '/?id=' + (this.info as any)._id);
             store.setSnackbar({
                 message: "Ссылка скопирована",
                 color: "success",

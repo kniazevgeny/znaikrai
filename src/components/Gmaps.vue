@@ -645,7 +645,6 @@
                 return getColoredMarkerUrl(this.getColor(marker.number_of_violations / maxviolations), marker.coronavirus);
             },
             checkUrlMarker() {
-                console.log(this.$route.query.id);
                 if (this.$route.query.id !== undefined) {
                     console.log(this.$route.query.id);
                     this.markers0.forEach(el => {

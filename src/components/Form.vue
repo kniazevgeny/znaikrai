@@ -111,7 +111,7 @@
                         }
                     }
                 );
-                console.log(this.questions);
+                //console.log(this.questions);
             }
         }
 
@@ -135,8 +135,8 @@
                         });
                     })
             } else {
-                console.log(this.questionsOrigin);
-                console.log(store.forms());
+                //console.log(this.questionsOrigin);
+                //console.log(store.forms());
                 this.questions = store.forms()[parseInt(this.questionsOrigin)];
                 this.setCheckboxes();
                 this.checkPlaceId();

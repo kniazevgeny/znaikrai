@@ -392,6 +392,7 @@
             this.tellViolation = false;
             this.sentTellViolation = false;
             this.checkPlace();
+            store.setInfowindow(true);
         }
 
         @Watch('activeBtn')
@@ -429,7 +430,7 @@
 	}*/
 	.inform {
 		position: absolute !important;
-		z-index: 91;
+		z-index: 101;
 		left: 1vh;
 		width: 40vw;
 		bottom: -4vh !important;

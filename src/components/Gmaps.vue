@@ -645,13 +645,12 @@
                 return getColoredMarkerUrl(this.getColor(marker.number_of_violations / maxviolations), marker.coronavirus);
             },
             checkUrlMarker() {
-                let markerToShow = this.$route.query.id;
-                if (markerToShow !== undefined) {
-                    console.log(markerToShow);
+                console.log(this.$route.query.id);
+                if (this.$route.query.id !== undefined) {
+                    console.log(this.$route.query.id);
                     this.markers0.forEach(el => {
-                        if (el._id === markerToShow) {
+                        if (el._id === this.$route.query.id) {
                             this.toggleInfoWindow(el, 0);
-                            store.setInfowindow(true);
                         }
                     })
                 }

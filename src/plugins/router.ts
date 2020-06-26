@@ -55,7 +55,7 @@ router.beforeEach((to, _, next) => {
     if ( to.path != 'home' && store.infowindow() ) {
         store.setInfowindow(false)
     }
-    console.log(store.dark());
+    //console.log(store.dark());
     next()
 })
 

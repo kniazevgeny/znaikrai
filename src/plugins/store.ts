@@ -120,6 +120,79 @@ export const forms = () => [
             button: ""
         },
         {
+            name: "time_of_offence",
+            question: "Укажите когда, произошли нарушения, о которых вы хотите рассказать:",
+            required: true,
+            requires: "",
+            type: "textfield",
+            values: null,
+            hint: "2015-2018",
+            button: ""
+        },
+        {
+            name: "additional_information",
+            question: "Если ли у вас есть дополнительная информация, которой вы готовы поделиться с нами, то ее можно написать здесь:",
+            required: false,
+            requires: "",
+            type: "textarea",
+            values: null,
+            hint: "",
+            button: ""
+        },
+        {
+            name: "contacts_sure",
+            question: "Готовы ли вы сообщить свое имя и контакты?",
+            required: false,
+            requires: "",
+            type: "choose_one",
+            values: [
+                "Да",
+                "Нет"
+            ],
+            hint: "",
+            button: ""
+        },
+        {
+            name: "contacts",
+            question: "Ваши контакты:",
+            required: false,
+            requires: "contacts_sure",
+            type: "textfield",
+            values: null,
+            hint: "Мамонтов Власий Демьянович, 89001112233",
+            button: ""
+        },
+        {
+            name: "processing_personal_data",
+            question: "Согласны ли вы на обработку Ваших персональных данных?",
+            required: true,
+            requires: "",
+            type: "choose_one",
+            values: [
+                "Да"
+            ],
+            hint: "",
+            button: ""
+        },],
+    // additional information form
+    [
+        {
+            name: "status",
+            question: "Какой ваш статус?",
+            required: true,
+            requires: "",
+            type: "choose_one",
+            values: [
+                "Бывший заключенный",
+                "Родственник заключенного",
+                "Заключенный в настоящее время",
+                "Адвокат",
+                "другое"
+            ],
+            hint: "",
+            button: ""
+        },
+        {
             name: "info",
             question: "Расскажите о ситуации с коронавирусом",
             required: true,
@@ -150,6 +223,18 @@ export const forms = () => [
             type: "textfield",
             values: null,
             hint: "Мамонтов Власий Демьянович, 89001112233",
+            button: ""
+        },
+        {
+            name: "processing_personal_data",
+            question: "Согласны ли вы на обработку Ваших персональных данных?",
+            required: true,
+            requires: "",
+            type: "choose_one",
+            values: [
+                "Да"
+            ],
+            hint: "",
             button: ""
         },]
 ] as object

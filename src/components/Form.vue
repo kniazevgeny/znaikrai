@@ -8,7 +8,7 @@
 				v-col(cols='9' v-for="(value, i) in questions" :key="i")
 					div(v-if="value.type === 'textfield' && (value.requires === '' || form[value.requires] === 'Да')")
 						span(class="question") {{ value.question }}
-						v-text-field(class="question-textfield" label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :rules="value.required ? requiredRules : undefined", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
+						v-text-field(class="question-textfield" label='', :placeholder="value.hint", v-model='form[value.name]', :disabled="value.disabled" :required="value.required", :rules="value.required ? requiredRules : undefined", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
 					div(v-if="value.type === 'textarea' && (value.requires === '' || form[value.requires] === 'Да')")
 						span(class="question") {{ value.question }}
 						v-textarea(class="question-textfield" auto-grow label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :rules="value.required ? requiredRules : undefined", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
@@ -98,13 +98,19 @@
         }
 
         checkPlaceId() {
-            if (this.place_id != "") {
+            if ( this.place_id != "" ) {
                 this.form["place_id"] = this.place_id;
                 this.questions.push({name: "place_id"});
                 this.questions.forEach(q => {
-                    // @ts-ignore
-                    if ( q.name == "fsin_organization" ) q.type = "skip"
-                });
+                        // @ts-ignore
+                        if ( q.name == "fsin_organization" && store.place(this.place_id) != undefined ) {
+                            // @ts-ignore
+                            q.disabled = true;
+                            // @ts-ignore
+                            this.form["fsin_organization"] = store.place(this.place_id).name;
+                        }
+                    }
+                );
                 console.log(this.questions);
             }
         }
@@ -131,7 +137,7 @@
             } else {
                 console.log(this.questionsOrigin);
                 console.log(store.forms());
-								this.questions = store.forms()[parseInt(this.questionsOrigin)];
+                this.questions = store.forms()[parseInt(this.questionsOrigin)];
                 this.setCheckboxes();
                 this.checkPlaceId();
                 this.loading = false;
@@ -143,8 +149,6 @@
         }
 
         sendNewBlank() {
-            console.log((this.form as any).status);
-            console.log("this.valid", this.valid);
             // @ts-ignore
             if ( this.$refs.form.validate() ) {
                 let b = {};
@@ -157,8 +161,6 @@
                     if ( this.questions[i].name.slice(-5, this.questions[i].name.length) === "_sure" ) {
                         // @ts-ignore
                         if ( b[this.questions[i].name] !== "Да" ) {
-                            // @ts-ignore
-                            //console.log(this.questions[i].name);
                             // @ts-ignore
                             (this.form as any)[this.questions[i].name.slice(0, -5)] = "";
                             // @ts-ignore
@@ -209,7 +211,6 @@
                 //console.log(b);
                 this.loadingbtn = true;
                 console.log(b);
-                console.log(this.other);
                 axios.post(store.apibase() + this.to,
                     b
                 ).then(response => {

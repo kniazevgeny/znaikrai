@@ -35,7 +35,7 @@
 						<v-icon light meduim class="pa-2 ma-0 search-icon" style="z-index: 101; height: 60px;"
 						        @click="searchName = ''; search()">mdi-window-close
 						</v-icon>
-						<v-select @input="search" dark height="60" class="pa-0 ma-0 mb-0 search-select" v-model="searchCovid"
+						<v-select @input="search()" dark height="60" class="pa-0 ma-0 mb-0 search-select" v-model="searchCovid"
 						          :items="searchCovids"
 						          label="По наличию COVID-19" menu-props="top, offsetY, light, close-on-click"
 						          placeholder="Все" attach="#attach2"
@@ -577,6 +577,7 @@
                 console.log(this.markersForClusters);
                 store.setPlaces(this.markers0);
                 this.checkUrlMarker();
+                this.setUrlParams();
             },
             changeTheme() {
                 store.setDark(!this.mapTheme);
@@ -654,7 +655,16 @@
                     })
                 }
             },
+            setUrlParams() {
+                if (this.searchCovid === 'Все') {
+                    if (this.$route.query.showAll !== "1")
+                        this.$router.replace({name: "home", query: {showAll: "1"}});
+                }
+                  else if (this.$route.query.showAll !== "0")
+                        this.$router.replace({name: "home", query: {showAll: "0"}})
+            },
             search() {
+                this.setUrlParams();
                 this.markers1 = store.places();
                 this.markers1 = this.markers1.filter(
                     tmp => this.searchType.includes(tmp.type)

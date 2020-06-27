@@ -1,11 +1,11 @@
-const path = require('path');
-const PrerenderSPAPlugin = require('prerender-spa-plugin');
+//const path = require('path');
+//const PrerenderSPAPlugin = require('prerender-spa-plugin');
 module.exports = {
   devServer: {
     disableHostCheck: true
   },
   assetsDir: 'static/',
-  configureWebpack: {
+  /*configureWebpack: {
     plugins: [
       new PrerenderSPAPlugin({
         staticDir: path.join(__dirname, 'dist'),
@@ -13,5 +13,5 @@ module.exports = {
         routes: [ '/', '/about', '/stories', '/analytics' ],
       })
     ]
-  }
+  }*/
 }

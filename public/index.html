@@ -15,7 +15,7 @@
 		href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons"
 		 rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"
 	/>
-	<link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'">
+	<link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel=preconnect as="style" onload="this.onload=null;this.rel='stylesheet'">
 	<title>Знайкрай</title>
 	<style>body {
 		background-color: #040404
@@ -55,6 +55,7 @@
 			src: local('Akrobat Bold'), local('Akrobat-Bold'), url('/static/Akrobatbold.woff2') format('woff2'), url('/static/Akrobatbold.woff') format('woff'), url('/static/Akrobatbold.ttf') format('truetype');
 			font-weight: 700;
 			font-style: normal;
+			font-display: swap;
 		}
 
 		@font-face {
@@ -62,6 +63,7 @@
 			src: local('Akrobat'), local('Akrobat-Regular'), url('/static/Akrobat.woff2') format('woff2'), url('/static/Akrobat.woff') format('woff'), url('/static/Akrobat.ttf') format('truetype');
 			font-weight: 400;
 			font-style: normal;
+			font-display: swap;
 		}
 
 		@-webkit-keyframes fadeIn {

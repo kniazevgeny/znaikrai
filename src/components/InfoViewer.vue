@@ -25,7 +25,7 @@
 					<v-tooltip bottom>
 						<template v-slot:activator="{ on, attrs }">
 							<v-btn @click="share" v-on="on" md1 xs1 text depressed text large style="margin-top: 20px">
-								<v-icon>mdi-share</v-icon>
+								<v-icon>share</v-icon>
 							</v-btn>
 						</template>
 						<span>{{$t('share')}}</span>
@@ -34,7 +34,7 @@
 						<template v-slot:activator="{ on, attrs }">
 							<v-btn md1 xs1 text depressed text large style="margin-top: 20px"
 							       @click="$emit('closes')" v-on="on">
-								<v-icon>mdi-window-close</v-icon>
+								<v-icon>close</v-icon>
 							</v-btn>
 						</template>
 						<span>{{$t('close')}}</span>

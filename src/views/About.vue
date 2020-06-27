@@ -18,8 +18,26 @@
 					span(class="subtitle1") “Русь сидящая” ведет собственный регулярный мониторинг ситуации в млс со 02.04.2020. Собираем и систематизируем данные о ситуациях в учреждениях ФСИН с помощью сообщений, которые получаем от родственников осужденных в обращениях к фонду и комментариев в социальных сетях “Руси сидящей”. Проверяем каждое сообщение. По грубейшим нарушениям юристы фонда готовят и отправляют жалобы в Генеральную прокуратуру. Данные полученные в ходе мониторинга, мы наносим на карту. Призываем журналистов, правозащитников, осужденных и их родственников участвовать в нашем мониторинге и сообщать о ситуации с коронавирусом в колониях.
 				br
 			v-container(style="margin-top: 100px")
-				v-layout(wrap)
-					a(href="https://zekovnet.ru/help-us/" target="_blank" rel="noreferrer" style="width: 100%; text-decoration: none")
+				v-layout(column)
+					h4(style="color: #D50000; font-family: 'Akrobat'!important; font-size: 2rem!important; font-weight: bold;") Поддержать проект
+					span(class="subtitle1") Сейчас нам можно помочь переводом на
+						b  Яндекс кошелек ЯК 410011325954985
+						span ,
+						b  на счет PAYPAL по адресу ooo.romanova@gmail.com
+						span , или отправить средства на криптовалютные кошельки:
+					span(class="subtitle1 mt-3")
+						b Bitcoin
+						span  1DxLhAj26FbSqWvMEUCZaoDCfMrRo5FexU
+						br
+						b Ethereum
+						span  0xBb3F34B6f970B195bf53A9D5326A46eAb4F56D2d
+						br
+						b Litecoin
+						span  LUgzNgyQbM3FkXR7zffbwwK4QCpYuoGnJz
+						br
+						b Ripple
+						span  rDRzY2CRtwsTKoSWDdyEFYz1LGDDHdHrnD
+					//a(href="https://zekovnet.ru/help-us/" target="_blank" rel="noreferrer" style="width: 100%; text-decoration: none")
 						v-btn(block tile text class="navbar-text" outlined large ) Поддержать проект
 					//div(style="width: 25vw")
 																					v-select(:items="ways" outlined v-model="current" label="" background-color="grey_e5" color="black" style="" class="about-select")

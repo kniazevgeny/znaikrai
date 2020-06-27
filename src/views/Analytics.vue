@@ -187,7 +187,7 @@
             this.totalCount = response.total_count;
             this.totalCountAppeals = response.total_count_appeals;
             this.totalCountCovid = response.total_count_appeals_corona;
-            console.log(this.analytics);
+            //console.log(this.analytics);
             // set headline ending: "о", "а"
             if ( this.totalCountAppeals % 10 === 1 ) this.headlineEnding = "о";
             else if ( this.totalCountAppeals % 10 >= 2 && this.totalCountAppeals % 10 <= 4 ) this.headlineEnding = "а";

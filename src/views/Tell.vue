@@ -36,7 +36,7 @@
         mounted(): void {
             if ( this.$route.query.place_id !== undefined ) {
                 this.place_id = this.$route.query.place_id as string;
-                console.log(this.place_id)
+                //console.log(this.place_id)
             }
         }
 

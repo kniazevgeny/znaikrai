@@ -118,10 +118,10 @@
         getQuestions() {
             if ( parseInt(this.originType) ) {
                 axios.get(store.apibase() + this.questionsOrigin).then((response) => {
-                    console.log("questions", response.status);
+                    //console.log("questions", response.status);
                     //console.log(response.data);
                     this.questions = response.data;
-                    console.log(this.questions);
+                    //console.log(this.questions);
                     this.setCheckboxes();
                     this.checkPlaceId();
                     this.loading = false;
@@ -210,7 +210,7 @@
                 }
                 //console.log(b);
                 this.loadingbtn = true;
-                console.log(b);
+                //console.log(b);
                 axios.post(store.apibase() + this.to,
                     b
                 ).then(response => {

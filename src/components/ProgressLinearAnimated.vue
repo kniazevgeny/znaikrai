@@ -56,7 +56,7 @@
         }
 
         mounted(): void {
-            console.log(!this.isMobile());
+            //console.log(!this.isMobile());
             if ( !this.isMobile() ) {
                 //just condition for animation to be completed
                 this.onChange();

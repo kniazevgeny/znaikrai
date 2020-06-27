@@ -510,9 +510,9 @@
                 set_types.clear();
                 this.searchType = this.searchTypes;
                 this.markers1.forEach(val => this.searchNames.push(val.name));
-                console.log(this.markers1);
+                //console.log(this.markers1);
                 this.markersForClusters = new Map([..._markersForClusters.entries()].sort());
-                console.log(this.markersForClusters);
+                //console.log(this.markersForClusters);
                 store.setPlaces(this.markers0);
                 this.checkUrlMarker();
                 this.setUrlParams();
@@ -542,7 +542,7 @@
                 store.setInfowindow(false);
             },
             addrmaps() {
-                console.log(this.place);
+                //console.log(this.place);
             },
             toggleInfoWindow(marker, idx) {
                 //this.infoWindowPos = marker.position;
@@ -584,7 +584,7 @@
             },
             checkUrlMarker() {
                 if (this.$route.query.id !== undefined) {
-                    console.log(this.$route.query.id);
+                    //console.log(this.$route.query.id);
                     this.markers0.forEach(el => {
                         if (el._id === this.$route.query.id) {
                             this.toggleInfoWindow(el, 0);

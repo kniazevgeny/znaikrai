@@ -375,7 +375,7 @@
 
         checkPlace() {
             let id = (this._info as any)._id;
-            console.log(id);
+            //console.log(id);
             // console.log(id);
             // console.log(store.isPlace((this._info as any)._id));
             if ( (this._info as any) !== undefined && (this._info as any)._id !== undefined )
@@ -388,7 +388,7 @@
                     this.loading = false;
                 } else
                     axios.get(store.apibase() + '/places/' + (this._info as any)._id).then(response => {
-                        console.log(response.data.place);
+                        //console.log(response.data.place);
                         let resp = response.data.place;
                         resp.name = resp.name.slice(resp.name.indexOf("«") + 1, resp.name.indexOf("»"));
                         // removes space after №

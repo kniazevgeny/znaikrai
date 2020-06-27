@@ -83,7 +83,7 @@
 
 <script lang="js">
     import Vue from "vue";
-    import axios from "axios";
+    import * as api from "../utils/api";
     import * as store from "../plugins/store";
     import * as VueGoogleMaps from "vue2-google-maps";
     import {gmapApi} from 'vue2-google-maps'
@@ -520,13 +520,13 @@
             changeTheme() {
                 store.setDark(!this.mapTheme);
             },
-            getPlaces() {
+            async getPlaces() {
                 try {
                     //console.log(store.apibase());
-                    axios.get(store.apibase() + '/places/').then(response => {
+                    await api.getPlaces().then(response => {
                         this.processPlaces(response.data.places);
                         this.search();
-                    });
+                    }).catch(err => console.log(err));
                     //this.$router.replace("cabinet");
                 } catch (err) {
                     console.log(err);

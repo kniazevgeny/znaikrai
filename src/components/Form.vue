@@ -4,11 +4,11 @@
 			v-col(v-if="loading" cols='9', style="width: 88%; margin-left: 6vw" class="analyse-loader" v-for="j in 6" :key="j")
 				v-skeleton-loader(type="card-heading")
 				v-skeleton-loader(type="sentences")
-			v-form(ref="form" small v-model="valid" lazy-validation @submit.prevent="sendNewBlank" class="mb-0 pb-0")
+			v-form(ref="form" small v-model="valid" lazy-validation @submit.prevent="sendNewBlank" class="mb-0 pb-0" style="width: 100%")
 				v-col(cols='9' v-for="(value, i) in questions" :key="i")
 					div(v-if="value.type === 'textfield' && (value.requires === '' || form[value.requires] === 'Да')")
 						span(class="question") {{ value.question }}
-						v-text-field(class="question-textfield" label='', :placeholder="value.hint", v-model='form[value.name]', :disabled="value.disabled" :required="value.required", :rules="value.required ? requiredRules : undefined", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
+						v-text-field(class="question-textfield" label='', :placeholder="value.hint", v-model='form[value.name]', :disabled="value.disabled", :required="value.required", :rules="getRules(value.required, value.rules)", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
 					div(v-if="value.type === 'textarea' && (value.requires === '' || form[value.requires] === 'Да')")
 						span(class="question") {{ value.question }}
 						v-textarea(class="question-textfield" auto-grow label='', :placeholder="value.hint", v-model='form[value.name]', :required="value.required", :rules="value.required ? requiredRules : undefined", :hint='value.required ? "Обязательное поле" : ""', persistent-hint, filled)
@@ -46,8 +46,8 @@
     Vue.use(Vuetify);
     import {Component, Prop, Watch} from "vue-property-decorator";
     import * as store from "../plugins/store";
+    import * as api from "@/utils/api";
     import {i18n} from "../plugins/i18n";
-    import axios from "axios";
 
     @Component
     export default class Form extends Vue {
@@ -77,6 +77,12 @@
         requiredRules = [
             v => !!v || 'Это поле нужно заполнить'
         ];
+
+        getRules(required: any, rules: any) {
+            if (rules != undefined) return rules;
+            if (required != undefined) return this.requiredRules;
+            return undefined;
+        }
 
         isOtherChoosed(name) {
             //only for checkboxes
@@ -115,9 +121,9 @@
             }
         }
 
-        getQuestions() {
+        async getQuestions() {
             if ( parseInt(this.originType) ) {
-                axios.get(store.apibase() + this.questionsOrigin).then((response) => {
+                api.getQuestions(this.questionsOrigin).then((response) => {
                     //console.log("questions", response.status);
                     //console.log(response.data);
                     this.questions = response.data;
@@ -148,7 +154,7 @@
             this.getQuestions();
         }
 
-        sendNewBlank() {
+        async sendNewBlank() {
             // @ts-ignore
             if ( this.$refs.form.validate() ) {
                 let b = {};
@@ -211,10 +217,8 @@
                 //console.log(b);
                 this.loadingbtn = true;
                 //console.log(b);
-                axios.post(store.apibase() + this.to,
-                    b
-                ).then(response => {
-                    console.log("sucess ", response.status == 200);
+		            api.sendForm(b, this.to).then(response => {
+                    console.log("success ", response.status == 200);
                     if ( response.status == 200 ) {
                         this.loadingbtn = false;
                         this.sent = true;
@@ -232,6 +236,7 @@
                             color: "error",
                             active: true
                         });
+                        this.loading = false;
                     })
             } else {
                 store.setSnackbar({

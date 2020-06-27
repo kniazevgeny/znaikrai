@@ -261,7 +261,7 @@
 
     Vue.use(Vuetify);
     import * as store from "../plugins/store";
-    import axios from "axios";
+    import * as api from "@/utils/api";
     import {Component, Prop, Watch} from "vue-property-decorator";
     import ViolationChart from "@/components/ViolationChart.vue"
     import EmailSubscription from "@/components/EmailSubscription.vue"
@@ -271,7 +271,6 @@
     Vue.component('Form', Form);
 
     Vue.component('violationChart', ViolationChart);
-    Vue.component('EmailSubscription', EmailSubscription);
     Vue.component('MistakeReport', MistakeReport);
 
     @Component
@@ -373,7 +372,7 @@
             //console.log(this.proofs);
         }
 
-        checkPlace() {
+        async checkPlace() {
             let id = (this._info as any)._id;
             //console.log(id);
             // console.log(id);
@@ -387,7 +386,7 @@
                     this.checkCovidViolations();
                     this.loading = false;
                 } else
-                    axios.get(store.apibase() + '/places/' + (this._info as any)._id).then(response => {
+                    await api.getPlace((this._info as any)._id).then(response => {
                         //console.log(response.data.place);
                         let resp = response.data.place;
                         resp.name = resp.name.slice(resp.name.indexOf("«") + 1, resp.name.indexOf("»"));

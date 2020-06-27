@@ -24,7 +24,9 @@
 									v-icon(meduim style="justify-content: normal;") mail_outlined
 							span {{$t('navbar.subscribe')}}
 					v-layout(style="z-index: 100" class="pa-6")
-						EmailSubscription {{$t('navbar.subscribe')}}
+						v-container(fluid class="pa-0")
+							h4(class="mb-10" style="color: #D50000; font-family: 'Akrobat'!important; font-size: 1.8rem!important; font-weight: bold;") {{$t('navbar.subscribe')}}
+							Form(originType="0" questionsOrigin="3" to="/mailing")
 		div(:style=`$route.path === "/" ? "position: fixed": "position: absolute;"` style='justify-content: center; top: 0px; left: 0; right: 0; margin: auto; z-index: 10')
 			v-btn(:style='$store.state.dark ? "filter: none" : "filter: invert()"' style="position: absolute; bottom: 0; left: 0; right: 0; margin: auto; animation: fadeIn 1.5s;" id="navbar-logo" icon)
 				a(href="https://zekovnet.ru" target="_blank" rel="noreferrer")

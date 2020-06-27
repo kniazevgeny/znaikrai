@@ -237,7 +237,7 @@ export const forms = () => [
             hint: "",
             button: ""
         },],
-    // 1 additional information form
+    // 2 report mistake
     [
         {
             name: "fsin_organization",
@@ -254,6 +254,8 @@ export const forms = () => [
             question: "Адрес электронной почты",
             required: true,
             requires: "",
+            rules: [v => !!v || 'Это поле обязательно к заполнению', // /^\w*@\w+$/.test(v)
+                v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test(v) || 'Проверьте корректность написания'],
             type: "textfield",
             values: null,
             hint: "",
@@ -265,6 +267,30 @@ export const forms = () => [
             required: true,
             requires: "",
             type: "textarea",
+            values: null,
+            hint: "",
+            button: ""
+        },],
+    // 3 email subscription
+    [
+        {
+            name: "name",
+            question: "Имя",
+            required: true,
+            requires: "",
+            type: "textfield",
+            values: null,
+            hint: "",
+            button: ""
+        },
+        {
+            name: "email",
+            question: "Email",
+            required: true,
+            requires: "",
+            type: "textfield",
+            rules: [v => !!v || 'Это поле обязательно к заполнению', // /^\w*@\w+$/.test(v)
+                    v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test(v) || 'Проверьте корректность написания'],
             values: null,
             hint: "",
             button: ""

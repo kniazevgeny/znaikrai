@@ -5,7 +5,8 @@
 	:color="color"
 	:height="height"
 	class="progress-bar"
-	style="transition-duration: 2s!important; transition-timing-function: ease-in-out;")
+	style="transition-timing-function: ease-in-out;"
+	:style="isMobile() ? 'transition-duration: 0s!important; ' : 'transition-duration: 2s!important; '")
 		template
 			span(style="color: white") {{ displayNumber }}
 </template>
@@ -35,6 +36,10 @@
             return ((this.displayNumber / this.value) * 100) + parseInt(this.offset)
         }
 
+        isMobile() {
+            return window.innerWidth < 600
+        }
+
         onChange() {
             clearInterval(this.interval);
             if ( this.value == this.displayNumber ) {
@@ -51,8 +56,11 @@
         }
 
         mounted(): void {
-            //just condition for animation to be completed
-            this.onChange();
+            console.log(!this.isMobile());
+            if ( !this.isMobile() ) {
+                //just condition for animation to be completed
+                this.onChange();
+            } else this.displayNumber = this.value;
         }
     }
 </script>

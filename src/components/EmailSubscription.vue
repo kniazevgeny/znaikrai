@@ -3,9 +3,9 @@
 		h4(class="mb-10" style="color: #D50000; font-family: 'Akrobat'!important; font-size: 1.8rem!important; font-weight: bold;") {{$t('navbar.subscribe')}}
 		v-form(ref="form" small v-model="valid" lazy-validation @submit.prevent="sendMailing")
 			span(class="question") Имя
-			v-text-field(class="mt-0 mb-0" label='', v-model="name" required, persistent-hint, filled :rules="nameRules" style="max-width: 350px")
+			v-text-field(class="mt-0 mb-0 question-textfield" label='', v-model="name" outlined required, persistent-hint, filled :rules="nameRules" style="max-width: 350px")
 			span(class="question") Email
-			v-text-field(class=" mt-0 mb-0" label='', v-model="email" required, persistent-hint, filled :rules="emailRules" style="max-width: 350px" @keyup.enter="sendMailing()")
+			v-text-field(class=" mt-0 mb-0 question-textfield" label='', v-model="email" outlined required, persistent-hint, filled :rules="emailRules" style="max-width: 350px" @keyup.enter="sendMailing()")
 			v-btn(class="btn" @click="sendMailing()" tile text background-color="transparent" block :disabled="sent") Подписаться
 </template>
 
@@ -31,7 +31,6 @@
             v => /^[a-zA-Zа-яА-Я_ ]+$/.test(v) || 'Имя не должно включать в себя спецсимволы'];
         emailRules = [
             v => !!v || 'Это поле обязательно к заполнению', // /^\w*@\w+$/.test(v)
-            v => v.length < 50 || 'Максимум 50 символов',
             v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/.test(v) || 'Проверьте корректность написания'
         ];
 
@@ -56,11 +55,11 @@
                     });
                 })
             }
-        }
+        };
 
     }
 </script>
 
 <style scoped>
-
+	@import url('../assets/styles/main.css');
 </style>

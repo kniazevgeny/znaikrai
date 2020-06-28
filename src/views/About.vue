@@ -20,7 +20,7 @@
 			v-container(style="margin-top: 100px")
 				v-layout(column)
 					h4(style="color: #D50000; font-family: 'Akrobat'!important; font-size: 2rem!important; font-weight: bold;") Поддержать проект
-					span(class="subtitle1") Сейчас нам можно помочь переводом на
+					span(class="subtitle1") Сейчас нам можно помочь переводом на реквизиты “Руси сидящей”:
 						b  Яндекс кошелек ЯК 410011325954985
 						span ,
 						b  на счет PAYPAL по адресу ooo.romanova@gmail.com
@@ -51,7 +51,7 @@
 			v-card(text tile width="100%").text-center.pa-6
 				v-card-text.pt-0 Над проектом работали:
 					br
-					a(href="https://t.me/tataromanovaya" target="_blank" rel="noreferrer" style="color: #3fcff6") Татьяна Абгаджава - идея
+					a(href="https://t.me/tataromanovaya" target="_blank" rel="noreferrer" style="color: #3fcff6") Татьяна Абгаджава - идея и организация
 					br
 					a(href="https://t.me/kniazevgeny" target="_blank" rel="noreferrer" style="color: #3fcff6") Евгений Князев - фронтенд
 					br
@@ -62,12 +62,12 @@
 					a(href="https://t.me/vitaliachik" target="_blank" rel="noreferrer" style="color: #3fcff6") Вита Чикнаева - заполнение сайта
 					br
 					br
-					v-card-text.pt-0 Данный проект имеет открытый исходный код:
+					v-card-text.pt-0 Открытый исходный код:
 						br
 						a(href="https://github.com/kniazevgeny/znaikrai/" target="_blank" rel="noreferrer" style="color: #3fcff6") Фронтенд
 						br
 						a(href="https://github.com/semyon-dev/znai-krai" target="_blank" rel="noreferrer" style="color: #3fcff6") Бэкенд
-					v-card-text.pt-0 Данный проект имеет публичное 
+					v-card-text.pt-0 Публичное 
 						a(href="https://github.com/semyon-dev/znai-krai#%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F-%D0%BA-api-%D0%BC%D0%B5%D1%82%D0%BE%D0%B4%D0%B0%D0%BC" target="_blank" rel="noreferrer" style="color: #3fcff6") API
 					v-card-text.pt-0 Все материалы сайта доступны по лицензии: 
 						a(href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noreferrer" style="color: #3fcff6") Creative Commons СС-BY-SA 3.0

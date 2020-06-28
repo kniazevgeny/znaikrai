@@ -94,7 +94,7 @@
 
         getRootMargin(i: number) {
             if ( i == 1 ) return "-100px";
-            else return window.innerWidth < 600 ? "-150px" : "-370px";
+            else return window.innerHeight / -5 + "px";
         }
 
         getWidth(val) {
@@ -321,6 +321,7 @@
 		font-size: 17px;
 		line-height: 150%;
 		width: 60vw;
+		white-space: pre-line;
 		/* or 18px */
 
 

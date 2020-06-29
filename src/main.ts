@@ -10,6 +10,9 @@ import vuetify from './plugins/vuetify'
 // @ts-ignore
 // import * as VueGoogleMaps from 'vue2-google-maps'
 
+import VueWorker from 'vue-worker'
+Vue.use(VueWorker);
+
 
 Vue.config.productionTip = true
 new Vue({

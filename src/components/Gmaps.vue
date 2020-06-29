@@ -6,7 +6,7 @@
 					v-layout.pa-0.ma-0(style='vertical-align: center; align-content: center', height='60')
 						v-icon.pa-2.ma-0.search-icon(light='', large='', style='width: 5vw; height: 60px;') search
 						i#attach0
-						v-autocomplete.pa-0.ma-0.search-autocomplete(v-if='markers0', v-model='searchName', @change='search', light='', height='60', style='width: 32vw; z-index: 100; ', label='Поиск по учреждениям ФСИН', :items='searchNames', item-text='name', item-value='searchObj', multiple='', flat='', attach='#attach0', menu-props='light, top, offsetY, tile, flat, close-on-click')
+						v-autocomplete.pa-0.ma-0.search-autocomplete(v-if='markers0', v-model='searchName', light='', height='60', style='width: 30vw; z-index: 100; ', label='Поиск по учреждениям ФСИН', :items='searchNames', item-text='name', item-value='searchObj', multiple='', flat='', attach='#attach0', menu-props='light, top, offsetY, tile, flat, close-on-click')
 							template(v-slot:selection='{ item, index }', style='overflow-y: hidden')
 								span(v-if='index === 0')
 									span {{ item }}
@@ -17,8 +17,8 @@
 									span  {{item}}
 							template(v-slot:no-data='')
 								span.ml-4 По запросу не найдено учреждений. Попробуйте изменить запрос.
-						v-icon.pa-2.ma-0.search-icon(light='', meduim='', style='z-index: 101; height: 60px;', @click="searchName = '', search()") mdi-window-close
-						v-select.pa-0.ma-0.mb-0.search-select(@input='search()', dark='', height='60', v-model='searchCovid', :items='searchCovids', label='По наличию COVID-19', menu-props='top, offsetY, light, close-on-click', placeholder='Все', attach='#attach2', dense='', style='z-index: 100; width: 15vw')
+						v-icon.pa-2.ma-0.search-icon(light='', meduim='', style='z-index: 101; height: 60px; width: 60px', @click="searchName = '', search()") close
+						v-select.pa-0.ma-0.mb-0.search-select(dark='', height='60', v-model='searchCovid', :items='searchCovids', label='По наличию COVID-19', menu-props='top, offsetY, light, close-on-click', placeholder='Все', attach='#attach2', dense='', style='z-index: 100; width: 15vw')
 							template(v-slot:selection='{ item, index }', style='overflow-y: hidden')
 								span#attach2
 								span {{ item }}
@@ -30,7 +30,7 @@
 					transition(name='fade1', mode='out-in')
 						v-layout(v-if='options', wrap='', style='max-width: 20vw')
 							span#attach1
-							v-select.pa-0.ma-0.search-select(@input='search', dark='', height='60', v-model='searchType', :items='searchTypes', attach='#attach1', label='По типу учреждения', multiple='', menu-props='light, top, offsetY', style='z-index: 100; width: 33vw')
+							v-select.pa-0.ma-0.search-select(dark='', height='60', v-model='searchType', :items='searchTypes', attach='#attach1', label='По типу учреждения', multiple='', menu-props='light, top, offsetY', style='z-index: 100; width: 33vw')
 								template(v-slot:selection='{ item, index }', style='overflow-y: hidden')
 									span(v-if='index === 0')
 										span {{ item }}
@@ -86,6 +86,9 @@
     import * as api from "../utils/api";
     import * as store from "../plugins/store";
     import * as VueGoogleMaps from "vue2-google-maps";
+    import VueWorker from 'vue-worker'
+    Vue.use(VueWorker, '$worker');
+
     import {gmapApi} from 'vue2-google-maps'
     import {loaded} from 'vue2-google-maps'
     import {getColoredMarkerUrl} from "../utils/marker-url-generator";
@@ -123,7 +126,6 @@
     Vue.component('z-checkbox', zcheckbox);
     Vue.component('GmapCluster', GmapCluster);
     Vue.component('gmap-info-window', VueGoogleMaps.InfoWindow);
-
 
     export default {
         name: "Gmaps",
@@ -523,9 +525,9 @@
             async getPlaces() {
                 try {
                     //console.log(store.apibase());
-                    await api.getPlaces().then(response => {
+                    await api.getPlaces().then(async response => {
                         this.processPlaces(response.data.places);
-                        this.search();
+                        await this.search();
                     }).catch(err => console.log(err));
                     //this.$router.replace("cabinet");
                 } catch (err) {
@@ -540,9 +542,6 @@
             closes() {
                 this.infoWinOpenMine = false;
                 store.setInfowindow(false);
-            },
-            addrmaps() {
-                //console.log(this.place);
             },
             toggleInfoWindow(marker, idx) {
                 //this.infoWindowPos = marker.position;
@@ -605,41 +604,44 @@
                         query: {showAll: "0", id: this.$route.query.id !== undefined ? this.$route.query.id : ""}
                     })
             },
-            search() {
+            async search() {
                 this.setUrlParams();
-                this.markers1 = store.places();
-                this.markers1 = this.markers1.filter(
-                    tmp => this.searchType.includes(tmp.type)
-                );
-                if (this.searchCovid !== 'Все')
-                    this.markers1 = this.markers1.filter(
-                        tmp => {
-                            if (this.searchCovid === this.searchCovids[0]) return tmp.coronavirus === true;
-                            else return tmp.coronavirus === false;
-                        }
+                this.$worker.run((data) => {
+                    let markers = data.places;
+                    const searchName = data.searchName;
+                    const searchCovid = data.searchCovid;
+                    const searchCovids = data.searchCovids;
+                    const searchType = data.searchType;
+                    markers = markers.filter(
+                        tmp => searchType.includes(tmp.type)
                     );
-                this.searchNames = [];
-                this.markers1.forEach(val => this.searchNames.push(val.name));
-                if (this.searchName !== "")
-                    this.markers1 = this.markers1.filter(
-                        tmp => this.searchName.includes(tmp.name)
-                    );
-            },
-            binarySearch(ar, el) {
-                let m = 0;
-                let n = ar.length - 1;
-                while (m <= n) {
-                    let k = (n + m) >> 1;
-                    let cmp = el - ar[k];
-                    if (cmp > 0) {
-                        m = k + 1;
-                    } else if (cmp < 0) {
-                        n = k - 1;
-                    } else {
-                        return k;
-                    }
-                }
-                return -m - 1;
+                    if (searchCovid !== 'Все')
+                        markers = markers.filter(
+                            tmp => {
+                                if (searchCovid === searchCovids[0]) return tmp.coronavirus === true;
+                                else return tmp.coronavirus === false;
+                            }
+                        );
+                    let searchNames = [];
+                    markers.forEach(val => searchNames.push(val.name));
+                    if (searchName !== "")
+                        markers = markers.filter(
+                            tmp => searchName.includes(tmp.name)
+                        );
+                    return [markers, searchNames]
+                }, [{
+                    places: store.places(),
+                    searchName: this.searchName,
+                    searchCovid: this.searchCovid,
+                    searchCovids: this.searchCovids,
+                    searchType: this.searchType
+                }])
+                    .then(result => {
+                        this.markers1 = result[0];
+                        this.searchNames = result[1];
+                    });
+                let worker  = this.$worker;
+                worker = null;
             },
             calculator(markers, numStyles) {
                 let violationCounter = 0;
@@ -675,9 +677,20 @@
                 });
                 if (s.length === 1) {
                     this.$refs.mapRef.$mapPromise.then((map) => {
-                        map.panTo(s[0].position); })
+                        map.panTo(s[0].position);
+                    })
                 }
-            }
+            },
+            async searchCovid() {
+                this.setUrlParams();
+                await this.search();
+            },
+            async searchName() {
+                await this.search();
+            },
+            async searchType() {
+                await this.search();
+            },
         }
 
     };

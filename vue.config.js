@@ -5,7 +5,21 @@ module.exports = {
     disableHostCheck: true
   },
   assetsDir: 'static/',
-  /*configureWebpack: {
+  configureWebpack: (config) => {
+    config.module.rules = [
+      {
+        test: /\.worker\.js$/,
+        use: [
+          {
+            loader: 'worker-loader',
+          }
+        ]
+      },
+      ...config.module.rules
+    ]
+  }
+
+    /*configureWebpack: {
     plugins: [
       new PrerenderSPAPlugin({
         staticDir: path.join(__dirname, 'dist'),

@@ -17,7 +17,7 @@
 					br
 					span(class="subtitle1") “Русь сидящая” ведет собственный регулярный мониторинг ситуации в млс со 02.04.2020. Собираем и систематизируем данные о ситуациях в учреждениях ФСИН с помощью сообщений, которые получаем от родственников осужденных в обращениях к фонду и комментариев в социальных сетях “Руси сидящей”. Проверяем каждое сообщение. По грубейшим нарушениям юристы фонда готовят и отправляют жалобы в Генеральную прокуратуру. Данные полученные в ходе мониторинга, мы наносим на карту. Призываем журналистов, правозащитников, осужденных и их родственников участвовать в нашем мониторинге и сообщать о ситуации с коронавирусом в колониях.
 				br
-			v-container(style="margin-top: 100px")
+			v-container(class="mt-3")
 				v-layout(column)
 					h4(style="color: #D50000; font-family: 'Akrobat'!important; font-size: 2rem!important; font-weight: bold;") Поддержать проект
 					span(class="subtitle1") Сейчас нам можно помочь переводом на реквизиты “Руси сидящей”:
@@ -47,6 +47,8 @@
 																					v-text-field(filled, placeholder="Ваш email", background-color="gray_e5")
 					//div(style="margin-left: 15px")
 																					v-btn(tile, flat, color="red_main", style="margin-right: 4%;", class="btn-text", x-large, id="send", elevetion="0") Отправить
+					a(href="https://zekovnet.ru/help-us/#formavol" target="_blank" rel="noreferrer" style="width: 100%; text-decoration: none" class="mt-6")
+						v-btn(tile text class="navbar-text" outlined large ) Помочь действием
 		v-footer(dark padless)
 			v-card(text tile width="100%").text-center.pa-6
 				v-card-text.pt-0 Над проектом работали:

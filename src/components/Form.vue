@@ -316,7 +316,7 @@
 	.subtitle1 {
 		font-family: 'Akrobat' !important;
 		color: #000;
-		font-size: 1.2rem;
+		font-size: 1.22rem;
 		width: 60vw;
 		margin-top: 20px;
 	}

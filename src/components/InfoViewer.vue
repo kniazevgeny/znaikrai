@@ -142,7 +142,7 @@
 								<v-btn v-if="!tellCovid" tile light large outlined block color="black" class="btn-thin"
 								       @click="tellCovid = true">Сообщить о COVID-19 в этом учреждении
 								</v-btn>
-								<Form v-if="tellCovid && !sentTellCovid" originType="0" questionsOrigin="0" to="/form_corona"
+								<Form v-if="tellCovid && !sentTellCovid" originType="0" questionsOrigin="1" to="/form_corona"
 								      :place_id="info._id" @sent="sentTellCovid = true"></Form>
 								<v-btn v-if="sentTellCovid" tile light large outlined block color="black" class="btn-thin"
 								       :to="'tell?place_id=' + info._id">Cообщить о других нарушениях в этом учреждении

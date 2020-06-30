@@ -79,8 +79,8 @@
         ];
 
         getRules(required: any, rules: any) {
-            if (rules != undefined) return rules;
-            if (required != undefined) return this.requiredRules;
+            if ( rules != undefined ) return rules;
+            if ( required != undefined ) return this.requiredRules;
             return undefined;
         }
 
@@ -109,11 +109,20 @@
                 this.questions.push({name: "place_id"});
                 this.questions.forEach(q => {
                         // @ts-ignore
-                        if ( q.name == "fsin_organization" && store.place(this.place_id) != undefined ) {
+                        if ( (q.name == "fsin_organization" || q.name == "name_of_fsin") && store.place(this.place_id) != undefined ) {
                             // @ts-ignore
                             q.disabled = true;
                             // @ts-ignore
-                            this.form["fsin_organization"] = store.place(this.place_id).name;
+                            if ( q.name == "fsin_organization" ) {
+                                // @ts-ignore
+                                this.form["fsin_organization"] = store.place(this.place_id).name;
+                            }
+                            // @ts-ignore
+                            else if (q.name == "name_of_fsin"){
+                                // @ts-ignore
+                                this.form["name_of_fsin"] = store.place(this.place_id).name;
+                            }
+
                         }
                     }
                 );
@@ -217,7 +226,7 @@
                 //console.log(b);
                 this.loadingbtn = true;
                 //console.log(b);
-		            api.sendForm(b, this.to).then(response => {
+                api.sendForm(b, this.to).then(response => {
                     console.log("success ", response.status == 200);
                     if ( response.status == 200 ) {
                         this.loadingbtn = false;
@@ -246,13 +255,14 @@
                 });
             }
         };
-		    @Watch('place_id')
-		    onChange() {
-		        // @ts-ignore
+
+        @Watch('place_id')
+        onChange() {
+            // @ts-ignore
             this.$refs.form.reset();
             this.sent = false;
             this.getQuestions();
-		    }
+        }
     }
 </script>
 

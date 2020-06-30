@@ -11,7 +11,7 @@ const INDEX = path.resolve(STATIC, 'index.html');
 
 const app = express();
 app.use(compression());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 // Static content
 app.use(express.static(STATIC));

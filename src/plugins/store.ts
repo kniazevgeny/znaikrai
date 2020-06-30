@@ -101,8 +101,18 @@ export const apibase = () => getters.apibase as string | undefined
 export const infowindow = () => getters.infowindow as boolean
 export const places = () => getters.places as object
 export const forms = () => [
-    // 0 covid form
+    // 0 additional information form
     [
+        {
+            name: "name_of_fsin",
+            question: "О каком учреждении ФСИН вы рассказываете?",
+            required: true,
+            requires: "",
+            type: "textfield",
+            values: null,
+            hint: "СИЗО 1",
+            button: ""
+        },
         {
             name: "status",
             question: "Какой ваш статус?",
@@ -174,7 +184,7 @@ export const forms = () => [
             hint: "",
             button: ""
         },],
-    // 1 additional information form
+    // 1 corona form
     [
         {
             name: "status",
@@ -187,6 +197,7 @@ export const forms = () => [
                 "Родственник заключенного",
                 "Заключенный в настоящее время",
                 "Адвокат",
+                "Журналист",
                 "другое"
             ],
             hint: "",

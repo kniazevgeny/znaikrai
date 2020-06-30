@@ -1,6 +1,6 @@
 User-Agent: *
-Disallow: /
-Disallow: /stories
-Disallow: /about
-Disallow: /analytics
-Disallow: /tell
+Allow: /
+Allow: /stories
+Allow: /about
+Allow: /analytics
+Allow: /tell

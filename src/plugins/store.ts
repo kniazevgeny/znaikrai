@@ -187,6 +187,16 @@ export const forms = () => [
     // 1 corona form
     [
         {
+            name: "name_of_fsin",
+            question: "О каком учреждении ФСИН вы рассказываете?",
+            required: true,
+            requires: "",
+            type: "textfield",
+            values: null,
+            hint: "СИЗО 1",
+            button: ""
+        },
+        {
             name: "status",
             question: "Какой ваш статус?",
             required: true,

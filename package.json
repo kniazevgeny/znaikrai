@@ -13,7 +13,7 @@
     "@types/chart.js": "^2.9.14",
     "@types/node": "^12.7.3",
     "@vue/test-utils": "^1.0.0-beta.32",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-core": "^6.26.3",
     "babel-jest": "^25.1.0",
     "buefy": "^0.8.13",

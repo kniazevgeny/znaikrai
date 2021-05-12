@@ -17,7 +17,7 @@
     "babel-core": "^6.26.3",
     "babel-jest": "^25.1.0",
     "buefy": "^0.8.13",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "compression": "^1.7.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

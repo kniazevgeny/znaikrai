@@ -42,7 +42,7 @@
     "vue-worker": "^1.2.1",
     "vue2-google-maps": "^0.10.7",
     "vuelidate": "latest",
-    "vuetify": "^2.0.11",
+    "vuetify": "^2.6.10",
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.5.4",
     "worker-loader": "^2.0.0"
